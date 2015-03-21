@@ -39,6 +39,24 @@ void BaseballTeam::setPitcher(int index)
     }
     else {
         pitcher = getPlayer(index);
+        defense[0] = pitcher;
+    }
+}
+
+void BaseballTeam::setBattingOrder(QList<int> playerIndicies)
+{
+    battingOrder.clear();
+    for (int i = 0; i < playerIndicies.length(); i++) {
+        battingOrder.insert(i,getPlayer(playerIndicies.at(i)));
+    }
+}
+
+void BaseballTeam::setDefense(QList<int> playerIndicies)
+{
+    defense.clear();
+    defense.insert(0, pitcher);
+    for (int i = 0; i < playerIndicies.size(); i++) {
+        defense.insert(i + 1, getPlayer(playerIndicies.at(i)));
     }
 }
 

@@ -3,7 +3,6 @@
 
 #include <QTabWidget>
 #include "BaseballGame.h"
-#include "GoalDisplayWidget.h"
 #include "TeamStatControl.h"
 #include "BatterStatControl.h"
 #include "Pitchers.h"
@@ -14,7 +13,6 @@ public:
     StatDisplayControls(BaseballGame* game);
 
 private:
-    //GoalDisplayWidget homeGoal, awayGoal;
     TeamStatControl homeStats, awayStats;
     BatterStatControl batters;
     Pitchers pitchers;

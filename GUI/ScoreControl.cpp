@@ -26,9 +26,5 @@ ScoreControl::ScoreControl(BaseballGame* game) {
     main->setVerticalSpacing(0);
     setLayout(main);
 
-    connect(&sm1, SIGNAL(clicked()), game, SLOT(awayGoal()));
-    connect(&sm2, SIGNAL(clicked()), game, SLOT(awayLoseGoal()));
-    connect(&sp1, SIGNAL(clicked()), game, SLOT(homeGoal()));
-    connect(&sp2, SIGNAL(clicked()), game, SLOT(homeLoseGoal()));
 
 }
