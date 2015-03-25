@@ -90,6 +90,7 @@ HEADERS  += MainWindow.h \
     GUI/BaseControlls.h
 
 
+
 RESOURCES += \
     graphics.qrc
 
