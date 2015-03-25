@@ -10,9 +10,9 @@
 #include "GameInfo.h"
 #include "ClockControls.h"
 #include "StatDisplayControls.h"
-
+#include "Lineups.h"
 #include "CommercialGraphic.h"
-
+#include "BaseControlls.h"
 
 
 class ControlPanel : public QWidget {
@@ -22,12 +22,14 @@ public:
 
 private:
     DisplayControls dispControls;
-    AtBatResults AtBatResults;
-    CountControl sogs;
+    AtBatResults atBatResults;
+    CountControl count;
     ScoreControl scores;
     GameInfo hud;
     ClockControls clockControls;
     StatDisplayControls stats;
+    Lineups lineup;
+    BaseControlls bases;
 };
 
 #endif // CONTROLPANEL_H

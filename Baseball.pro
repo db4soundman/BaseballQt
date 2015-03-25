@@ -50,7 +50,9 @@ SOURCES += main.cpp\
     GUI/CountControl.cpp \
     GUI/TeamStatControl.cpp \
     GUI/BatterStatControl.cpp \
-    GUI/AtBatResults.cpp
+    GUI/AtBatResults.cpp \
+    GUI/Lineups.cpp \
+    GUI/BaseControlls.cpp
 
 HEADERS  += MainWindow.h \
     Scoreboard.h \
@@ -83,7 +85,9 @@ HEADERS  += MainWindow.h \
     GUI/CountControl.h \
     GUI/TeamStatControl.h \
     GUI/BatterStatControl.h \
-    GUI/AtBatResults.h
+    GUI/AtBatResults.h \
+    GUI/Lineups.h \
+    GUI/BaseControlls.h
 
 
 RESOURCES += \

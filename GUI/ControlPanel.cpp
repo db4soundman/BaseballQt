@@ -4,19 +4,21 @@
 #include <QGridLayout>
 
 ControlPanel::ControlPanel(BaseballGame* game, CommercialGraphic* comGraphic) :
-    dispControls(game, comGraphic), AtBatResults(game), sogs(game),
-    scores(game), hud(game), clockControls(game, comGraphic), stats(game) {
+    dispControls(game, comGraphic), atBatResults(game), count(game), lineup(game),
+    scores(game), hud(game), clockControls(game, comGraphic), stats(game), bases(game) {
     QHBoxLayout* mainLayout = new QHBoxLayout();
 
     QVBoxLayout* leftColumn = new QVBoxLayout();
     leftColumn->addWidget(&dispControls);
     QGridLayout* grid = new QGridLayout();
-    grid->addWidget(&AtBatResults, 1, 1);
-    grid->addWidget(&sogs, 0, 0,Qt::AlignHCenter | Qt::AlignTop);
-    grid->addWidget(&scores, 0, 1, Qt::AlignHCenter | Qt::AlignTop );
-
+    grid->addWidget(&lineup, 0, 0, 3, 1);
+    grid->addWidget(&atBatResults, 1, 1);
+    grid->addWidget(&count, 0, 1,Qt::AlignHCenter | Qt::AlignTop);
+    grid->addWidget(&bases, 1, 2);
+    grid->addWidget(&scores, 0, 2, Qt::AlignHCenter | Qt::AlignTop );
+    grid->addWidget(&stats, 2, 1, 1, 2);
     leftColumn->addLayout(grid);
-    leftColumn->addWidget(&stats);
+
 
     QVBoxLayout* rightColumn = new QVBoxLayout();
     rightColumn->addWidget(&hud);

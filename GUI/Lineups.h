@@ -1,0 +1,25 @@
+#ifndef LINEUPS_H
+#define LINEUPS_H
+#include <QComboBox>
+#include "BaseballGame.h"
+class Lineups : public QWidget
+{
+    Q_OBJECT
+public:
+    Lineups(BaseballGame* game);
+
+public slots:
+    void awayLineupChanged();
+    void homeLineupChanged();
+
+signals:
+    void homeBattingOrderUpdate(QList<int> ind);
+    void awayBattingOrderUpdate(QList<int> ind);
+    void homeDefenseUpdate(QList<int> ind);
+    void awayDefenseUpdate(QList<int> ind);
+
+private:
+    QList<QComboBox*> awayOrder, homeOrder, awayDef, homeDef;
+};
+
+#endif // LINEUPS_H

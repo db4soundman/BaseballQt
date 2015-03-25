@@ -24,9 +24,11 @@ signals:
 public slots:
 
     void setPitcher(int index);
+    void setBattingOrder(QList<int>playerIndicies);
+    void setDefense(QList<int> playerIndicies);
 
 private:
-    QList<BaseballPlayer*> roster;
+    QList<BaseballPlayer*> roster, battingOrder, defense;
 
     BaseballPlayer* pitcher;
     // period data???

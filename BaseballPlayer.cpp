@@ -4,6 +4,8 @@
 
 BaseballPlayer::BaseballPlayer() {
     abToday= rToday= hToday= rbiToday= hrToday= walksToday= strikeoutsToday= hbpToday=pitchCount= ballsThrown= strikesThrown= outsToday =0;
+    outs= ap= gs= wins= losses= saves= hitsAllowed= runsAllowed= er= bb= kOut = 0;
+    era = "0.00";
 }
 
 

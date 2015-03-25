@@ -3,25 +3,14 @@
 
 SeasonXMLHandler::SeasonXMLHandler(BaseballTeam* t) {
     team = t;
-    inPlayer = inTotals = inOpponent = foundGoalie =  false;
+    inPlayer = inTotals = inOpponent = foundPitcher =  false;
 }
 
 bool SeasonXMLHandler::startElement(const QString& namespaceURI,
                                     const QString& localName,
                                     const QString& qName,
                                     const QXmlAttributes& atts) {
-    if (qName == "totals") {
-        inTotals = true;
-    }
-    else if (qName == "opponent") {
-        inOpponent = true;
-    }
-
-    else if (qName == "powerplay" && inTotals) {
-
-    }
-
-    else if (qName == "player") {
+    if (qName == "player") {
         currPlayer = new BaseballPlayer();
         inPlayer = true;
         currPlayer->setName(correctName(atts.value("name")));
@@ -30,21 +19,32 @@ bool SeasonXMLHandler::startElement(const QString& namespaceURI,
         currPlayer->setGp(atts.value("gp").toInt());
     }
 
-    else if (qName == "shots" && inPlayer) {
-
+    else if (qName == "hitting" && inPlayer) {
+        currPlayer->setSacFly(atts.value("sf").toInt());
+        currPlayer->setHbp(atts.value("hbp").toInt());
+        currPlayer->setStrikeouts(atts.value("so").toInt());
+        currPlayer->setWalks(atts.value("bb").toInt());
+        currPlayer->setHr(atts.value("hr").toInt());
+        currPlayer->setTriples(atts.value("triple").toInt());
+        currPlayer->setDoubles(atts.value("double").toInt());
+        currPlayer->setRbi(atts.value("rbi").toInt());
+        currPlayer->setAb(atts.value("ab").toInt());
     }
 
-    else if (qName == "penalty" && inPlayer) {
-
-    }
-
-    else if (qName == "misc" && inPlayer) {
-
-    }
-
-    else if (qName == "goalie" && inPlayer) {
-
-
+    else if (qName == "pitching" && inPlayer) {
+        currPlayer->setEra(atts.value("era"));
+        currPlayer->setAp(atts.value("appear").toInt());
+        currPlayer->setGs(atts.value("gs").toInt());
+        currPlayer->setSaves(atts.value("save").toInt());
+        currPlayer->setWins(atts.value("win").toInt());
+        currPlayer->setLosses(atts.value("loss").toInt());
+        currPlayer->setHitsAllowed(atts.value("h").toInt());
+        currPlayer->setRunsAllowed(atts.value("r").toInt());
+        currPlayer->setEr(atts.value("er").toInt());
+        currPlayer->setBb(atts.value("bb").toInt());
+        currPlayer->setKOut(atts.value("k").toInt());
+        double ip = atts.value("ip").toDouble();
+        currPlayer->setOuts(((int) (ip) * 3) + ((int) (ip*10)) % 10);
     }
 
     return true;
@@ -55,15 +55,6 @@ bool SeasonXMLHandler::endElement(const QString& namespaceURI, const QString& lo
 
         team->addPlayer(currPlayer);
         inPlayer = false;
-        foundGoalie = false;
-    }
-
-    else if (qName == "totals") {
-        inTotals = false;
-    }
-
-    else if (qName == "opponent") {
-        inOpponent = false;
     }
 
     return true;
@@ -82,9 +73,13 @@ bool SeasonXMLHandler::fatalError(const QXmlParseException& exception)
 QString
 SeasonXMLHandler::correctName(QString name) {
     if (!name.contains(",")) {
-        return name.toUpper();
+        name = name.toUpper();
     }
-    QString goodName = (name.mid(name.indexOf(",")) + " " +
-                        name.left(name.indexOf(",")));
-    return goodName.toUpper().trimmed();
+    else {
+        std::string goodName = name.toStdString();
+        QString firstName = QString::fromStdString(goodName.substr(goodName.find(" ") + 1, goodName.length()));
+        QString lastName = QString::fromStdString(goodName.substr(0, goodName.find(",")));
+        name = firstName.toUpper() + " " + lastName.toUpper();
+    }
+    return name;
 }
