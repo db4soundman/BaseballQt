@@ -6,5 +6,6 @@
         <file alias="Scoreboard.png">images/Scoreboard.png</file>
         <file alias="GrayBase.png">images/GrayBase.png</file>
         <file alias="YellowBase.png">images/YellowBase.png</file>
+        <file alias="Field.png">images/AllAccessField.png</file>
     </qresource>
 </RCC>

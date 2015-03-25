@@ -3,8 +3,8 @@
 Lineups::Lineups(BaseballGame *game)
 {
     QStringList positions;
-    positions.append("P");
-    positions.append("C");
+    positions.append(" P");
+    positions.append(" C");
     positions.append("1B");
     positions.append("2B");
     positions.append("SS");
@@ -50,8 +50,8 @@ Lineups::Lineups(BaseballGame *game)
         myLayout->addWidget(box, i, 3);
     }
     connect(this, SIGNAL(awayDefenseUpdate(QList<int>)), game->getAwayTeam(), SLOT(setDefense(QList<int>)));
-    connect(this, SIGNAL(awayBattingOrderUpdate(QList<int>)), game->getAwayTeam(), SLOT(setBattingOrder(QList<int>)));
-    connect(this, SIGNAL(homeBattingOrderUpdate(QList<int>)), game->getHomeTeam(), SLOT(setBattingOrder(QList<int>)));
+    connect(this, SIGNAL(awayBattingOrderUpdate(QList<int>,QList<QString>)), game->getAwayTeam(), SLOT(setBattingOrder(QList<int>,QList<QString>)));
+    connect(this, SIGNAL(homeBattingOrderUpdate(QList<int>,QList<QString>)), game->getHomeTeam(), SLOT(setBattingOrder(QList<int>,QList<QString>)));
     connect(this, SIGNAL(homeDefenseUpdate(QList<int>)), game->getHomeTeam(), SLOT(setDefense(QList<int>)));
     setLayout(myLayout);
 }
@@ -59,33 +59,37 @@ Lineups::Lineups(BaseballGame *game)
 void Lineups::awayLineupChanged()
 {
     QList <int> def, bat;
+    QList<QString> batPos;
     for (int i = 0; i < awayOrder.size(); i++) {
         bat.append(awayOrder.at(i)->currentIndex());
+        batPos.append(awayDef.at(i)->currentText());
     }
-    for (int i = 0; i < 9; i++) {
+    for (int i = 0; i < 10; i++) {
         for (int j = 0; j < awayDef.size(); j++) {
             if (awayDef.at(j)->currentIndex() == i) {
                 def.append(awayOrder.at(j)->currentIndex());
             }
         }
     }
-    emit awayBattingOrderUpdate(bat);
+    emit awayBattingOrderUpdate(bat, batPos);
     emit awayDefenseUpdate(def);
 }
 
 void Lineups::homeLineupChanged()
 {
     QList <int> def, bat;
+    QList<QString> batPos;
     for (int i = 0; i < homeOrder.size(); i++) {
         bat.append(homeOrder.at(i)->currentIndex());
+        batPos.append(homeDef.at(i)->currentText());
     }
-    for (int i = 0; i < 9; i++) {
+    for (int i = 0; i < 10; i++) {
         for (int j = 0; j < homeDef.size(); j++) {
             if (homeDef.at(j)->currentIndex() == i) {
                 def.append(homeOrder.at(j)->currentIndex());
             }
         }
     }
-    emit homeBattingOrderUpdate(bat);
+    emit homeBattingOrderUpdate(bat, batPos);
     emit homeDefenseUpdate(def);
 }

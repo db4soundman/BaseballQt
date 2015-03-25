@@ -13,8 +13,8 @@ public slots:
     void homeLineupChanged();
 
 signals:
-    void homeBattingOrderUpdate(QList<int> ind);
-    void awayBattingOrderUpdate(QList<int> ind);
+    void homeBattingOrderUpdate(QList<int> ind, QList<QString>p);
+    void awayBattingOrderUpdate(QList<int> ind, QList<QString>p);
     void homeDefenseUpdate(QList<int> ind);
     void awayDefenseUpdate(QList<int> ind);
 

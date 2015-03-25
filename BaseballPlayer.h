@@ -12,6 +12,8 @@ public:
     QString getName() const;
     void setName(const QString& value);
 
+    QString getLastName() const;
+
     QString getUni() const;
     void setUni(const QString& value);
 

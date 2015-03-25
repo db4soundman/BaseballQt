@@ -16,6 +16,11 @@ QString BaseballPlayer::getName() const {
 void BaseballPlayer::setName(const QString& value) {
     name = value;
 }
+
+QString BaseballPlayer::getLastName() const
+{
+    return name.mid(name.indexOf(" "));
+}
 QString BaseballPlayer::getUni() const {
     return uni;
 }

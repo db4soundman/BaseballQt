@@ -19,20 +19,20 @@ public:
     BaseballPlayer* getPitcher();
 
 signals:
-
+    void defenseChanged(QList<BaseballPlayer*> def);
+    void battingOrderChanged(QList<BaseballPlayer*>ord, QList<QString> defPos);
 
 public slots:
 
     void setPitcher(int index);
-    void setBattingOrder(QList<int>playerIndicies);
+    void setBattingOrder(QList<int>playerIndicies, QList<QString>p);
     void setDefense(QList<int> playerIndicies);
 
 private:
     QList<BaseballPlayer*> roster, battingOrder, defense;
+    QList<QString> orderDefense;
 
     BaseballPlayer* pitcher;
-    // period data???
-    // game history???
 };
 
 #endif // BASEBALLTEAM_H

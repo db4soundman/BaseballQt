@@ -52,7 +52,9 @@ SOURCES += main.cpp\
     GUI/BatterStatControl.cpp \
     GUI/AtBatResults.cpp \
     GUI/Lineups.cpp \
-    GUI/BaseControlls.cpp
+    GUI/BaseControlls.cpp \
+    DefenseGraphic.cpp \
+    BattingOrder.cpp
 
 HEADERS  += MainWindow.h \
     Scoreboard.h \
@@ -87,7 +89,9 @@ HEADERS  += MainWindow.h \
     GUI/BatterStatControl.h \
     GUI/AtBatResults.h \
     GUI/Lineups.h \
-    GUI/BaseControlls.h
+    GUI/BaseControlls.h \
+    DefenseGraphic.h \
+    BattingOrder.h
 
 
 
