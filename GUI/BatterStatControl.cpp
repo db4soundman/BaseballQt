@@ -17,10 +17,10 @@ BatterStatControl::BatterStatControl(BaseballGame* game) {
     connect(this, SIGNAL(requestSb(int)), game, SLOT(gatherAwayGameStatsSb(int)));
 
     // CONNECT GAME TO LABEL SO THAT BATTER TEXT IS CORRECT..................................................................................
-
+    connect(game, SIGNAL(batterChanged(QString)), this, SLOT(updateBatterLabel(QString)));
     setLayout(main);
 }
-// FIX THESE SLOTS ..........................................................................................................................
+
 void BatterStatControl::requestLt()
 {
     //emit requestLt(playerSelector.currentIndex());

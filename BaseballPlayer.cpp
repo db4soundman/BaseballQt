@@ -4,7 +4,7 @@
 
 BaseballPlayer::BaseballPlayer() {
     abToday= rToday= hToday= rbiToday= hrToday= walksToday= strikeoutsToday= hbpToday=pitchCount= ballsThrown= strikesThrown= outsToday =0;
-    outs= ap= gs= wins= losses= saves= hitsAllowed= runsAllowed= er= bb= kOut = 0;
+    outs= ap= gs= wins= losses= saves= hitsAllowed= runsAllowed= er= bb= kOut = pStrikeOutsToday= pWalksToday=0;
     era = "0.00";
 }
 
@@ -437,3 +437,33 @@ void BaseballPlayer::applyHitAllowed(int value)
 {
     hitsAllowed += value;
 }
+
+void BaseballPlayer::applyStrikeOutPitcher()
+{
+    pStrikeOutsToday++;
+}
+
+void BaseballPlayer::applyWalkPitcher()
+{
+    pWalksToday++;
+}
+int BaseballPlayer::getPStrikeOutsToday() const
+{
+    return pStrikeOutsToday;
+}
+
+void BaseballPlayer::setPStrikeOutsToday(int value)
+{
+    pStrikeOutsToday = value;
+}
+int BaseballPlayer::getPWalksToday() const
+{
+    return pWalksToday;
+}
+
+void BaseballPlayer::setPWalksToday(int value)
+{
+    pWalksToday = value;
+}
+
+

@@ -143,7 +143,15 @@ public:
     void strikeThrown(int value);
     void recordOut(int value);
     void applyHitAllowed(int value);
+    void applyStrikeOutPitcher();
+    void applyWalkPitcher();
 
+
+    int getPStrikeOutsToday() const;
+    void setPStrikeOutsToday(int value);
+
+    int getPWalksToday() const;
+    void setPWalksToday(int value);
 
 private:
     QString name, uni, year;
@@ -152,7 +160,7 @@ private:
     hbp, abToday, rToday, hToday, rbiToday, hrToday, walksToday, strikeoutsToday, hbpToday;
     // Pitching
     int outs, ap, gs, wins, losses, saves, hitsAllowed, runsAllowed,
-    er, bb, kOut, pitchCount, ballsThrown, strikesThrown, outsToday;
+    er, bb, kOut, pitchCount, ballsThrown, strikesThrown, outsToday, pStrikeOutsToday, pWalksToday;
     QString era;
 };
 

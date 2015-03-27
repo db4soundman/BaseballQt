@@ -33,6 +33,12 @@ BaseballPlayer* BaseballTeam::getPitcher()
     return pitcher;
 }
 
+BaseballPlayer *BaseballTeam::getBatterByIndex(int index)
+{
+    if (index > 8) return NULL;
+    return battingOrder.at(index);
+}
+
 void BaseballTeam::setPitcher(int index)
 {
     if (index >= roster.size()) {

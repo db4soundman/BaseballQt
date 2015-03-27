@@ -23,13 +23,16 @@ CountControl::CountControl(BaseballGame* game) {
 //    main->setHorizontalSpacing(10);
 //    main->setVerticalSpacing(0);
 
-// HEY DOUG LOOK AT THIS ----------------------------------------------------------------------------------
-    connect(&ballSub, SIGNAL(clicked()), game, SLOT(addAwaySOG()));
-    connect(&strikeSub, SIGNAL(clicked()), game, SLOT(subAwaySOG()));
-    connect(&ballThrown, SIGNAL(clicked()), game, SLOT(addHomeSOG()));
-    connect(&strikeThrown, SIGNAL(clicked()), game, SLOT(subHomeSOG()));
 
-    connect(&foul, SIGNAL(clicked()), this, SLOT(callSogDisplay()));
+    connect(&ballSub, SIGNAL(clicked()), game, SLOT(subBallThrown()));
+    connect(&strikeSub, SIGNAL(clicked()), game, SLOT(subStrikeThrown()));
+    connect(&ballThrown, SIGNAL(clicked()), game, SLOT(ballThrown()));
+    connect(&strikeThrown, SIGNAL(clicked()), game, SLOT(strikeThrown()));
+    connect(&foul, SIGNAL(clicked()), game, SLOT(foulBall()));
+    connect(&foul, SIGNAL(clicked()), game, SLOT(subFoulBall()));
+    connect(&outSub, SIGNAL(clicked()), game, SLOT(subOut()));
+    connect(&outPlus, SIGNAL(clicked()), game, SLOT(out()));
+
 
     setLayout(main);
 }

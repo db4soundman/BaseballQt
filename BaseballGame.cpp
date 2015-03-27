@@ -23,9 +23,13 @@ BaseballGame::BaseballGame(QString awayName, QString homeName, QColor awayColor,
     //connect(&gameClock, SIGNAL(clockExpired()), this, SLOT(toggleClock()));
     //connect(&timer, SIGNAL(timeout()), &gameClock, SLOT(tick()));
 
-    //connect(this, SIGNAL(periodChanged(int)), &sb, SLOT(updatePeriod(int)));
+    connect(this, SIGNAL(periodChanged(QString,int)), &sb, SLOT(updateInning(QString,int)));
     connect(this, SIGNAL(awayScoreChanged(int)), &sb, SLOT(updateAwayScore(int)));
     connect(this, SIGNAL(homeScoreChanged(int)), &sb, SLOT(updateHomeScore(int)));
+    connect(this, SIGNAL(firstBaseStatus(bool)), &sb, SLOT(toggleFirstBase(bool)));
+    connect(this, SIGNAL(secondBaseStatus(bool)), &sb, SLOT(toggleSecondBase(bool)));
+    connect(this, SIGNAL(thirdBaseStatus(bool)), &sb, SLOT(toggleThirdBase(bool)));
+    connect(this, SIGNAL(basesCleared()), &sb, SLOT(clearBases()));
 
     // Make teams...
     homeTeam = new BaseballTeam();
@@ -48,30 +52,6 @@ BaseballGame::BaseballGame(QString awayName, QString homeName, QColor awayColor,
 }
 
 void
-BaseballGame::awayScored(int score) {
-    awayScore += score;
-    emit awayScoreChanged(awayScore);
-}
-
-void
-BaseballGame::subRunAway() {
-    awayScore --;
-    emit awayScoreChanged(awayScore);
-}
-
-void
-BaseballGame::homeScored(int score) {
-    homeScore += score;
-    emit homeScoreChanged(homeScore);
-}
-
-void
-BaseballGame::subRunHome() {
-    homeScore --;
-    emit homeScoreChanged(homeScore);
-}
-
-void
 BaseballGame::addAwayHit() {
     awayHits++;
     emit awayHitsChanged(awayHits);
@@ -81,6 +61,29 @@ void
 BaseballGame::subAwayHit() {
     awayHits--;
     emit awayHitsChanged(awayHits);
+}
+
+void BaseballGame::checkOuts()
+{
+    if (outs >= 3) {
+        advancePeriod();
+    }
+}
+
+BaseballPlayer *BaseballGame::getPitcher()
+{
+    if (inningMod == "Top") {
+        return homeTeam->getPitcher();
+    }
+    return awayTeam->getPitcher();
+}
+
+BaseballPlayer *BaseballGame::getBatter()
+{
+    if (inningMod == "Top") {
+        return awayTeam->getBatterByIndex(awayBatter);
+    }
+    return homeTeam->getBatterByIndex(homeBatter);
 }
 
 void
@@ -245,11 +248,8 @@ BaseballGame::advancePeriod() {
         period++;
     }
     isFinal = false;
-    balls = 0;
-    strikes = 0;
+    clearCount();
     outs = 0;
-    emit ballsChanged(balls);
-    emit strikesChanged(strikes);
     emit outsChanged(outs);
     emit periodChanged(inningMod, period);
 }
@@ -259,18 +259,376 @@ BaseballGame::rewindPeriod() {
     if (inningMod == "Top") {
         inningMod = "Bot";
         period--;
+        emit batterChanged(homeTeam->getBatterByIndex(homeBatter)->getName());
     }
     else {
-        inningMod = "Top";
+        emit batterChanged(awayTeam->getBatterByIndex(awayBatter)->getName());
     }
     isFinal = false;
     emit periodChanged(inningMod, period);
+}
+
+void BaseballGame::addScore(int value)
+{
+    if (inningMod == "Top") {
+        awayScore += value;
+        emit awayScoreChanged(awayScore);
+    }
+    else {
+        homeScore += value;
+        emit homeScoreChanged(homeScore);
+    }
+}
+
+void BaseballGame::addHit()
+{
+    if (inningMod == "Top") {
+        awayHits++;
+        emit awayHitsChanged(awayHits);
+    }
+    else {
+        homeHits++;
+        emit homeHitsChanged(homeHits);
+    }
+}
+
+void BaseballGame::subHit()
+{
+    if (inningMod == "Top") {
+        awayHits--;
+        emit awayHitsChanged(awayHits);
+    }
+    else {
+        homeHits--;
+        emit homeHitsChanged(homeHits);
+    }
+}
+
+void BaseballGame::addError()
+{
+    if (inningMod != "Top") {
+        awayErrors++;
+        emit awayErrorsChanged(awayErrors);
+    }
+    else {
+        homeErrors++;
+        emit homeErrorsChanged(homeErrors);
+    }
+}
+
+void BaseballGame::subError()
+{
+    if (inningMod == "Top") {
+        awayErrors--;
+        emit awayErrorsChanged(awayErrors);
+    }
+    else {
+        homeErrors--;
+        emit homeErrorsChanged(homeErrors);
+    }
 }
 
 void BaseballGame::makeFinal()
 {
     isFinal = true;
 }
+
+void BaseballGame::advanceBatter()
+{
+    if (inningMod == "Top") {
+        awayBatter = (awayBatter + 1) % 9;
+        emit batterChanged(awayTeam->getBatterByIndex(awayBatter)->getName());
+    }
+    else {
+        homeBatter = (homeBatter + 1) % 9;
+        emit batterChanged(homeTeam->getBatterByIndex(homeBatter)->getName());
+    }
+}
+
+void BaseballGame::updateFirstBaseStatus()
+{
+    onFirst = !onFirst;
+    emit firstBaseStatus(onFirst);
+}
+
+void BaseballGame::updateSecondBaseStatus()
+{
+    onSecond = !onSecond;
+    emit secondBaseStatus(onSecond);
+}
+
+void BaseballGame::updateThirdBaseStatus()
+{
+    onThird = !onThird;
+    emit thirdBaseStatus(onThird);
+}
+
+void BaseballGame::clearBases()
+{
+    onFirst = onSecond = onThird = false;
+    emit basesCleared();
+}
+
+void BaseballGame::ballThrown()
+{
+    BaseballPlayer* pitcher = getPitcher();
+    pitcher->ballThrown(1);
+    balls++;
+    emit ballsChanged(balls);
+}
+
+void BaseballGame::subBallThrown()
+{
+    BaseballPlayer* pitcher = getPitcher();
+    pitcher->ballThrown(-1);
+    balls--;
+    emit ballsChanged(balls);
+}
+
+void BaseballGame::strikeThrown()
+{
+    BaseballPlayer* pitcher = getPitcher();
+    pitcher->strikeThrown(1);
+    strikes++;
+    emit strikesChanged(strikes);
+}
+
+void BaseballGame::subStrikeThrown()
+{
+    BaseballPlayer* pitcher = getPitcher();
+    pitcher->strikeThrown(-1);
+    strikes--;
+    emit strikesChanged(strikes);
+}
+
+void BaseballGame::foulBall()
+{
+    BaseballPlayer* pitcher = getPitcher();
+    pitcher->strikeThrown(1);
+    if (strikes < 2) {
+        strikes++;
+        emit strikesChanged(strikes);
+    }
+}
+
+void BaseballGame::subFoulBall()
+{
+    BaseballPlayer* pitcher = getPitcher();
+    pitcher->strikeThrown(-1);
+}
+
+void BaseballGame::out()
+{
+    BaseballPlayer* pitcher = getPitcher();
+    pitcher->recordOut(1);
+    outs++;
+    emit outsChanged(outs);
+    checkOuts();
+}
+
+void BaseballGame::subOut()
+{
+    BaseballPlayer* pitcher = getPitcher();
+    pitcher->recordOut(-1);
+    outs--;
+    emit outsChanged(outs);
+}
+
+void BaseballGame::clearCount()
+{
+    balls = strikes = 0;
+    emit ballsChanged(0);
+    emit strikesChanged(0);
+}
+
+void BaseballGame::single()
+{
+    BaseballPlayer* pitcher = getPitcher();
+    BaseballPlayer* batter = getBatter();
+
+    batter->applyBaseHit(1);
+    pitcher->applyHitAllowed(1);
+    pitcher->strikeThrown(1);
+    addHit();
+    setOnFirst(true);
+    advanceBatter();
+    clearCount();
+}
+
+void BaseballGame::double2b()
+{
+    BaseballPlayer* pitcher = getPitcher();
+    BaseballPlayer* batter = getBatter();
+
+    batter->applyBaseHit(2);
+    pitcher->applyHitAllowed(1);
+    pitcher->strikeThrown(1);
+    addHit();
+    setOnSecond(true);
+    advanceBatter();
+    clearCount();
+}
+
+void BaseballGame::triple()
+{
+    BaseballPlayer* pitcher = getPitcher();
+    BaseballPlayer* batter = getBatter();
+
+    batter->applyBaseHit(3);
+    pitcher->applyHitAllowed(1);
+    pitcher->strikeThrown(1);
+    addHit();
+    setOnThird(true);
+    advanceBatter();
+    clearCount();
+}
+
+void BaseballGame::homeRun()
+{
+    BaseballPlayer* pitcher = getPitcher();
+    BaseballPlayer* batter = getBatter();
+
+    batter->applyBaseHit(4);
+    pitcher->applyHitAllowed(1);
+
+    pitcher->strikeThrown(1);
+    addHit();
+
+    int runsScored = 1;
+    if (onFirst) runsScored++;
+    if (onSecond) runsScored++;
+    if (onThird) runsScored++;
+    addScore(runsScored);
+    advanceBatter();
+    clearCount();
+    clearBases();
+}
+
+void BaseballGame::strikeOut()
+{
+    strikeThrown();
+    BaseballPlayer* pitcher = getPitcher();
+    BaseballPlayer* batter = getBatter();
+    batter->applyStrikeOutBatter();
+    pitcher->applyStrikeOutPitcher();
+    advanceBatter();
+    clearCount();
+    out();
+}
+
+void BaseballGame::walk()
+{
+    ballThrown();
+    BaseballPlayer* pitcher = getPitcher();
+    BaseballPlayer* batter = getBatter();
+    pitcher->applyWalkPitcher();
+    batter->applyWalk(1);
+    advanceBatter();
+    clearCount();
+}
+
+void BaseballGame::hitByPitch()
+{
+    ballThrown();
+    BaseballPlayer* pitcher = getPitcher();
+    BaseballPlayer* batter = getBatter();
+    batter->applyWalk(2);
+    advanceBatter();
+    clearCount();
+}
+
+void BaseballGame::reachOnError()
+{
+    strikeThrown();
+    BaseballPlayer* pitcher = getPitcher();
+    BaseballPlayer* batter = getBatter();
+    batter->applyGenericOut();
+    addError();
+    advanceBatter();
+    clearCount();
+}
+
+void BaseballGame::genOut()
+{
+    strikeThrown();
+    BaseballPlayer* pitcher = getPitcher();
+    BaseballPlayer* batter = getBatter();
+    batter->applyGenericOut();
+    pitcher->recordOut(1);
+    advanceBatter();
+    clearCount();
+    out();
+}
+
+void BaseballGame::fielderChoice()
+{
+    strikeThrown();
+    BaseballPlayer* pitcher = getPitcher();
+    BaseballPlayer* batter = getBatter();
+    batter->applyGenericOut();
+    pitcher->recordOut(1);
+    advanceBatter();
+    clearCount();
+    setOnFirst(true);
+    out();
+}
+
+void BaseballGame::doublePlay()
+{
+    strikeThrown();
+    BaseballPlayer* pitcher = getPitcher();
+    BaseballPlayer* batter = getBatter();
+    batter->applyGenericOut();
+    pitcher->recordOut(2);
+    advanceBatter();
+    clearCount();
+    setOnFirst(false);
+    out();
+    out();
+}
+
+void BaseballGame::sacrifice()
+{
+    strikeThrown();
+    BaseballPlayer* pitcher = getPitcher();
+    pitcher->recordOut(1);
+    advanceBatter();
+    clearCount();
+    out();
+}
+bool BaseballGame::getOnThird() const
+{
+    return onThird;
+}
+
+void BaseballGame::setOnThird(bool value)
+{
+    onThird = value;
+    emit thirdBaseStatus(onThird);
+}
+
+bool BaseballGame::getOnSecond() const
+{
+    return onSecond;
+}
+
+void BaseballGame::setOnSecond(bool value)
+{
+    onSecond = value;
+    emit secondBaseStatus(onSecond);
+}
+
+bool BaseballGame::getOnFirst() const
+{
+    return onFirst;
+}
+
+void BaseballGame::setOnFirst(bool value)
+{
+    onFirst = value;
+    emit firstBaseStatus(onFirst);
+}
+
 int BaseballGame::getOuts() const
 {
     return outs;
@@ -279,6 +637,29 @@ int BaseballGame::getOuts() const
 void BaseballGame::setOuts(int value)
 {
     outs = value;
+}
+
+QString BaseballGame::getInningText()
+{
+    QString periodStr = QString::number(period);
+    if (periodStr.endsWith("11"))
+      periodStr += "th";
+    else if (periodStr.endsWith("1"))
+      periodStr += "st";
+    if (periodStr.endsWith("12"))
+      periodStr += "th";
+    else if (periodStr.endsWith("2"))
+      periodStr += "nd";
+    if (periodStr.endsWith("13"))
+      periodStr += "th";
+    else if (periodStr.endsWith("3"))
+      periodStr += "rd";
+    if (periodStr.endsWith("0") || periodStr.endsWith("4")
+      || periodStr.endsWith("5") || periodStr.endsWith("6")
+      || periodStr.endsWith("7") || periodStr.endsWith("8")
+      || periodStr.endsWith("9"))
+      periodStr += "th";
+    return inningMod + " " + periodStr;
 }
 
 int BaseballGame::getBalls() const

@@ -14,11 +14,11 @@
 
 CommercialGraphic::CommercialGraphic(BaseballGame* game, int width, QString pawayLogo, QGraphicsItem* parent) :
     QGraphicsPixmapItem(parent), blackBar(QPixmap(":/images/ppBar.png")),
-    blockText(QPixmap(":/images/MiamiBlock.png")) {
+    blockText(QPixmap(":/images/M.png")) {
     baseballGame = game;
     show = false;
-    WIDTH = width / 2;
-    NAME_WIDTH = WIDTH - 100;
+    WIDTH = width;
+    NAME_WIDTH = WIDTH/2;
     inGame  = false;
     QFont font("Arial", 60, QFont::Bold);
     QFont sponsorFont("Arial", 36, QFont::Bold);
@@ -35,14 +35,14 @@ CommercialGraphic::CommercialGraphic(BaseballGame* game, int width, QString pawa
 
     descriptiveFont = sponsorFont;
     prepareGradients(game->getAwayColor(), game->getHomeColor());
-    maaText = "Miami All-Access on NCHC.tv";
+    maaText = "Miami All-Access";
     clockStatus = SHOW_CLOCK;
 
     awayLogo = new QPixmap(pawayLogo);
     if (awayLogo->height() > 120) {
         *awayLogo = awayLogo->scaledToHeight(120, Qt::SmoothTransformation);
     }
-  /*  if (awayLogo->width() > 1919) {
+    /*  if (awayLogo->width() > 1919) {
        *awayLogo =  awayLogo->scaledToWidth(800, Qt::SmoothTransformation);
     }*/
 }
@@ -51,35 +51,46 @@ void CommercialGraphic::paint(QPainter* painter, const QStyleOptionGraphicsItem*
                               QWidget* widget) {
     if (show){
         painter->setPen(QColor(255, 255, 255));
-        painter->drawPixmap(WIDTH/2, -BLACK_BAR_HEIGHT, WIDTH, BLACK_BAR_HEIGHT, blackBar);
+        painter->drawPixmap(WIDTH/4, -BLACK_BAR_HEIGHT, WIDTH * .75, BLACK_BAR_HEIGHT, blackBar);
 
         painter->setFont(descriptiveFont);
-        painter->drawText(WIDTH / 2, -BLACK_BAR_HEIGHT, WIDTH, BLACK_BAR_HEIGHT, Qt::AlignCenter, maaText);
+        painter->drawText(WIDTH / 4, -BLACK_BAR_HEIGHT, WIDTH/4, BLACK_BAR_HEIGHT, Qt::AlignCenter, maaText);
+        painter->drawText(WIDTH*.75, -BLACK_BAR_HEIGHT, CENTER_OFFSET-10, BLACK_BAR_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, "R");
+        painter->drawText(WIDTH*.75+ CENTER_OFFSET, -BLACK_BAR_HEIGHT, CENTER_OFFSET-10, BLACK_BAR_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, "H");
+        painter->drawText(WIDTH*.75 + CENTER_OFFSET +CENTER_OFFSET, -BLACK_BAR_HEIGHT, CENTER_OFFSET-10, BLACK_BAR_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, "E");
 
         painter->fillRect(0, 0, WIDTH, RECT_HEIGHT, awayTeamGradient);
-        painter->fillRect(WIDTH, 0, WIDTH, RECT_HEIGHT, homeTeamGradient);
+        painter->fillRect(0, RECT_HEIGHT, WIDTH, RECT_HEIGHT, homeTeamGradient);
         painter->setFont(away->font());
         //painter->drawText(10, 0, NAME_WIDTH, RECT_HEIGHT, Qt::AlignCenter, away->toPlainText());
         //painter->drawPixmap(WIDTH - CENTER_OFFSET - 100 - awayLogo.width(), 20, awayLogo);
         painter->setOpacity(.996);
-        painter->drawPixmap(WIDTH - CENTER_OFFSET - 100 - awayLogo->width(), 0, *awayLogo);
+        painter->drawPixmap(WIDTH /4, 0, *awayLogo);
         painter->setFont(home->font());
         //painter->drawText(WIDTH + CENTER_OFFSET, 0, NAME_WIDTH, RECT_HEIGHT, Qt::AlignCenter, home->toPlainText());
-        painter->drawPixmap(WIDTH + CENTER_OFFSET + 100, 20, blockText);
-        painter->fillRect(WIDTH - CENTER_OFFSET, 0, CENTER_OFFSET * 2, RECT_HEIGHT, QColor(0,0,0, 100));
+        painter->drawPixmap(WIDTH/4, 0, blockText);
         painter->setOpacity(1);
-        painter->drawText(WIDTH - CENTER_OFFSET, 0, CENTER_OFFSET, RECT_HEIGHT, Qt::AlignCenter, awayScore);
-        painter->drawText(WIDTH, 0, CENTER_OFFSET, RECT_HEIGHT, Qt::AlignCenter, homeScore);
+
+        painter->fillRect(WIDTH*.75, 0, CENTER_OFFSET * 2, RECT_HEIGHT*2, QColor(1,1,1, 100));
 
 
-        painter->drawPixmap(WIDTH - 200, RECT_HEIGHT, WIDTH - (WIDTH- 400), BLACK_BAR_HEIGHT, blackBar);
+        painter->drawText(WIDTH*.75, 0, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, awayScore);
+        painter->drawText(WIDTH*.75, RECT_HEIGHT, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, homeScore);
+
+        painter->drawText(WIDTH*.75+ CENTER_OFFSET, 0, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, hitsAway);
+        painter->drawText(WIDTH*.75 +CENTER_OFFSET, RECT_HEIGHT, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, hitsHome);
+
+        painter->drawText(WIDTH*.75 + CENTER_OFFSET +CENTER_OFFSET, 0, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, errorsAway);
+        painter->drawText(WIDTH*.75 + CENTER_OFFSET + CENTER_OFFSET, RECT_HEIGHT, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, errorsHome);
+
+
+        painter->drawPixmap(WIDTH/2 - 200, RECT_HEIGHT*2, WIDTH/2 - (WIDTH/2- 400), BLACK_BAR_HEIGHT, blackBar);
         painter->setFont(descriptiveFont);
         if (clockStatus == FINAL) {
-            painter->drawText(WIDTH - 200, RECT_HEIGHT, WIDTH - (WIDTH- 400), BLACK_BAR_HEIGHT, Qt::AlignCenter, "FINAL");
+            painter->drawText(WIDTH/2 - 200, RECT_HEIGHT*2, WIDTH/2 - (WIDTH/2- 400), BLACK_BAR_HEIGHT, Qt::AlignCenter, "FINAL");
         }
         else {
-            painter->drawText(WIDTH- 190, RECT_HEIGHT, WIDTH - (WIDTH- 400), BLACK_BAR_HEIGHT, Qt::AlignLeft, period);
-            painter->drawText(WIDTH-200, RECT_HEIGHT, WIDTH - (WIDTH- 390), BLACK_BAR_HEIGHT, Qt::AlignRight, clock);
+            painter->drawText(WIDTH/2 - 200, RECT_HEIGHT*2, WIDTH/2 - (WIDTH/2- 400), BLACK_BAR_HEIGHT, Qt::AlignCenter, clock);
         }
     }
 }
@@ -88,35 +99,14 @@ void CommercialGraphic::prepareAndShow()
 {
     awayScore = QString::number(baseballGame->getAwayScore());
     homeScore = QString::number(baseballGame->getHomeScore());
-
-    switch (baseballGame->getPeriod()) {
-    case 0:
-        inGame = false;
-        period = "Starts in";
-        break;
-    case 1:
-        inGame = true;
-        period = "1st";
-        break;
-    case 2:
-        period = "2nd";
-        break;
-    case 3:
-        period = "3rd";
-        break;
-    case 4:
-        period = "OT";
-        break;
-    case 5:
-        period = "SHOOTOUT";
-        break;
-    default:
-        period = "";
-        break;
-    }
+    hitsHome = QString::number(baseballGame->getHomeHits());
+    hitsAway = QString::number(baseballGame->getAwayHits());
+    errorsAway = QString::number(baseballGame->getAwayErrors());
+    errorsHome = QString::number(baseballGame->getHomeErrors());
+    clock = baseballGame->getInningText();
     show = true;
     updateClock();
-    scene()->update();
+    scene()->update(0,0,1920,1080);
 }
 
 void CommercialGraphic::updateClock()
@@ -124,7 +114,7 @@ void CommercialGraphic::updateClock()
     if (show) {
         if (clockStatus == SHOW_CLOCK) {
             //clock = baseballGame->getGameClock()->toString();
-            scene()->update(x() + WIDTH - 200, y() + RECT_HEIGHT, WIDTH - (WIDTH- 400), BLACK_BAR_HEIGHT);
+            scene()->update(x() + WIDTH/2 - 200, y() + RECT_HEIGHT*2, WIDTH/2 - (WIDTH/2- 400), BLACK_BAR_HEIGHT);
         }
         else if (clockStatus == INTERMISSION) {
             clock = "INT";
@@ -141,7 +131,7 @@ void CommercialGraphic::showClock() {
     clockStatus = SHOW_CLOCK;
     updateClock();
     if (show)
-        scene()->update(x() + WIDTH - 200, y() + RECT_HEIGHT, WIDTH - (WIDTH- 400), BLACK_BAR_HEIGHT);
+        scene()->update(x() + WIDTH/2 - 200, y() + RECT_HEIGHT*2, WIDTH/2 - (WIDTH/2- 400), BLACK_BAR_HEIGHT);
 }
 
 void CommercialGraphic::intermissionTime()
@@ -157,14 +147,14 @@ void CommercialGraphic::finalTime()
     clockStatus = FINAL;
     updateClock();
     if (show)
-        scene()->update(x() + WIDTH - 200, y() + RECT_HEIGHT, WIDTH - (WIDTH- 400), BLACK_BAR_HEIGHT);
+        scene()->update(x() + WIDTH/2 - 200, y() + RECT_HEIGHT*2, WIDTH/2 - (WIDTH/2- 400), BLACK_BAR_HEIGHT);
 }
 
 void CommercialGraphic::hide()
 {
     if (show) {
         show = false;
-        scene()->update();
+        scene()->update(0,0,1920,1080);
     }
 }
 
@@ -184,8 +174,8 @@ void CommercialGraphic::checkAwayFont()
 
 void CommercialGraphic::prepareGradients(QColor awayColor, QColor homeColor)
 {
-    homeTeamGradient.setStart(0, 0);
-    homeTeamGradient.setFinalStop(0, 120);
+    homeTeamGradient.setStart(0, RECT_HEIGHT);
+    homeTeamGradient.setFinalStop(0, RECT_HEIGHT*2);
     awayTeamGradient.setStart(0,0);
     awayTeamGradient.setFinalStop(0, 120);
     int red, green, blue;

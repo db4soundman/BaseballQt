@@ -33,7 +33,7 @@ private:
     BaseballGame* baseballGame;
     bool show, inGame;
     QGraphicsTextItem* away, *home;
-    QString homeScore, awayScore, maaText, period, clock;
+    QString homeScore, awayScore, maaText, clock, hitsHome, hitsAway, errorsHome, errorsAway;
     QFont descriptiveFont;
     int clockStatus, WIDTH, NAME_WIDTH;
     void checkAwayFont();

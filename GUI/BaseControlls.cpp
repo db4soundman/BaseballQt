@@ -14,10 +14,10 @@ BaseControlls::BaseControlls(BaseballGame *game)
     myLayout->addWidget(&third, 1, 0);
     myLayout->addWidget(&clear, 2,1);
 
-    //connect(&first, SIGNAL(clicked()), game, )
-    //connect(&second, SIGNAL(clicked()), game, )
-    //connect(&third, SIGNAL(clicked()), game, )
-    //connect(&clear, SIGNAL(clicked()), game, )
+    connect(&first, SIGNAL(clicked()), game, SLOT(updateFirstBaseStatus()));
+    connect(&second, SIGNAL(clicked()), game, SLOT(updateSecondBaseStatus()));
+    connect(&third, SIGNAL(clicked()), game, SLOT(updateThirdBaseStatus()));
+    connect(&clear, SIGNAL(clicked()), game, SLOT(clearBases()));
 
     setLayout(myLayout);
 }
@@ -41,5 +41,12 @@ void BaseControlls::updateThird(bool on)
     QString text = "3B: ";
     text += on? "ON" : "OFF";
     third.setText(text);
+}
+
+void BaseControlls::clearBases()
+{
+    updateFirst(false);
+    updateSecond(false);
+    updateThird(false);
 }
 

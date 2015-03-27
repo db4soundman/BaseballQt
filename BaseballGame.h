@@ -89,18 +89,26 @@ public:
     int getOuts() const;
     void setOuts(int value);
 
+    QString getInningText();
+
+    bool getOnFirst() const;
+    void setOnFirst(bool value);
+
+    bool getOnSecond() const;
+    void setOnSecond(bool value);
+
+    bool getOnThird() const;
+    void setOnThird(bool value);
+
 public slots:
     void advancePeriod();
     void rewindPeriod();
     //void toggleClock();
-    void homeScored(int score);
-    void awayScored(int score);
-    void subRunHome();
-    void subRunAway();
-    void addHomeHit();
-    void addAwayHit();
-    void subHomeHit();
-    void subAwayHit();
+    void addScore(int value);
+    void addHit();
+    void subHit();
+    void addError();
+    void subError();
     void showAnnouncers();
     void gatherHomeSeasonStatsLt(int index);
     void gatherHomeSeasonStatsSb(int index);
@@ -111,6 +119,36 @@ public slots:
     void gatherAwayGameStatsLt(int index);
     void gatherAwayGameStatsSb(int index);
     void makeFinal();
+    void advanceBatter();
+    void updateFirstBaseStatus();
+    void updateSecondBaseStatus();
+    void updateThirdBaseStatus();
+    void clearBases();
+
+    void ballThrown();
+    void subBallThrown();
+    void strikeThrown();
+    void subStrikeThrown();
+    void foulBall();
+    void subFoulBall();
+    void out();
+    void subOut();
+    void clearCount();
+
+    void single();
+    void double2b();
+    void triple();
+    void homeRun();
+
+    void strikeOut();
+    void walk();
+    void hitByPitch();
+    void reachOnError();
+
+    void genOut();
+    void fielderChoice();
+    void doublePlay();
+    void sacrifice();
 
 signals:
     void homeScoreChanged(int score);
@@ -124,6 +162,11 @@ signals:
     void ballsChanged(int b);
     void strikesChanged(int s);
     void outsChanged(int o);
+    void batterChanged(QString name);
+    void firstBaseStatus(bool on);
+    void secondBaseStatus(bool on);
+    void thirdBaseStatus(bool on);
+    void basesCleared();
 
 private:
     QString homeName, awayName, sponsor, announcers, homeRank,
@@ -131,12 +174,20 @@ private:
     int awayScore, homeScore, period, homeHits, awayHits, homeErrors, awayErrors,
     homeBatter, awayBatter, strikes, balls, outs;
     //Clock gameClock;
-    bool isFinal;
+    bool isFinal, onFirst, onSecond, onThird;
     QColor homeColor, awayColor;
     BaseballTeam* homeTeam;
     BaseballTeam* awayTeam;
     Scoreboard sb;
     LowerThird lt;
+
+    void addHomeHit();
+    void addAwayHit();
+    void subHomeHit();
+    void subAwayHit();
+    void checkOuts();
+    BaseballPlayer* getPitcher();
+    BaseballPlayer* getBatter();
     // GUI is separate class
     // GraphicsVars
 };

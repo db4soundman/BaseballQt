@@ -16,6 +16,19 @@ AtBatResults::AtBatResults(BaseballGame* game) {
     sacrifice.setText("Sac B/F");
     doublePlay.setText("DP");
 
+    connect(&single, SIGNAL(clicked()), game, SLOT(single()));
+    connect(&double2b, SIGNAL(clicked()), game, SLOT(double2b()));
+    connect(&triple, SIGNAL(clicked()), game, SLOT(triple()));
+    connect(&homeRun, SIGNAL(clicked()), game, SLOT(homeRun()));
+    connect(&walk, SIGNAL(clicked()), game, SLOT(walk()));
+    connect(&hbp, SIGNAL(clicked()), game, SLOT(hitByPitch()));
+    connect(&strikeout, SIGNAL(clicked()), game, SLOT(strikeOut()));
+    connect(&reachedOnError, SIGNAL(clicked()), game, SLOT(reachOnError()));
+    connect(&fieldersChoice, SIGNAL(clicked()), game, SLOT(fielderChoice()));
+    connect(&genOut, SIGNAL(clicked()), game, SLOT(genOut()));
+    connect(&sacrifice, SIGNAL(clicked()), game, SLOT(sacrifice()));
+    connect(&doublePlay, SIGNAL(clicked()), game, SLOT(doublePlay()));
+
     main->addWidget(&single, 0, 0);
     main->addWidget(&homeRun, 0,3);
     main->addWidget(&double2b, 0,1);

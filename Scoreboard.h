@@ -43,6 +43,7 @@ public slots:
      void updateCount(int b, int s);
      void updateOut(int o);
      void updateBases();
+     void clearBases();
      void delayed();
      void displayClock();
      void displaySponsor();

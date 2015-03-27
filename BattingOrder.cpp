@@ -4,7 +4,7 @@
 #define COLUMN1_X 5
 #define COLUMN2_X 100
 #define COLUMN3_X 800
-BattingOrder::BattingOrder(BaseballGame* game)
+BattingOrder::BattingOrder(BaseballGame* game) : font(QFont("Arial",24, QFont::Bold))
 {
     setPixmap(QPixmap(":/images/Field.png"));
     show = false;
@@ -17,14 +17,17 @@ BattingOrder::BattingOrder(BaseballGame* game)
     awayGradient.setFinalStop(0,0);
     homeGradient.setStart(0,-30);
     homeGradient.setFinalStop(0,0);
+    mainGradient.setStart(0,0);
+    mainGradient.setFinalStop(0,pixmap().height());
     prepareColor();
 }
 
 void BattingOrder::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     if (show) {
+        painter->setFont(font);
         painter->fillRect(0,-30,pixmap().width(),30, homeTeam? homeGradient : awayGradient);
-        painter->fillRect(0,0, pixmap().width(), pixmap().height(), QColor(1,1,1));
+        painter->fillRect(0,0, pixmap().width(), pixmap().height(), mainGradient);
         painter->setPen(QColor(255,255,255));
         painter->drawText(0,-30, pixmap().width(), 30, Qt::AlignCenter,homeTeam? homeName : awayName);
         for (int i = 0; i < 9; i++) {
@@ -85,6 +88,10 @@ void BattingOrder::prepareColor() {
     awayGradient.setColorAt(.6, awayColor);
     awayGradient.setColorAt(1, end2);
     awayGradient.setColorAt(0, end2);
+
+    mainGradient.setColorAt(0, QColor(25,25,25));
+    mainGradient.setColorAt(.5, QColor(83,83,83));
+    mainGradient.setColorAt(1, QColor(25,25,25));
 }
 
 

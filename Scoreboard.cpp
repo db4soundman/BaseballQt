@@ -263,7 +263,7 @@ void Scoreboard::prepareAwayName()
 void
 Scoreboard::togglePitchingChange() {
     pitchingChange = !pitchingChange;
-    scene()->update();
+    scene()->update(x() + CLOCK_FIELD_X, y() +SCOREBOARD_HEIGHT,CLOCK_FIELD_WIDTH,PP_BAR_HEIGHT);
 }
 
 void
@@ -288,6 +288,12 @@ void Scoreboard::updateBases()
     scene()->update(x() + DIAMOND_START, y(), 32 * 3, SCOREBOARD_WIDTH);
 }
 
+void Scoreboard::clearBases()
+{
+    firstBase = secondBase = thirdBase = false;
+    updateBases();
+}
+
 
 void
 Scoreboard::updateAwayScore(int score) {
@@ -305,7 +311,7 @@ Scoreboard::updateHomeScore(int score) {
 
 void
 Scoreboard::updateInning(QString mod, int pd) {
-    topOfInning = mod == "Top";
+    topOfInning = (mod == "Top");
     QString periodStr = QString::number(pd);
     if (periodStr.endsWith("11"))
       periodStr += "th";

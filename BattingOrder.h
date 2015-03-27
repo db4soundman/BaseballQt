@@ -24,7 +24,7 @@ private:
 
     void prepareColor();
     QColor awayColor, homeColor;
-    QLinearGradient homeGradient, awayGradient;
+    QLinearGradient homeGradient, awayGradient, mainGradient;
     QFont font;
     QString homeName, awayName;
 };

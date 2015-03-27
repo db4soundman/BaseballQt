@@ -22,6 +22,7 @@ void DefenseGraphic::paint(QPainter *painter,
                            QWidget *widget)
 {
     if (show) {
+        painter->setFont(font);
         painter->fillRect(0,-30,pixmap().width(),30, homeTeam? homeGradient : awayGradient);
         painter->fillRect(0,0, pixmap().width(), pixmap().height(), QColor(1,1,1));
         painter->drawPixmap(0,0, pixmap());

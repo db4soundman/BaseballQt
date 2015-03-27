@@ -22,16 +22,18 @@ ClockControls::ClockControls(BaseballGame* game, CommercialGraphic* comGraphic) 
 
 
     //connect(&run, SIGNAL(clicked()), game, SLOT(toggleClock()));
-    connect(game, SIGNAL(clockIsRunning(bool)),
-            this, SLOT(updateClockButton(bool)));
+//    connect(game, SIGNAL(clockIsRunning(bool)),
+//            this, SLOT(updateClockButton(bool)));
     //connect(&set, SIGNAL(clicked()), this, SLOT(showClockDialog()));
-    connect(&pitchingChange, SIGNAL(clicked()), game->getSb(), SLOT(togglePenalty()));
+    connect(&pitchingChange, SIGNAL(clicked()), game->getSb(), SLOT(togglePitchingChange()));
     connect(&nextPd, SIGNAL(clicked()), game, SLOT(advancePeriod()));
     connect(&prevPd, SIGNAL(clicked()), game, SLOT(rewindPeriod()));
 
     connect(&count, SIGNAL(clicked()), game->getSb(), SLOT(displayClock()));
+    connect(&count, SIGNAL(clicked()), comGraphic, SLOT(showClock()));
     connect(&final, SIGNAL(clicked()), game->getSb(), SLOT(final()));
     connect(&final, SIGNAL(clicked()), comGraphic, SLOT(finalTime()));
+    connect(&advanceBatter, SIGNAL(clicked()), game, SLOT(advanceBatter()));
     setLayout(main);
 
 

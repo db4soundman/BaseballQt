@@ -17,6 +17,7 @@ public:
     QList<QString> getGuiNames();
 
     BaseballPlayer* getPitcher();
+    BaseballPlayer* getBatterByIndex(int index);
 
 signals:
     void defenseChanged(QList<BaseballPlayer*> def);
