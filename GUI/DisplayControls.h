@@ -5,14 +5,15 @@
 #include <QPushButton>
 #include <QLineEdit>
 #include "BaseballGame.h"
-
+#include "PitcherGraphic.h"
 #include "CommercialGraphic.h"
-
+#include "BattingOrder.h"
+#include "DefenseGraphic.h"
 
 class DisplayControls : public QWidget {
     Q_OBJECT
 public:
-    DisplayControls(BaseballGame* game,CommercialGraphic* comGraphic);
+    DisplayControls(BaseballGame* game,CommercialGraphic* comGraphic, PitcherGraphic* pg, DefenseGraphic* dg, BattingOrder* bog);
 
 public slots:
     void prepareCustomText();

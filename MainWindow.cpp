@@ -6,13 +6,13 @@
 #include <QMenu>
 #include <QMenuBar>
 
-MainWindow::MainWindow(BaseballGame* game, CommercialGraphic* comGraphic, QWidget *parent)
-    : QMainWindow(parent), panel(game, comGraphic),
+MainWindow::MainWindow(BaseballGame* game, CommercialGraphic* comGraphic, PitcherGraphic *pg, DefenseGraphic *dg, BattingOrder *bog)
+    : panel(game, comGraphic,pg, dg, bog),
     awayPlayerEdit(game, false), homePlayerEdit(game, true), awayEdit(game->getAwayTeam()), homeEdit(game->getHomeTeam()),
     ltCreator(game->getLt()) {
     setCentralWidget(&panel);
     //setMaximumWidth(800);
-    makeMenu(game);
+    //makeMenu(game);
 
 }
 

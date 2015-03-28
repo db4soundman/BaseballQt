@@ -55,7 +55,8 @@ SOURCES += main.cpp\
     GUI/BaseControlls.cpp \
     DefenseGraphic.cpp \
     BattingOrder.cpp \
-    PitcherGraphic.cpp
+    PitcherGraphic.cpp \
+    GUI/PreGame.cpp
 
 HEADERS  += MainWindow.h \
     Scoreboard.h \
@@ -93,7 +94,8 @@ HEADERS  += MainWindow.h \
     GUI/BaseControlls.h \
     DefenseGraphic.h \
     BattingOrder.h \
-    PitcherGraphic.h
+    PitcherGraphic.h \
+    GUI/PreGame.h
 
 
 

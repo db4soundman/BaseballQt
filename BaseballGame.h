@@ -131,6 +131,8 @@ public slots:
     void updateSecondBaseStatus();
     void updateThirdBaseStatus();
     void clearBases();
+    void decideTeamForDefense();
+    void decideTeamForBattingOrder();
 
     void ballThrown();
     void subBallThrown();
@@ -174,6 +176,8 @@ signals:
     void secondBaseStatus(bool on);
     void thirdBaseStatus(bool on);
     void basesCleared();
+    void showDefense(bool team);
+    void showBatters(bool team);
 
 private:
     QString homeName, awayName, sponsor, announcers, homeRank,

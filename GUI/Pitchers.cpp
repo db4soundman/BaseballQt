@@ -3,7 +3,7 @@
 #include <QVBoxLayout>
 #include <QLabel>
 
-Pitchers::Pitchers(BaseballGame* game) {
+Pitchers::Pitchers(BaseballGame* game, PitcherGraphic *pg) {
     QHBoxLayout* main = new QHBoxLayout();
     QVBoxLayout* away = new QVBoxLayout();
     away->addWidget(new QLabel(game->getAwayName()));
@@ -31,12 +31,14 @@ Pitchers::Pitchers(BaseballGame* game) {
     main->addLayout(home);
 
     setLayout(main);
-// HEY DOUG LOOK AT THIS ---------------------------------------------------------------------------
 
-    /*connect(&awayPitcher, SIGNAL(currentIndexChanged(int)),
-            game->getAwayTeam(), SLOT(setGoalie(int)));
+
+    connect(&awayPitcher, SIGNAL(currentIndexChanged(int)),
+            game->getAwayTeam(), SLOT(setPitcher(int)));
     connect(&homePitcher, SIGNAL(currentIndexChanged(int)),
-            game->getHomeTeam(), SLOT(setGoalie(int))); */
+            game->getHomeTeam(), SLOT(setPitcher(int)));
+    connect(&awaySeason, SIGNAL(clicked()), this, SLOT(getAwayPitcher()));
+    connect(&homeSeason, SIGNAL(clicked()), this, SLOT(getHomePitcher()));
     connect(&homeLt, SIGNAL(clicked()), this, SLOT(getHomeLt()));
     connect(&awayLt, SIGNAL(clicked()), this, SLOT(getAwayLt()));
     connect(&homeSB, SIGNAL(clicked()), this, SLOT(getHomeSb()));
@@ -46,6 +48,8 @@ Pitchers::Pitchers(BaseballGame* game) {
     connect(this, SIGNAL(requestHomeLt(int)), game, SLOT(gatherHomeGameStatsLt(int)));
     connect(this, SIGNAL(requestAwaySb(int)), game, SLOT(gatherAwayGameStatsSb(int)));
     connect(this, SIGNAL(requestHomeSb(int)), game, SLOT(gatherHomeGameStatsSb(int)));
+
+    connect(this, SIGNAL(pitcherSeason(bool)), pg, SLOT(displayGraphic(bool)));
 
     emit awayPitcher.currentIndexChanged(0);
     emit homePitcher.currentIndexChanged(0);
@@ -70,4 +74,14 @@ void Pitchers::getHomeSb()
 void Pitchers::getAwaySb()
 {
     emit requestAwaySb(awayPitcher.currentIndex());
+}
+
+void Pitchers::getAwayPitcher()
+{
+    emit pitcherSeason(false);
+}
+
+void Pitchers::getHomePitcher()
+{
+    emit pitcherSeason(true);
 }

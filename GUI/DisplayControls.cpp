@@ -2,7 +2,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
-DisplayControls::DisplayControls(BaseballGame* game, CommercialGraphic* comGraphic) {
+DisplayControls::DisplayControls(BaseballGame* game, CommercialGraphic* comGraphic, PitcherGraphic *pg, DefenseGraphic *dg, BattingOrder *bog) {
     sponsorText = game->getSponsor();
     customtext.setReadOnly(false);
     customtext.setText("");
@@ -42,20 +42,28 @@ DisplayControls::DisplayControls(BaseballGame* game, CommercialGraphic* comGraph
     connect(&commericalButton, SIGNAL(clicked()), comGraphic, SLOT(prepareAndShow()));
     connect(&commericalButton, SIGNAL(clicked()), game->getLt(), SLOT(hideLt()));
     connect(&commericalButton, SIGNAL(clicked()), game->getSb(), SLOT(hideBoard()));
+    connect(&commericalButton, SIGNAL(clicked()), pg, SLOT(hideGraphic()));
+    connect(&commericalButton, SIGNAL(clicked()), dg, SLOT(hideGraphic()));
+    connect(&commericalButton, SIGNAL(clicked()), bog, SLOT(hideGraphic()));
 
-    connect(&sbButton, SIGNAL(clicked()),
-            game->getSb(), SLOT(toggleShowBoard()));
-
-    connect(&sbButton, SIGNAL(clicked()),
-            comGraphic, SLOT(hide()));
+    connect(&sbButton, SIGNAL(clicked()),game->getSb(), SLOT(toggleShowBoard()));
+    connect(&sbButton, SIGNAL(clicked()), comGraphic, SLOT(hide()));
+    connect(&sbButton, SIGNAL(clicked()), pg, SLOT(hideGraphic()));
+    connect(&sbButton, SIGNAL(clicked()), dg, SLOT(hideGraphic()));
+    connect(&sbButton, SIGNAL(clicked()), bog, SLOT(hideGraphic()));
 
     connect(&hideLT, SIGNAL(clicked()), game->getLt(), SLOT(hideLt()));
+    connect(&hideLT, SIGNAL(clicked()), pg, SLOT(hideGraphic()));
+    connect(&hideLT, SIGNAL(clicked()), dg, SLOT(hideGraphic()));
+    connect(&hideLT, SIGNAL(clicked()), bog, SLOT(hideGraphic()));
 
     //hide
     connect(&hideButton, SIGNAL(clicked()), game->getSb(), SLOT(hideBoard()));
     connect(&hideButton, SIGNAL(clicked()), game->getLt(), SLOT(hideLt()));
-
     connect(&hideButton, SIGNAL(clicked()), comGraphic, SLOT(hide()));
+    connect(&hideButton, SIGNAL(clicked()), pg, SLOT(hideGraphic()));
+    connect(&hideButton, SIGNAL(clicked()), dg, SLOT(hideGraphic()));
+    connect(&hideButton, SIGNAL(clicked()), bog, SLOT(hideGraphic()));
 
 }
 

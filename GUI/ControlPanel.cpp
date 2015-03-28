@@ -3,9 +3,9 @@
 #include <QVBoxLayout>
 #include <QGridLayout>
 
-ControlPanel::ControlPanel(BaseballGame* game, CommercialGraphic* comGraphic) :
-    dispControls(game, comGraphic), atBatResults(game), count(game), lineup(game),
-    scores(game), hud(game), clockControls(game, comGraphic), stats(game), bases(game) {
+ControlPanel::ControlPanel(BaseballGame* game, CommercialGraphic* comGraphic, PitcherGraphic *pg, DefenseGraphic *dg, BattingOrder *bog) :
+    dispControls(game, comGraphic, pg, dg, bog), atBatResults(game), count(game), lineup(game),
+    scores(game), hud(game), clockControls(game, comGraphic), stats(game, pg), bases(game) {
     QHBoxLayout* mainLayout = new QHBoxLayout();
 
     QVBoxLayout* leftColumn = new QVBoxLayout();

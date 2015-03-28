@@ -540,6 +540,22 @@ void BaseballGame::clearBases()
     emit basesCleared();
 }
 
+void BaseballGame::decideTeamForDefense()
+{
+    if (inningMod == "Top") {
+        emit showDefense(true);
+    }
+    else emit showDefense(false);
+}
+
+void BaseballGame::decideTeamForBattingOrder()
+{
+    if (inningMod != "Top") {
+        emit showBatters(true);
+    }
+    else emit showBatters(false);
+}
+
 void BaseballGame::ballThrown()
 {
     BaseballPlayer* pitcher = getPitcher();

@@ -11,11 +11,14 @@
 #include "PlayerEditor.h"
 #include "TeamEditor.h"
 #include "LowerThirdCreator.h"
+#include "PitcherGraphic.h"
+#include "DefenseGraphic.h"
+#include "BattingOrder.h"
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
-    MainWindow(BaseballGame* game, CommercialGraphic* comGraphic,QWidget *parent = 0);
+    MainWindow(BaseballGame* game, CommercialGraphic* comGraphic, PitcherGraphic* pg, DefenseGraphic* dg, BattingOrder* bog);
     ~MainWindow();
 
 private:
