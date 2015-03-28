@@ -47,7 +47,7 @@ MiamiAllAccessBaseball::exec() {
                        &announcer, &awayRank, &homeRank, &awayColor, &homeColor,
                        &bg, &usingTricaster, &awayLogo);
     wizard.exec();
-    QRect graphicsScreen = usingTricaster ? QRect(0,0,1920,1080) : desktop.screenGeometry(0);
+    QRect graphicsScreen = usingTricaster ? QRect(0,0,1920,1080) : desktop.screenGeometry(1);
     game = new BaseballGame(awayName, homeName, awayColor, homeColor,
                           awayFile, homeFile, sponsor, announcer, awayRank,
                           homeRank, graphicsScreen.width() + 1, awayLogo);
