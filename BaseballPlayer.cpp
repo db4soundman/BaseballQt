@@ -6,6 +6,7 @@ BaseballPlayer::BaseballPlayer() {
     abToday= rToday= hToday= rbiToday= hrToday= walksToday= strikeoutsToday= hbpToday=pitchCount= ballsThrown= strikesThrown= outsToday =0;
     outs= ap= gs= wins= losses= saves= hitsAllowed= runsAllowed= er= bb= kOut = pStrikeOutsToday= pWalksToday=0;
     era = "0.00";
+    pos = "";
 }
 
 
@@ -82,7 +83,7 @@ void BaseballPlayer::setH(int value)
 }
 int BaseballPlayer::getRbi() const
 {
-    return rbi;
+    return rbi + rbiToday;
 }
 
 void BaseballPlayer::setRbi(int value)
@@ -100,7 +101,7 @@ void BaseballPlayer::setHr(int value)
 }
 int BaseballPlayer::getWalks() const
 {
-    return walks;
+    return walks + walksToday;
 }
 
 void BaseballPlayer::setWalks(int value)
@@ -109,7 +110,7 @@ void BaseballPlayer::setWalks(int value)
 }
 int BaseballPlayer::getStrikeouts() const
 {
-    return strikeouts;
+    return strikeouts + strikeoutsToday;
 }
 
 void BaseballPlayer::setStrikeouts(int value)
@@ -236,7 +237,8 @@ void BaseballPlayer::setEra(const QString &value)
 
 QString BaseballPlayer::getAvg()
 {
-    return QString::number(h*1.0 / ab, 'g', 3);
+    if (ab + abToday == 0) return ".000";
+    return QString::number((h+hToday)*1.0 / (ab+abToday), 'g', 3);
 }
 
 QString BaseballPlayer::getIp()
@@ -414,6 +416,7 @@ void BaseballPlayer::applyGenericOut()
 void BaseballPlayer::applyStrikeOutBatter()
 {
     strikeoutsToday++;
+    applyGenericOut();
 }
 
 void BaseballPlayer::ballThrown(int value)
@@ -465,5 +468,15 @@ void BaseballPlayer::setPWalksToday(int value)
 {
     pWalksToday = value;
 }
+QString BaseballPlayer::getPos() const
+{
+    return pos;
+}
+
+void BaseballPlayer::setPos(const QString &value)
+{
+    pos = value;
+}
+
 
 

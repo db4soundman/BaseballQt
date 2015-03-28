@@ -12,6 +12,9 @@ PitcherGraphic::PitcherGraphic(BaseballGame *game) : font(QFont("Arial",24, QFon
     awayGradient.setFinalStop(0,0);
     homeGradient.setStart(0,-30);
     homeGradient.setFinalStop(0,0);
+
+    connect(game->getAwayTeam(), SIGNAL(pitcherChanged(BaseballPlayer*)), this, SLOT(setAwayPitcher(BaseballPlayer*)));
+    connect(game->getHomeTeam(), SIGNAL(pitcherChanged(BaseballPlayer*)), this, SLOT(setHomePitcher(BaseballPlayer*)));
 }
 
 void PitcherGraphic::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

@@ -8,28 +8,19 @@ BatterStatControl::BatterStatControl(BaseballGame* game) {
     QHBoxLayout* main = new QHBoxLayout();
     main->addWidget(&currentBatter);
     main->addWidget(&displayLt);
-    main->addWidget(&displayBar);
+    //main->addWidget(&displayBar);
 
-    connect(&displayLt, SIGNAL(clicked()), this, SLOT(requestLt()));
-    connect(&displayBar, SIGNAL(clicked()), this, SLOT(requestSb()));
+    connect(&displayLt, SIGNAL(clicked()), game, SLOT(gatherBatterGraphic()));
+    //connect(&displayBar, SIGNAL(clicked()), this, SLOT(requestSb()));
 
-    connect(this, SIGNAL(requestLt(int)), game, SLOT(gatherAwayStatsLt(int)));
-    connect(this, SIGNAL(requestSb(int)), game, SLOT(gatherAwayGameStatsSb(int)));
+    //connect(this, SIGNAL(requestLt(int)), game, SLOT(gatherAwayStatsLt(int)));
+    //connect(this, SIGNAL(requestSb(int)), game, SLOT(gatherAwayGameStatsSb(int)));
 
-    // CONNECT GAME TO LABEL SO THAT BATTER TEXT IS CORRECT..................................................................................
+
     connect(game, SIGNAL(batterChanged(QString)), this, SLOT(updateBatterLabel(QString)));
     setLayout(main);
 }
 
-void BatterStatControl::requestLt()
-{
-    //emit requestLt(playerSelector.currentIndex());
-}
-
-void BatterStatControl::requestSb()
-{
-    //emit requestSb(playerSelector.currentIndex());
-}
 
 void BatterStatControl::updateBatterLabel(QString player)
 {

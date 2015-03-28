@@ -54,6 +54,10 @@ MiamiAllAccessBaseball::exec() {
     if (usingTricaster)
         bg.setRgb(0,0,0);
 
+    pitcherVert = new PitcherGraphic(game);
+    defense = new DefenseGraphic(game);
+    battingOrderGraphic = new BattingOrder(game);
+
     scene->addItem(game->getSb());
 
     scene->addItem(game->getLt());

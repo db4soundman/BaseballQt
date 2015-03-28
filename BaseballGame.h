@@ -110,6 +110,12 @@ public slots:
     void addError();
     void subError();
     void showAnnouncers();
+    void gatherBatterGraphic();
+    void gatherBatterSeasonSb();
+    void gatherHomePitcherRecapLt();
+    void gatherAwayPitcherRecapLt();
+    void gatherHomePitcherSb();
+    void gatherAwayPitcherSb();
     void gatherHomeSeasonStatsLt(int index);
     void gatherHomeSeasonStatsSb(int index);
     void gatherHomeGameStatsLt(int index);
@@ -120,6 +126,7 @@ public slots:
     void gatherAwayGameStatsSb(int index);
     void makeFinal();
     void advanceBatter();
+    void updateBatterNoAdvance();
     void updateFirstBaseStatus();
     void updateSecondBaseStatus();
     void updateThirdBaseStatus();

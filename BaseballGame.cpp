@@ -35,6 +35,11 @@ BaseballGame::BaseballGame(QString awayName, QString homeName, QColor awayColor,
     homeTeam = new BaseballTeam();
     awayTeam = new BaseballTeam();
 
+    connect(homeTeam, SIGNAL(battingOrderChanged(QList<BaseballPlayer*>,QList<QString>)),
+            this, SLOT(updateBatterNoAdvance()));
+    connect(awayTeam, SIGNAL(battingOrderChanged(QList<BaseballPlayer*>,QList<QString>)),
+            this, SLOT(updateBatterNoAdvance()));
+
     SeasonXMLHandler handler(homeTeam);
     QXmlSimpleReader r;
     r.setContentHandler(&handler);
@@ -96,12 +101,120 @@ BaseballGame::showAnnouncers() {
     }
 }
 
+void BaseballGame::gatherBatterGraphic()
+{
+     BaseballPlayer* player = getBatter();
+     QList<QString> labels, numbers;
+
+     labels.append("GP");
+     labels.append("AVG");
+     labels.append("RBI");
+     labels.append("HR");
+     labels.append("BB");
+     labels.append("SO");
+
+     numbers.append(QString::number(player->getGp()));
+     numbers.append(player->getAvg());
+     numbers.append(QString::number(player->getRbi()));
+     numbers.append(QString::number(player->getHr()));
+     numbers.append(QString::number(player->getWalks()));
+     numbers.append(QString::number(player->getStrikeouts()));
+
+     lt.prepareForDisplay(player->getName(),player->getUni(), player->getPos(),
+                          labels, numbers, inningMod == "Bot");
+}
+
+void BaseballGame::gatherBatterSeasonSb()
+{
+     BaseballPlayer* player = getBatter();
+     QString text = player->getName() + " (" +
+             inningMod == "Top" ? getAwayName() : getHomeName()+"): ";
+     text += player->getAvg() + ", " + QString::number(player->getWalks()) + " BB, "+
+             QString::number(player->getStrikeouts()) + " K";
+     sb.changeTopBarText(text);
+}
+
+void BaseballGame::gatherHomePitcherRecapLt()
+{
+    QList<QString> labels, numbers;
+    BaseballPlayer* player = homeTeam->getPitcher();
+    labels.append("IP");
+    labels.append("PC");
+    labels.append("B");
+    labels.append("S");
+    labels.append("BB");
+    labels.append("K");
+
+    numbers.append(player->getIpToday());
+    numbers.append(QString::number(player->getPitchCount()));
+    numbers.append(QString::number(player->getBallsThrown()));
+    numbers.append(QString::number(player->getStrikesThrown()));
+    numbers.append(QString::number(player->getPWalksToday()));
+    numbers.append(QString::number(player->getPStrikeOutsToday()));
+
+    lt.prepareForDisplay(player->getName(), player->getUni(), "P",
+                         labels, numbers, true);
+}
+
+void BaseballGame::gatherAwayPitcherRecapLt()
+{
+    QList<QString> labels, numbers;
+    BaseballPlayer* player = awayTeam->getPitcher();
+    labels.append("IP");
+    labels.append("PC");
+    labels.append("B");
+    labels.append("S");
+    labels.append("BB");
+    labels.append("K");
+
+    numbers.append(player->getIpToday());
+    numbers.append(QString::number(player->getPitchCount()));
+    numbers.append(QString::number(player->getBallsThrown()));
+    numbers.append(QString::number(player->getStrikesThrown()));
+    numbers.append(QString::number(player->getPWalksToday()));
+    numbers.append(QString::number(player->getPStrikeOutsToday()));
+
+    lt.prepareForDisplay(player->getName(), player->getUni(), "P",
+                         labels, numbers, false);
+}
+
+void BaseballGame::gatherHomePitcherSb()
+{
+    BaseballPlayer* player = getHomeTeam()->getPitcher();
+    QString text = player->getName() + " (" + getHomeName()+"): ";
+    text += QString::number(player->getPitchCount()) + " PITCHES, " + QString::number(player->getBallsThrown()) + " BALLS, "+
+            QString::number(player->getStrikesThrown()) + " STRIKES";
+
+    sb.changeTopBarText(text);
+}
+
+void BaseballGame::gatherAwayPitcherSb()
+{
+    BaseballPlayer* player = getAwayTeam()->getPitcher();
+    QString text = player->getName() + " (" + getAwayName()+"): ";
+    text += QString::number(player->getPitchCount()) + " PITCHES, " + QString::number(player->getBallsThrown()) + " BALLS, "+
+            QString::number(player->getStrikesThrown()) + " STRIKES";
+
+    sb.changeTopBarText(text);
+}
+
 void BaseballGame::gatherHomeSeasonStatsLt(int index)
 {
     QList<QString> labels, numbers;
     BaseballPlayer* player = getHomeTeam()->getPlayer(index);
     labels.append("GP");
+    labels.append("AVG");
+    labels.append("RBI");
+    labels.append("HR");
+    labels.append("BB");
+    labels.append("SO");
+
     numbers.append(QString::number(player->getGp()));
+    numbers.append(player->getAvg());
+    numbers.append(QString::number(player->getRbi()));
+    numbers.append(QString::number(player->getHr()));
+    numbers.append(QString::number(player->getWalks()));
+    numbers.append(QString::number(player->getStrikeouts()));
 
     lt.prepareForDisplay(player->getName(), player->getUni(), player->getYear(),
                          labels, numbers, true);
@@ -111,6 +224,8 @@ void BaseballGame::gatherHomeSeasonStatsSb(int index)
 {
     BaseballPlayer* player = getHomeTeam()->getPlayer(index);
     QString text = player->getName() + " (" + getHomeName()+"): ";
+    text += player->getAvg() + ", " + QString::number(player->getWalks()) + " BB, "+
+            QString::number(player->getStrikeouts()) + " K";
 
     sb.changeTopBarText(text);
 }
@@ -120,6 +235,18 @@ void BaseballGame::gatherHomeGameStatsLt(int index)
     BaseballPlayer* player = getHomeTeam()->getPlayer(index);
     QList<QString> labels, numbers;
 
+    labels.append("H");
+    labels.append("AB");
+    labels.append("RBI");
+    labels.append("BB");
+    labels.append("SO");
+
+    numbers.append(QString::number(player->getHToday()));
+    numbers.append(QString::number(player->getAbToday()));
+    numbers.append(QString::number(player->getRbiToday()));
+    numbers.append(QString::number(player->getWalksToday()));
+    numbers.append(QString::number(player->getStrikeoutsToday()));
+
     lt.prepareForDisplay(player->getName(), player->getUni(), player->getYear(),
                          labels, numbers, true);
 }
@@ -128,8 +255,18 @@ void BaseballGame::gatherAwayGameStatsLt(int index)
 {
     BaseballPlayer* player = getAwayTeam()->getPlayer(index);
     QList<QString> labels, numbers;
+    labels.append("H");
+    labels.append("AB");
+    labels.append("RBI");
+    labels.append("BB");
+    labels.append("SO");
 
-    lt.prepareForDisplay(player->getName(), player->getUni(), "",
+    numbers.append(QString::number(player->getHToday()));
+    numbers.append(QString::number(player->getAbToday()));
+    numbers.append(QString::number(player->getRbiToday()));
+    numbers.append(QString::number(player->getWalksToday()));
+    numbers.append(QString::number(player->getStrikeoutsToday()));
+    lt.prepareForDisplay(player->getName(), player->getUni(), player->getUni(),
                          labels, numbers, false);
 }
 
@@ -138,17 +275,39 @@ void BaseballGame::gatherHomeGameStatsSb(int index)
     BaseballPlayer* player = getHomeTeam()->getPlayer(index);
     QString text = player->getName() + " (" + getHomeName()+"): ";
 
-    sb.changeTopBarText(text);
+   // sb.changeTopBarText(text);
 }
 
 void BaseballGame::gatherAwaySeasonStatsLt(int index)
 {
+    QList<QString> labels, numbers;
+    BaseballPlayer* player = getAwayTeam()->getPlayer(index);
+    labels.append("GP");
+    labels.append("AVG");
+    labels.append("RBI");
+    labels.append("HR");
+    labels.append("BB");
+    labels.append("SO");
 
+    numbers.append(QString::number(player->getGp()));
+    numbers.append(player->getAvg());
+    numbers.append(QString::number(player->getRbi()));
+    numbers.append(QString::number(player->getHr()));
+    numbers.append(QString::number(player->getWalks()));
+    numbers.append(QString::number(player->getStrikeouts()));
+
+    lt.prepareForDisplay(player->getName(), player->getUni(), player->getYear(),
+                         labels, numbers, false);
 }
 
 void BaseballGame::gatherAwaySeasonStatsSb(int index)
 {
+    BaseballPlayer* player = getAwayTeam()->getPlayer(index);
+    QString text = player->getName() + " (" + getAwayName()+"): ";
+    text += player->getAvg() + ", " + QString::number(player->getWalks()) + " BB, "+
+            QString::number(player->getStrikeouts()) + " K";
 
+    sb.changeTopBarText(text);
 }
 
 void BaseballGame::gatherAwayGameStatsSb(int index)
@@ -156,7 +315,7 @@ void BaseballGame::gatherAwayGameStatsSb(int index)
     BaseballPlayer* player = getAwayTeam()->getPlayer(index);
     QString text = player->getName() + " (" + getAwayName()+"): ";
 
-    sb.changeTopBarText(text);
+   // sb.changeTopBarText(text);
 }
 
 /*
@@ -252,6 +411,7 @@ BaseballGame::advancePeriod() {
     outs = 0;
     emit outsChanged(outs);
     emit periodChanged(inningMod, period);
+    updateBatterNoAdvance();
 }
 
 void
@@ -266,6 +426,7 @@ BaseballGame::rewindPeriod() {
     }
     isFinal = false;
     emit periodChanged(inningMod, period);
+    updateBatterNoAdvance();
 }
 
 void BaseballGame::addScore(int value)
@@ -341,6 +502,16 @@ void BaseballGame::advanceBatter()
     }
     else {
         homeBatter = (homeBatter + 1) % 9;
+        emit batterChanged(homeTeam->getBatterByIndex(homeBatter)->getName());
+    }
+}
+
+void BaseballGame::updateBatterNoAdvance()
+{
+    if (inningMod == "Top") {
+        emit batterChanged(awayTeam->getBatterByIndex(awayBatter)->getName());
+    }
+    else {
         emit batterChanged(homeTeam->getBatterByIndex(homeBatter)->getName());
     }
 }

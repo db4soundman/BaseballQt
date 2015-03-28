@@ -10,7 +10,6 @@ Pitchers::Pitchers(BaseballGame* game) {
     awaySeason.setText("Season");
     homeSeason.setText("Season");
     awayPitcher.addItems(game->getAwayTeam()->getGuiNames());
-    awayPitcher.addItem("UNKNOWN");
     away->addWidget(&awayPitcher);
     awayLt.setText("Game Lower Third");
     awaySB.setText("Game Stat Bar");
@@ -21,7 +20,6 @@ Pitchers::Pitchers(BaseballGame* game) {
     QVBoxLayout* home = new QVBoxLayout();
     home->addWidget(new QLabel(game->getHomeName()));
     homePitcher.addItems(game->getHomeTeam()->getGuiNames());
-    homePitcher.addItem("UNKNOWN");
     home->addWidget(&homePitcher);
     homeLt.setText("Game Lower Third");
     homeSB.setText("Game Stat Bar");

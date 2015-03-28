@@ -15,6 +15,8 @@ DefenseGraphic::DefenseGraphic(BaseballGame *game) : font(QFont("Arial",24, QFon
     homeGradient.setStart(0,-30);
     homeGradient.setFinalStop(0,0);
     prepareColor();
+    connect(game->getAwayTeam(), SIGNAL(defenseChanged(QList<BaseballPlayer*>)), this, SLOT(setAwayDef(QList<BaseballPlayer*>)));
+    connect(game->getHomeTeam(), SIGNAL(defenseChanged(QList<BaseballPlayer*>)), this, SLOT(setHomeDef(QList<BaseballPlayer*>)));
 }
 
 void DefenseGraphic::paint(QPainter *painter,

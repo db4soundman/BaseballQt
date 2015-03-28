@@ -39,6 +39,11 @@ BaseballPlayer *BaseballTeam::getBatterByIndex(int index)
     return battingOrder.at(index);
 }
 
+QString BaseballTeam::getPlayerPos(int orderIndex)
+{
+    return orderDefense.at(orderIndex);
+}
+
 void BaseballTeam::setPitcher(int index)
 {
     if (index >= roster.size()) {
@@ -46,6 +51,7 @@ void BaseballTeam::setPitcher(int index)
     else {
         pitcher = getPlayer(index);
         defense[0] = pitcher;
+        emit pitcherChanged(pitcher);
     }
 }
 
@@ -54,6 +60,7 @@ void BaseballTeam::setBattingOrder(QList<int> playerIndicies, QList<QString> p)
     battingOrder.clear();
     for (int i = 0; i < playerIndicies.length(); i++) {
         battingOrder.insert(i,getPlayer(playerIndicies.at(i)));
+        getPlayer(playerIndicies.at(i))->setPos(p.at(i));
     }
     orderDefense = p;
     emit battingOrderChanged(battingOrder, orderDefense);

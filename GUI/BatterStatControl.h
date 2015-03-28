@@ -12,12 +12,9 @@ public:
     BatterStatControl(BaseballGame* game);
 
 signals:
-    void requestLt(int index);
-    void requestSb(int index);
+
 
 private slots:
-    void requestLt();
-    void requestSb();
     void updateBatterLabel(QString player);
 
 private:

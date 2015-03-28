@@ -153,8 +153,11 @@ public:
     int getPWalksToday() const;
     void setPWalksToday(int value);
 
+    QString getPos() const;
+    void setPos(const QString &value);
+
 private:
-    QString name, uni, year;
+    QString name, uni, year, pos;
     // Batting
     int gp, sacFly, ab, r, h, rbi, hr, walks, strikeouts, doubles, triples,
     hbp, abToday, rToday, hToday, rbiToday, hrToday, walksToday, strikeoutsToday, hbpToday;

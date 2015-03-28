@@ -20,6 +20,8 @@ BattingOrder::BattingOrder(BaseballGame* game) : font(QFont("Arial",24, QFont::B
     mainGradient.setStart(0,0);
     mainGradient.setFinalStop(0,pixmap().height());
     prepareColor();
+    connect(game->getAwayTeam(), SIGNAL(battingOrderChanged(QList<BaseballPlayer*>,QList<QString>)), this, SLOT(setAwayOrder(QList<BaseballPlayer*>,QList<QString>)));
+    connect(game->getHomeTeam(), SIGNAL(battingOrderChanged(QList<BaseballPlayer*>,QList<QString>)), this, SLOT(setHomeOrder(QList<BaseballPlayer*>,QList<QString>)));
 }
 
 void BattingOrder::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

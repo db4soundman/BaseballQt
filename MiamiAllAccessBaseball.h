@@ -6,7 +6,9 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include "MainWindow.h"
-
+#include "DefenseGraphic.h"
+#include "BattingOrder.h"
+#include "PitcherGraphic.h"
 #include "CommercialGraphic.h"
 
 //#include "StatCrewScanner.h"
@@ -37,6 +39,9 @@ private:
     CommercialGraphic* commercial;
     //StatCrewScanner* stats;
     TricasterHandler* tricaster;
+    PitcherGraphic* pitcherVert;
+    DefenseGraphic* defense;
+    BattingOrder* battingOrderGraphic;
 };
 
 #endif // MIAMIALLACCESSBASEBALL_H
