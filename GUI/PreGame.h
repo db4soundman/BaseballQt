@@ -5,12 +5,14 @@
 #include <QWidget>
 #include <QPushButton>
 #include "BaseballGame.h"
+#include "DefenseGraphic.h"
+#include "BattingOrder.h"
 
 class PreGame : public QWidget
 {
     Q_OBJECT
 public:
-    PreGame(BaseballGame* game);
+    PreGame(BaseballGame* game, DefenseGraphic* dg, BattingOrder* bog);
 
 
 signals:

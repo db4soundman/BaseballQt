@@ -8,11 +8,13 @@
 #include "Pitchers.h"
 #include "PitcherGraphic.h"
 #include "PreGame.h"
+#include "DefenseGraphic.h"
+#include "BattingOrder.h"
 
 class StatDisplayControls : public QTabWidget {
     Q_OBJECT
 public:
-    StatDisplayControls(BaseballGame* game, PitcherGraphic* pg);
+    StatDisplayControls(BaseballGame* game, PitcherGraphic* pg, DefenseGraphic* dg, BattingOrder* bog);
 
 private:
     TeamStatControl homeStats, awayStats;
