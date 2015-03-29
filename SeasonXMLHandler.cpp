@@ -58,34 +58,6 @@ bool SeasonXMLHandler::endElement(const QString& namespaceURI, const QString& lo
         team->addPlayer(currPlayer);
         inPlayer = false;
     }
-
-    else if (qName == "bbseas") {
-        currPlayer = new BaseballPlayer();
-        currPlayer->setName("NO NAME");
-        currPlayer->setUni("");
-        currPlayer->setYear("");
-        currPlayer->setGp(0);
-        currPlayer->setSacFly(0);
-        currPlayer->setHbp(0);
-        currPlayer->setStrikeouts(0);
-        currPlayer->setWalks(0);
-        currPlayer->setHr(0);
-        currPlayer->setTriples(0);
-        currPlayer->setDoubles(0);
-        currPlayer->setRbi(0);
-        currPlayer->setAb(0);
-        currPlayer->setAp(0);
-        currPlayer->setGs(0);
-        currPlayer->setSaves(0);
-        currPlayer->setWins(0);
-        currPlayer->setLosses(0);
-        currPlayer->setHitsAllowed(0);
-        currPlayer->setRunsAllowed(0);
-        currPlayer->setEr(0);
-        currPlayer->setBb(0);
-        currPlayer->setKOut(0);
-        team->addPlayer(currPlayer);
-    }
     return true;
 }
 
@@ -104,9 +76,15 @@ SeasonXMLHandler::correctName(QString name) {
     if (!name.contains(",")) {
         name = name.toUpper();
     }
-    else {
+    else if (name.contains(", ")){
         std::string goodName = name.toStdString();
         QString firstName = QString::fromStdString(goodName.substr(goodName.find(" ") + 1, goodName.length()));
+        QString lastName = QString::fromStdString(goodName.substr(0, goodName.find(",")));
+        name = firstName.toUpper() + " " + lastName.toUpper();
+    }
+    else if (name.contains(",")) {
+        std::string goodName = name.toStdString();
+        QString firstName = QString::fromStdString(goodName.substr(goodName.find(",") + 1, goodName.length()));
         QString lastName = QString::fromStdString(goodName.substr(0, goodName.find(",")));
         name = firstName.toUpper() + " " + lastName.toUpper();
     }

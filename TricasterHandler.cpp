@@ -3,15 +3,15 @@
 #include <QHostAddress>
 #include <QMessageBox>
 
-TricasterHandler::TricasterHandler(QGraphicsView *view, QColor pAlphaBlack) :
+TricasterHandler::TricasterHandler(QString ip, QGraphicsView *view, QColor pAlphaBlack) :
     alphaBlack(pAlphaBlack)
 {
     screen = view;
     tricaster = AirSend_Create(1920, 1080,3000,1001,true, 16.0/9.0, false, 0,0);
 
     // Connect
-    QHostAddress ip("10.44.0.171");
-    unsigned int blah = ip.toIPv4Address();
+    QHostAddress triCasterIp(ip);
+    unsigned int blah = triCasterIp.toIPv4Address();
     AirSend_request_connection(tricaster, blah, 7001);
     /*tricaster = AirSend_Create(1920, 1080,3000,1001,false, 16.0/9.0, false, 0,0);
     // Connect
@@ -123,6 +123,7 @@ void TricasterHandler::addAlphaRect(int x, int y, int w, int h)
 void TricasterHandler::removeAlphaRect(int x, int y, int w, int h)
 {
     transparentRects.removeAll(QRect(x,y,w,h));
+    //updatePortion(x,w,y,h);
 }
 
 void TricasterHandler::drawTransparentRectangle()

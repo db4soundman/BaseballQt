@@ -106,10 +106,10 @@ void CommercialGraphic::prepareAndShow()
     hitsAway = QString::number(baseballGame->getAwayHits());
     errorsAway = QString::number(baseballGame->getAwayErrors());
     errorsHome = QString::number(baseballGame->getHomeErrors());
-    clock = baseballGame->getInningText();
+    clock = clockStatus == SHOW_CLOCK? baseballGame->getInningText() : "FINAL";
     show = true;
-    updateClock();
-    scene()->update(0,0,1920,1080);
+    //updateClock();
+    scene()->update(0,y() - BLACK_BAR_HEIGHT,1920,1080);
 }
 
 void CommercialGraphic::updateClock()
@@ -117,7 +117,7 @@ void CommercialGraphic::updateClock()
     if (show) {
         if (clockStatus == SHOW_CLOCK) {
             //clock = baseballGame->getGameClock()->toString();
-            scene()->update(x() + WIDTH/2 - 200, y() + RECT_HEIGHT*2, WIDTH/2 - (WIDTH/2- 400), BLACK_BAR_HEIGHT);
+            //scene()->update(x() + WIDTH/2 - 200, y() + RECT_HEIGHT*2, WIDTH/2 - (WIDTH/2- 400), BLACK_BAR_HEIGHT);
         }
         else if (clockStatus == INTERMISSION) {
             clock = "INT";
@@ -157,7 +157,7 @@ void CommercialGraphic::hide()
 {
     if (show) {
         show = false;
-        scene()->update(0,0,1920,1080);
+        scene()->update(0,y() - BLACK_BAR_HEIGHT,1920,1080);
     }
 }
 

@@ -424,7 +424,7 @@ Scoreboard::toggleShowBoard() {
     show = true;
     if (useTransparency)
         emit transparentField(x(), y()-49,SCOREBOARD_WIDTH,49);
-    scene()->update();
+    scene()->update(x(), y() - 49, SCOREBOARD_WIDTH, 49 + SCOREBOARD_HEIGHT + PP_BAR_HEIGHT);
 }
 
 void Scoreboard::togglePpClocks()
@@ -439,7 +439,7 @@ Scoreboard::hideBoard() {
     if (show) {
         show = false;
         emit removeTransparentField(x(), y()-49,SCOREBOARD_WIDTH,49);
-        scene()->update();
+        scene()->update(x(), y() - 49, SCOREBOARD_WIDTH, 49 + SCOREBOARD_HEIGHT + PP_BAR_HEIGHT);
     }
 }
 

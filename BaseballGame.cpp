@@ -51,12 +51,64 @@ BaseballGame::BaseballGame(QString awayName, QString homeName, QColor awayColor,
     QXmlInputSource src(&file);
     r.parse(src);
 
+    BaseballPlayer* currPlayer = new BaseballPlayer();
+    currPlayer->setName("NO NAME");
+    currPlayer->setUni("");
+    currPlayer->setYear("");
+    currPlayer->setGp(0);
+    currPlayer->setSacFly(0);
+    currPlayer->setHbp(0);
+    currPlayer->setStrikeouts(0);
+    currPlayer->setWalks(0);
+    currPlayer->setHr(0);
+    currPlayer->setTriples(0);
+    currPlayer->setDoubles(0);
+    currPlayer->setRbi(0);
+    currPlayer->setAb(0);
+    currPlayer->setAp(0);
+    currPlayer->setGs(0);
+    currPlayer->setSaves(0);
+    currPlayer->setWins(0);
+    currPlayer->setLosses(0);
+    currPlayer->setHitsAllowed(0);
+    currPlayer->setRunsAllowed(0);
+    currPlayer->setEr(0);
+    currPlayer->setBb(0);
+    currPlayer->setKOut(0);
+    homeTeam->addPlayer(currPlayer);
+
     SeasonXMLHandler roadHandler(awayTeam);
     r.setContentHandler(&roadHandler);
     r.setErrorHandler(&roadHandler);
     QFile f2(awayXML);
     QXmlInputSource src2(&f2);
     r.parse(src2);
+
+    currPlayer = new BaseballPlayer();
+    currPlayer->setName("NO NAME");
+    currPlayer->setUni("");
+    currPlayer->setYear("");
+    currPlayer->setGp(0);
+    currPlayer->setSacFly(0);
+    currPlayer->setHbp(0);
+    currPlayer->setStrikeouts(0);
+    currPlayer->setWalks(0);
+    currPlayer->setHr(0);
+    currPlayer->setTriples(0);
+    currPlayer->setDoubles(0);
+    currPlayer->setRbi(0);
+    currPlayer->setAb(0);
+    currPlayer->setAp(0);
+    currPlayer->setGs(0);
+    currPlayer->setSaves(0);
+    currPlayer->setWins(0);
+    currPlayer->setLosses(0);
+    currPlayer->setHitsAllowed(0);
+    currPlayer->setRunsAllowed(0);
+    currPlayer->setEr(0);
+    currPlayer->setBb(0);
+    currPlayer->setKOut(0);
+    awayTeam->addPlayer(currPlayer);
 }
 
 void
@@ -410,6 +462,7 @@ BaseballGame::advancePeriod() {
         period++;
     }
     isFinal = false;
+    clearBases();
     //clearCount();
     balls = strikes = 0;
     outs = 0;
@@ -426,6 +479,7 @@ BaseballGame::rewindPeriod() {
         emit batterChanged(homeTeam->getBatterByIndex(homeBatter)->getName());
     }
     else {
+        inningMod = "Top";
         emit batterChanged(awayTeam->getBatterByIndex(awayBatter)->getName());
     }
     isFinal = false;
@@ -727,6 +781,7 @@ void BaseballGame::hitByPitch()
     BaseballPlayer* pitcher = getPitcher();
     BaseballPlayer* batter = getBatter();
     batter->applyWalk(2);
+    setOnFirst(true);
     advanceBatter();
     clearCount();
 }

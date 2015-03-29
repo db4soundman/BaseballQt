@@ -32,7 +32,7 @@ MiamiAllAccessBaseball::exec() {
     scene = new QGraphicsScene();
 
     QString awayName, homeName, awayRank, homeRank, homeFile, awayFile, sponsor, announcer,
-            awayLogo;
+            awayLogo, tricasterIp;
     QColor awayColor, homeColor,  bg;
     int pk, pkopp, ppg, ppopp;
     bool usingTricaster = true;
@@ -45,7 +45,7 @@ MiamiAllAccessBaseball::exec() {
 
     SetupWizard wizard(&awayName, &homeName, &awayFile, &homeFile, &sponsor,
                        &announcer, &awayRank, &homeRank, &awayColor, &homeColor,
-                       &bg, &usingTricaster, &awayLogo);
+                       &bg, &usingTricaster, &awayLogo, &tricasterIp);
     wizard.exec();
     QRect graphicsScreen = usingTricaster ? QRect(0,0,1920,1080) : desktop.screenGeometry(1);
     game = new BaseballGame(awayName, homeName, awayColor, homeColor,
@@ -68,6 +68,7 @@ MiamiAllAccessBaseball::exec() {
     game->getLt()->setY(graphicsScreen.height() - 160);
     game->getSb()->setY(80);
     game->getSb()->setX((graphicsScreen.width() / 2) - (game->getSb()->getRealWidth()/2));
+    game->getSb()->setUseTransparency(usingTricaster);
     commercial->setY(graphicsScreen.height() - 350);
     tv = new QGraphicsView(scene);
     scene->addItem(defense);
@@ -93,8 +94,7 @@ MiamiAllAccessBaseball::exec() {
     if (!usingTricaster)
         tv->showFullScreen();
     else {
-        tricaster = new TricasterHandler(tv, bg);
-        game->getSb()->setUseTransparency(true);
+        tricaster = new TricasterHandler(tricasterIp, tv, bg);
         connect(scene, SIGNAL(changed(QList<QRectF>)), tricaster, SLOT(updatePortion(QList<QRectF>)));
         connect(game->getSb(), SIGNAL(transparentField(int,int,int,int)), tricaster, SLOT(addAlphaRect(int,int,int,int)));
         connect(game->getSb(), SIGNAL(removeTransparentField(int,int,int,int)), tricaster, SLOT(removeAlphaRect(int,int,int,int)));

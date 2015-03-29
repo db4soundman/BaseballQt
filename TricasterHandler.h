@@ -14,7 +14,7 @@ class TricasterHandler : public QThread
 {
     Q_OBJECT
 public:
-    TricasterHandler(QGraphicsView* view, QColor pAlphaBlack);
+    TricasterHandler(QString ip, QGraphicsView* view, QColor pAlphaBlack);
 
     void run();
 

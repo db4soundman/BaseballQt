@@ -22,7 +22,7 @@ BaseControlls::BaseControlls(BaseballGame *game)
     connect(game, SIGNAL(firstBaseStatus(bool)), this, SLOT(updateFirst(bool)));
     connect(game, SIGNAL(secondBaseStatus(bool)), this, SLOT(updateSecond(bool)));
     connect(game, SIGNAL(thirdBaseStatus(bool)), this, SLOT(updateThird(bool)));
-
+    connect(game, SIGNAL(basesCleared()), this, SLOT(clearBases()));
     setLayout(myLayout);
 }
 
@@ -52,5 +52,6 @@ void BaseControlls::clearBases()
     updateFirst(false);
     updateSecond(false);
     updateThird(false);
+
 }
 

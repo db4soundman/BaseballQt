@@ -27,7 +27,7 @@ GameInfo::GameInfo(BaseballGame* game) {
 
 void
 GameInfo::updateCount(int b, int s, int o) {
-   //time.setText(QString::number(b)+"-"+QString::number(s)+ " "+QString::number(o) + " Out");
+   time.setText(QString::number(b)+"-"+QString::number(s)+ " "+QString::number(o) + " Out");
 }
 
 void GameInfo::updateHomeScore(int score) {

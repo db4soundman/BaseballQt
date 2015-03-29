@@ -3,8 +3,8 @@
 SetupWizard::SetupWizard(QString* pAwayName, QString* pHomeName, QString* pAwayFile,
                          QString* pHomeFile, QString* pSponsor, QString* pAnnouncer,
                          QString* pAwayRank, QString* pHomeRank, QColor* pAwayColor,
-                         QColor* pHomeColor, QColor* pBg, bool *usingTricaster, QString* awayLogo) :
+                         QColor* pHomeColor, QColor* pBg, bool *usingTricaster, QString* awayLogo, QString* tricasterIp) :
     wizpage(pAwayName, pHomeName, pAwayFile, pHomeFile, pSponsor, pAnnouncer,
-            pAwayRank, pHomeRank, pAwayColor, pHomeColor, pBg, usingTricaster, awayLogo){
+            pAwayRank, pHomeRank, pAwayColor, pHomeColor, pBg, usingTricaster, awayLogo, tricasterIp){
     addPage(&wizpage);
 }
