@@ -65,12 +65,12 @@ void CommercialGraphic::paint(QPainter* painter, const QStyleOptionGraphicsItem*
         painter->fillRect(0, 0, WIDTH, RECT_HEIGHT, awayTeamGradient);
         painter->fillRect(0, RECT_HEIGHT, WIDTH, RECT_HEIGHT, homeTeamGradient);
         painter->setFont(away->font());
-        painter->drawText(WIDTH/4, 0, NAME_WIDTH*3, RECT_HEIGHT, Qt::AlignCenter, away->toPlainText());
+        painter->drawText(WIDTH/4, 0, NAME_WIDTH*2, RECT_HEIGHT, Qt::AlignCenter, away->toPlainText());
         //painter->drawPixmap(WIDTH - CENTER_OFFSET - 100 - awayLogo.width(), 20, awayLogo);
         painter->setOpacity(.996);
         painter->drawPixmap(WIDTH /4, 0, *awayLogo);
         painter->setFont(home->font());
-        painter->drawText(WIDTH/4, RECT_HEIGHT, NAME_WIDTH*3, RECT_HEIGHT, Qt::AlignCenter, home->toPlainText());
+        painter->drawText(WIDTH/4, RECT_HEIGHT, NAME_WIDTH*2, RECT_HEIGHT, Qt::AlignCenter, home->toPlainText());
         painter->drawPixmap(WIDTH/4, RECT_HEIGHT, blockText);
         painter->setOpacity(1);
 
