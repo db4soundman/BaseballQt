@@ -6,4 +6,5 @@ StatDisplayControls::StatDisplayControls(BaseballGame* game, PitcherGraphic *pg)
     addTab(&batters, "Batters");
     addTab(&awayStats, game->getAwayName());
     addTab(&homeStats, game->getHomeName());
+    addTab (&preStats, "Pre-Game");
 }

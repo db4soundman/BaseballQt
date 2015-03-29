@@ -10,13 +10,15 @@ DefenseGraphic::DefenseGraphic(BaseballGame *game) : font(QFont("Arial",24, QFon
     homeColor = game->getHomeColor();
     homeName = game->getHomeName() + " DEFENSE";
     awayName = game->getAwayName() + " DEFENSE";
-    awayGradient.setStart(0,-30);
-    awayGradient.setFinalStop(0,0);
-    homeGradient.setStart(0,-30);
-    homeGradient.setFinalStop(0,0);
+    awayGradient.setStart(0,0);
+    awayGradient.setFinalStop(0,30);
+    homeGradient.setStart(0,0);
+    homeGradient.setFinalStop(0,30);
+    homeTeamP = game->getHomeTeam();
+    awayTeam = game->getAwayTeam();
     prepareColor();
-    connect(game->getAwayTeam(), SIGNAL(defenseChanged(QList<BaseballPlayer*>)), this, SLOT(setAwayDef(QList<BaseballPlayer*>)));
-    connect(game->getHomeTeam(), SIGNAL(defenseChanged(QList<BaseballPlayer*>)), this, SLOT(setHomeDef(QList<BaseballPlayer*>)));
+    connect(game->getAwayTeam(), SIGNAL(defenseChanged()), this, SLOT(setAwayDef()));
+    connect(game->getHomeTeam(), SIGNAL(defenseChanged()), this, SLOT(setHomeDef()));
 }
 
 void DefenseGraphic::paint(QPainter *painter,
@@ -25,31 +27,31 @@ void DefenseGraphic::paint(QPainter *painter,
 {
     if (show) {
         painter->setFont(font);
-        painter->fillRect(0,-30,pixmap().width(),30, homeTeam? homeGradient : awayGradient);
-        painter->fillRect(0,0, pixmap().width(), pixmap().height(), QColor(1,1,1));
-        painter->drawPixmap(0,0, pixmap());
+        painter->fillRect(0,0,pixmap().width(),30, homeTeam? homeGradient : awayGradient);
+        painter->fillRect(0,30, pixmap().width(), pixmap().height(), QColor(1,1,1));
+        painter->drawPixmap(0,30, pixmap());
         painter->setPen(QColor(255,255,255));
-        painter->drawText(0,-30, pixmap().width(), 30, Qt::AlignCenter,homeTeam? homeName : awayName);
-        painter->drawText(438,414,400,28, Qt::AlignCenter,homeTeam? home[0]->getLastName() : away[0]->getLastName());
-        painter->drawText(438,732,400,28, Qt::AlignCenter,homeTeam? home[1]->getLastName() : away[1]->getLastName());
-        painter->drawText(790,255,400,28, Qt::AlignCenter,homeTeam? home[2]->getLastName() : away[2]->getLastName());
-        painter->drawText(718,120,400,28, Qt::AlignCenter,homeTeam? home[3]->getLastName() : away[3]->getLastName());
-        painter->drawText(638-440,120,400,28, Qt::AlignCenter,homeTeam? home[4]->getLastName() : away[4]->getLastName());
-        painter->drawText(190,255,400,28, Qt::AlignCenter,homeTeam? home[5]->getLastName() : away[5]->getLastName());
-        painter->drawText(220,96,400,28, Qt::AlignCenter, homeTeam? home[6]->getLastName() : away[6]->getLastName());
-        painter->drawText(438,20,400,28, Qt::AlignCenter,homeTeam? home[7]->getLastName() : away[7]->getLastName());
-        painter->drawText(800,96,400,28, Qt::AlignCenter, homeTeam? home[8]->getLastName() : away[8]->getLastName());
+        painter->drawText(0,0, pixmap().width(), 30, Qt::AlignCenter,homeTeam? homeName : awayName);
+        painter->drawText(438,444,400,28, Qt::AlignCenter,homeTeam? home[0]->getLastName() : away[0]->getLastName());
+        painter->drawText(438,762,400,28, Qt::AlignCenter,homeTeam? home[1]->getLastName() : away[1]->getLastName());
+        painter->drawText(790,380,400,28, Qt::AlignCenter,homeTeam? home[2]->getLastName() : away[2]->getLastName());
+        painter->drawText(718,250,400,28, Qt::AlignCenter,homeTeam? home[3]->getLastName() : away[3]->getLastName());
+        painter->drawText(638-440,250,400,28, Qt::AlignCenter,homeTeam? home[4]->getLastName() : away[4]->getLastName());
+        painter->drawText(190,380,400,28, Qt::AlignCenter,homeTeam? home[5]->getLastName() : away[5]->getLastName());
+        painter->drawText(100,126,400,28, Qt::AlignCenter, homeTeam? home[6]->getLastName() : away[6]->getLastName());
+        painter->drawText(438,50,400,28, Qt::AlignCenter,homeTeam? home[7]->getLastName() : away[7]->getLastName());
+        painter->drawText(800,126,400,28, Qt::AlignCenter, homeTeam? home[8]->getLastName() : away[8]->getLastName());
     }
 }
 
-void DefenseGraphic::setAwayDef(QList<BaseballPlayer *> def)
+void DefenseGraphic::setAwayDef()
 {
-    away = def;
+    away = awayTeam->getDefense();
 }
 
-void DefenseGraphic::setHomeDef(QList<BaseballPlayer *> def)
+void DefenseGraphic::setHomeDef()
 {
-    home=def;
+    home=homeTeamP->getDefense();
 }
 
 void DefenseGraphic::displayGraphic(bool team)

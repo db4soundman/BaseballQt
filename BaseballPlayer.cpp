@@ -238,7 +238,11 @@ void BaseballPlayer::setEra(const QString &value)
 QString BaseballPlayer::getAvg()
 {
     if (ab + abToday == 0) return ".000";
-    return QString::number((h+hToday)*1.0 / (ab+abToday), 'g', 3);
+    QString avg = QString::number((h+hToday)*1.0 / (ab+abToday), 'f', 3);
+    if (avg.contains("0.")) {
+        avg = avg.mid(1);
+    }
+    return avg;
 }
 
 QString BaseballPlayer::getIp()

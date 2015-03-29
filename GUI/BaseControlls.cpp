@@ -19,6 +19,10 @@ BaseControlls::BaseControlls(BaseballGame *game)
     connect(&third, SIGNAL(clicked()), game, SLOT(updateThirdBaseStatus()));
     connect(&clear, SIGNAL(clicked()), game, SLOT(clearBases()));
 
+    connect(game, SIGNAL(firstBaseStatus(bool)), this, SLOT(updateFirst(bool)));
+    connect(game, SIGNAL(secondBaseStatus(bool)), this, SLOT(updateSecond(bool)));
+    connect(game, SIGNAL(thirdBaseStatus(bool)), this, SLOT(updateThird(bool)));
+
     setLayout(myLayout);
 }
 

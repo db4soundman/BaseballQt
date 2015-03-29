@@ -68,10 +68,18 @@ MiamiAllAccessBaseball::exec() {
     game->getLt()->setY(graphicsScreen.height() - 160);
     game->getSb()->setY(80);
     game->getSb()->setX((graphicsScreen.width() / 2) - (game->getSb()->getRealWidth()/2));
-    commercial->setY(graphicsScreen.height() - 230);
+    commercial->setY(graphicsScreen.height() - 350);
     tv = new QGraphicsView(scene);
+    scene->addItem(defense);
+    scene->addItem(pitcherVert);
+    scene->addItem(battingOrderGraphic);
 
-
+    defense->setX(1278 / 4);
+    defense->setY(810/4);
+    battingOrderGraphic->setX(1278/4);
+    battingOrderGraphic->setY(810/4);
+    pitcherVert->setX(1920 * 3 /4);\
+    pitcherVert->setY(1080 / 2 - 388/2);
 
     tv->setGeometry(graphicsScreen);
     tv->setSceneRect(0, 0,graphicsScreen.width(), graphicsScreen.height());

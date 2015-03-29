@@ -21,13 +21,13 @@ GameInfo::GameInfo(BaseballGame* game) {
     connect(game, SIGNAL(awayScoreChanged(int)), this, SLOT(updateAwayScore(int)));
     connect(game, SIGNAL(homeScoreChanged(int)), this, SLOT(updateHomeScore(int)));
     connect(game, SIGNAL(periodChanged(QString,int)), this, SLOT(updatePeriod(QString,int)));
-
+    connect(game, SIGNAL(updateCount(int,int,int)), this, SLOT(updateCount(int,int,int)));
     setLayout(main);
 }
 
 void
 GameInfo::updateCount(int b, int s, int o) {
-   time.setText(QString::number(b)+"-"+QString::number(s)+ " "+QString::number(o) + " Out");
+   //time.setText(QString::number(b)+"-"+QString::number(s)+ " "+QString::number(o) + " Out");
 }
 
 void GameInfo::updateHomeScore(int score) {

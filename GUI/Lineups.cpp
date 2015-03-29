@@ -54,6 +54,8 @@ Lineups::Lineups(BaseballGame *game)
     connect(this, SIGNAL(homeBattingOrderUpdate(QList<int>,QList<QString>)), game->getHomeTeam(), SLOT(setBattingOrder(QList<int>,QList<QString>)));
     connect(this, SIGNAL(homeDefenseUpdate(QList<int>)), game->getHomeTeam(), SLOT(setDefense(QList<int>)));
     setLayout(myLayout);
+    homeLineupChanged();
+    awayLineupChanged();
 }
 
 void Lineups::awayLineupChanged()

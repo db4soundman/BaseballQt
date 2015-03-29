@@ -42,6 +42,10 @@ ScoreControl::ScoreControl(BaseballGame* game) {
     connect(&sp3, SIGNAL(clicked()), this, SLOT(up3()));
     connect(&sm4, SIGNAL(clicked()), this, SLOT(down4()));
     connect(&sp4, SIGNAL(clicked()), this, SLOT(up4()));
+    connect(&hm1, SIGNAL(clicked()), game, SLOT(subHit()));
+    connect(&hp1, SIGNAL(clicked()), game, SLOT(addHit()));
+    connect(&em1, SIGNAL(clicked()), game, SLOT(subError()));
+    connect(&ep1, SIGNAL(clicked()), game, SLOT(addError()));
     connect(this, SIGNAL(changeScore(int)), game, SLOT(addScore(int)));
 
 

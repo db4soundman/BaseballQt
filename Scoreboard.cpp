@@ -134,7 +134,7 @@ Scoreboard::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                               count);
             painter->drawText(CLOCK_FIELD_X + CLOCK_FIELD_WIDTH*2/3, 3, CLOCK_FIELD_WIDTH/3, 48, Qt::AlignCenter,
                               QString::number(out) + " OUT");
-            painter->fillRect(CLOCK_FIELD_X, topOfInning ? 3 : 48-3, CLOCK_FIELD_WIDTH/3, 3, QColor(231,231,28));
+            painter->fillRect(CLOCK_FIELD_X, topOfInning ? 3 : 48-5, CLOCK_FIELD_WIDTH/3, 5, QColor(255,255,0));
 
         }
         else {
@@ -269,6 +269,12 @@ Scoreboard::togglePitchingChange() {
 void
 Scoreboard::updateClock() {
     scene()->update(this->x() + CLOCK_FIELD_X, this->y() + 3, CLOCK_FIELD_WIDTH, 50);
+}
+
+void Scoreboard::updateCount(int b, int s, int o)
+{
+    count = QString::number(b) + "-" + QString::number(s);
+    updateOut(o);
 }
 
 void Scoreboard::updateCount(int b, int s)

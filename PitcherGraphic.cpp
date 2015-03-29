@@ -12,9 +12,12 @@ PitcherGraphic::PitcherGraphic(BaseballGame *game) : font(QFont("Arial",24, QFon
     awayGradient.setFinalStop(0,0);
     homeGradient.setStart(0,-30);
     homeGradient.setFinalStop(0,0);
+    mainGradient.setStart(0,0);
+    mainGradient.setFinalStop(0, pixmap().height() + 100);
 
     connect(game->getAwayTeam(), SIGNAL(pitcherChanged(BaseballPlayer*)), this, SLOT(setAwayPitcher(BaseballPlayer*)));
     connect(game->getHomeTeam(), SIGNAL(pitcherChanged(BaseballPlayer*)), this, SLOT(setHomePitcher(BaseballPlayer*)));
+    prepareColor();
 }
 
 void PitcherGraphic::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -23,30 +26,30 @@ void PitcherGraphic::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
         BaseballPlayer* player = homeTeam? homePitcher : awayPitcher;
         painter->setFont(font);
         painter->fillRect(0,-30,pixmap().width(),30, homeTeam? homeGradient : awayGradient);
-        painter->fillRect(0,0, pixmap().width(), pixmap().height(), mainGradient);
+        painter->fillRect(0,0, pixmap().width(), pixmap().height() + 100, mainGradient);
         painter->setPen(QColor(255,255,255));
+        painter->drawText(0,-30, pixmap().width(), 30, Qt::AlignCenter, player->getName());
+        painter->drawText(15, 42* 1, 240, 30, Qt::AlignLeft, "APP");
+        painter->drawText(15,  42* 2, 240, 30, Qt::AlignLeft, "GS/SV");
+        painter->drawText(15,  42* 3, 240, 30, Qt::AlignLeft, "W-L");
+        painter->drawText(15,  42* 4, 240, 30, Qt::AlignLeft, "ERA");
+        painter->drawText(15,  42* 5, 240, 30, Qt::AlignLeft, "IP");
+        painter->drawText(15,  42* 6, 240, 30, Qt::AlignLeft, "H");
+        painter->drawText(15,  42* 7, 240, 30, Qt::AlignLeft, "R");
+        painter->drawText(15,  42* 8, 240, 30, Qt::AlignLeft, "ER");
+        painter->drawText(15,  42* 9, 240, 30, Qt::AlignLeft, "BB");
+        painter->drawText(15,  42* 10, 240, 30, Qt::AlignLeft, "SO");
 
-        painter->drawText(190, 66 * 1, 240, 30, Qt::AlignLeft, "APP");
-        painter->drawText(190, 66 * 2, 240, 30, Qt::AlignLeft, "GS/SV");
-        painter->drawText(190, 66 * 3, 240, 30, Qt::AlignLeft, "W-L");
-        painter->drawText(190, 66 * 4, 240, 30, Qt::AlignLeft, "ERA");
-        painter->drawText(190, 66 * 5, 240, 30, Qt::AlignLeft, "IP");
-        painter->drawText(190, 66 * 6, 240, 30, Qt::AlignLeft, "H");
-        painter->drawText(190, 66 * 7, 240, 30, Qt::AlignLeft, "R");
-        painter->drawText(190, 66 * 8, 240, 30, Qt::AlignLeft, "ER");
-        painter->drawText(190, 66 * 9, 240, 30, Qt::AlignLeft, "BB");
-        painter->drawText(190, 66 * 10, 240, 30, Qt::AlignLeft, "SO");
-
-        painter->drawText(590, 66 * 1, 240, 30, Qt::AlignRight, QString::number(player->getAp()));
-        painter->drawText(590, 66 * 2, 240, 30, Qt::AlignRight,  QString::number(player->getGs()) + "/" +  QString::number(player->getSaves()));
-        painter->drawText(590, 66 * 3, 240, 30, Qt::AlignRight,  QString::number(player->getWins()) + "-" +  QString::number(player->getLosses()));
-        painter->drawText(590, 66 * 4, 240, 30, Qt::AlignRight,  player->getEra());
-        painter->drawText(590, 66 * 5, 240, 30, Qt::AlignRight,  player->getIp());
-        painter->drawText(590, 66 * 6, 240, 30, Qt::AlignRight,  QString::number(player->getHitsAllowed()));
-        painter->drawText(590, 66 * 7, 240, 30, Qt::AlignRight,  QString::number(player->getRunsAllowed()));
-        painter->drawText(590, 66 * 8, 240, 30, Qt::AlignRight,  QString::number(player->getEr()));
-        painter->drawText(590, 66 * 9, 240, 30, Qt::AlignRight, QString::number(player->getBb()));
-        painter->drawText(590, 66 * 10, 240, 30, Qt::AlignRight,  QString::number(player->getKOut()));
+        painter->drawText(105,  42* 1, 240, 30, Qt::AlignRight, QString::number(player->getAp()));
+        painter->drawText(105,  42* 2, 240, 30, Qt::AlignRight,  QString::number(player->getGs()) + "/" +  QString::number(player->getSaves()));
+        painter->drawText(105,  42* 3, 240, 30, Qt::AlignRight,  QString::number(player->getWins()) + "-" +  QString::number(player->getLosses()));
+        painter->drawText(105,  42* 4, 240, 30, Qt::AlignRight,  player->getEra());
+        painter->drawText(105,  42* 5, 240, 30, Qt::AlignRight,  player->getIp());
+        painter->drawText(105,  42* 6, 240, 30, Qt::AlignRight,  QString::number(player->getHitsAllowed()));
+        painter->drawText(105,  42* 7, 240, 30, Qt::AlignRight,  QString::number(player->getRunsAllowed()));
+        painter->drawText(105,  42* 8, 240, 30, Qt::AlignRight,  QString::number(player->getEr()));
+        painter->drawText(105,  42* 9, 240, 30, Qt::AlignRight, QString::number(player->getBb()));
+        painter->drawText(105,  42* 10, 240, 30, Qt::AlignRight,  QString::number(player->getKOut()));
     }
 }
 

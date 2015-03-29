@@ -29,6 +29,8 @@ bool SeasonXMLHandler::startElement(const QString& namespaceURI,
         currPlayer->setDoubles(atts.value("double").toInt());
         currPlayer->setRbi(atts.value("rbi").toInt());
         currPlayer->setAb(atts.value("ab").toInt());
+        currPlayer->setR(atts.value("r").toInt());
+        currPlayer->setH(atts.value("h").toInt());
     }
 
     else if (qName == "pitching" && inPlayer) {

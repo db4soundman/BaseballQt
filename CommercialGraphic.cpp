@@ -18,7 +18,7 @@ CommercialGraphic::CommercialGraphic(BaseballGame* game, int width, QString pawa
     baseballGame = game;
     show = false;
     WIDTH = width;
-    NAME_WIDTH = WIDTH/2;
+    NAME_WIDTH = WIDTH/4;
     inGame  = false;
     QFont font("Arial", 60, QFont::Bold);
     QFont sponsorFont("Arial", 36, QFont::Bold);
@@ -42,6 +42,9 @@ CommercialGraphic::CommercialGraphic(BaseballGame* game, int width, QString pawa
     if (awayLogo->height() > 120) {
         *awayLogo = awayLogo->scaledToHeight(120, Qt::SmoothTransformation);
     }
+    if (blockText.height() > 120) {
+        blockText = blockText.scaledToHeight(120, Qt::SmoothTransformation);
+    }
     /*  if (awayLogo->width() > 1919) {
        *awayLogo =  awayLogo->scaledToWidth(800, Qt::SmoothTransformation);
     }*/
@@ -62,16 +65,16 @@ void CommercialGraphic::paint(QPainter* painter, const QStyleOptionGraphicsItem*
         painter->fillRect(0, 0, WIDTH, RECT_HEIGHT, awayTeamGradient);
         painter->fillRect(0, RECT_HEIGHT, WIDTH, RECT_HEIGHT, homeTeamGradient);
         painter->setFont(away->font());
-        //painter->drawText(10, 0, NAME_WIDTH, RECT_HEIGHT, Qt::AlignCenter, away->toPlainText());
+        painter->drawText(WIDTH/2, 0, NAME_WIDTH, RECT_HEIGHT, Qt::AlignLeft | Qt::AlignVCenter, away->toPlainText());
         //painter->drawPixmap(WIDTH - CENTER_OFFSET - 100 - awayLogo.width(), 20, awayLogo);
         painter->setOpacity(.996);
         painter->drawPixmap(WIDTH /4, 0, *awayLogo);
         painter->setFont(home->font());
-        //painter->drawText(WIDTH + CENTER_OFFSET, 0, NAME_WIDTH, RECT_HEIGHT, Qt::AlignCenter, home->toPlainText());
-        painter->drawPixmap(WIDTH/4, 0, blockText);
+        painter->drawText(WIDTH/2, RECT_HEIGHT, NAME_WIDTH, RECT_HEIGHT, Qt::AlignLeft | Qt::AlignVCenter, home->toPlainText());
+        painter->drawPixmap(WIDTH/4, RECT_HEIGHT, blockText);
         painter->setOpacity(1);
 
-        painter->fillRect(WIDTH*.75, 0, CENTER_OFFSET * 2, RECT_HEIGHT*2, QColor(1,1,1, 100));
+        painter->fillRect(WIDTH*.75, 0, CENTER_OFFSET, RECT_HEIGHT*2, QColor(1,1,1, 100));
 
 
         painter->drawText(WIDTH*.75, 0, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, awayScore);

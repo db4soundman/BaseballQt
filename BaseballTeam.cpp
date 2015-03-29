@@ -50,7 +50,9 @@ void BaseballTeam::setPitcher(int index)
     }
     else {
         pitcher = getPlayer(index);
-        defense[0] = pitcher;
+        if (defense.size() > 0)
+            defense[0] = pitcher;
+        else defense.append(pitcher);
         emit pitcherChanged(pitcher);
     }
 }
@@ -59,31 +61,62 @@ void BaseballTeam::setBattingOrder(QList<int> playerIndicies, QList<QString> p)
 {
     battingOrder.clear();
     for (int i = 0; i < playerIndicies.length(); i++) {
-        battingOrder.insert(i,getPlayer(playerIndicies.at(i)));
+        battingOrder.append(getPlayer(playerIndicies.at(i)));
         getPlayer(playerIndicies.at(i))->setPos(p.at(i));
     }
     orderDefense = p;
-    emit battingOrderChanged(battingOrder, orderDefense);
+    emit battingOrderChanged();
 }
 
 void BaseballTeam::setDefense(QList<int> playerIndicies)
 {
     defense.clear();
-    defense.insert(0, pitcher);
+    defense.append(pitcher);
     // DH used
     if (Q_LIKELY(pitcher != getPlayer(playerIndicies.at(0))))
         for (int i = 0; i < playerIndicies.size(); i++) {
-            defense.insert(i + 1, getPlayer(playerIndicies.at(i)));
+            defense.append(getPlayer(playerIndicies.at(i)));
         }
     // Pitcher is batting
     else {
+        defense.clear();
         for (int i = 0; i < playerIndicies.size(); i++) {
-            defense.insert(i, getPlayer(playerIndicies.at(i)));
+            defense.append(getPlayer(playerIndicies.at(i)));
         }
     }
 
-    emit defenseChanged(defense);
+    emit defenseChanged();
 }
+QList<BaseballPlayer *> BaseballTeam::getRoster() const
+{
+    return roster;
+}
+
+void BaseballTeam::setRoster(const QList<BaseballPlayer *> &value)
+{
+    roster = value;
+}
+
+QList<BaseballPlayer *> BaseballTeam::getBattingOrder() const
+{
+    return battingOrder;
+}
+
+QList<BaseballPlayer *> BaseballTeam::getDefense() const
+{
+    return defense;
+}
+
+QList<QString> BaseballTeam::getOrderDefense() const
+{
+    return orderDefense;
+}
+
+void BaseballTeam::setOrderDefense(const QList<QString> &value)
+{
+    orderDefense = value;
+}
+
 
 QList<QString> BaseballTeam::getGuiNames()
 {

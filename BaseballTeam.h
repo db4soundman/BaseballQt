@@ -20,9 +20,18 @@ public:
     BaseballPlayer* getBatterByIndex(int index);
     QString getPlayerPos(int orderIndex);
 
+    QList<QString> getOrderDefense() const;
+    void setOrderDefense(const QList<QString> &value);
+
+    QList<BaseballPlayer *> getRoster() const;
+    void setRoster(const QList<BaseballPlayer *> &value);
+
+    QList<BaseballPlayer *> getBattingOrder() const;
+    QList<BaseballPlayer *> getDefense() const;
+
 signals:
-    void defenseChanged(QList<BaseballPlayer*> def);
-    void battingOrderChanged(QList<BaseballPlayer*>ord, QList<QString> defPos);
+    void defenseChanged();
+    void battingOrderChanged();
     void pitcherChanged(BaseballPlayer* pitcher);
 
 public slots:

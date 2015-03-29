@@ -29,7 +29,7 @@ CountControl::CountControl(BaseballGame* game) {
     connect(&ballThrown, SIGNAL(clicked()), game, SLOT(ballThrown()));
     connect(&strikeThrown, SIGNAL(clicked()), game, SLOT(strikeThrown()));
     connect(&foul, SIGNAL(clicked()), game, SLOT(foulBall()));
-    connect(&foul, SIGNAL(clicked()), game, SLOT(subFoulBall()));
+    connect(&foulSub, SIGNAL(clicked()), game, SLOT(subFoulBall()));
     connect(&outSub, SIGNAL(clicked()), game, SLOT(subOut()));
     connect(&outPlus, SIGNAL(clicked()), game, SLOT(out()));
 

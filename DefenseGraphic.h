@@ -15,14 +15,14 @@ public:
                const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 
 public slots:
-    void setAwayDef(QList<BaseballPlayer*> def);
-    void setHomeDef(QList<BaseballPlayer*> def);
+    void setAwayDef();
+    void setHomeDef();
     void displayGraphic(bool team);
     void hideGraphic();
 private:
     QList<BaseballPlayer*> away, home;
     bool show, homeTeam;
-
+    BaseballTeam* homeTeamP, *awayTeam;
     void prepareColor();
     QColor awayColor, homeColor;
     QLinearGradient homeGradient, awayGradient;

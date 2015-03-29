@@ -39,15 +39,10 @@ Pitchers::Pitchers(BaseballGame* game, PitcherGraphic *pg) {
             game->getHomeTeam(), SLOT(setPitcher(int)));
     connect(&awaySeason, SIGNAL(clicked()), this, SLOT(getAwayPitcher()));
     connect(&homeSeason, SIGNAL(clicked()), this, SLOT(getHomePitcher()));
-    connect(&homeLt, SIGNAL(clicked()), this, SLOT(getHomeLt()));
-    connect(&awayLt, SIGNAL(clicked()), this, SLOT(getAwayLt()));
-    connect(&homeSB, SIGNAL(clicked()), this, SLOT(getHomeSb()));
-    connect(&awaySB, SIGNAL(clicked()), this, SLOT(getAwaySb()));
-
-    connect(this, SIGNAL(requestAwayLt(int)), game, SLOT(gatherAwayStatsLt(int)));
-    connect(this, SIGNAL(requestHomeLt(int)), game, SLOT(gatherHomeGameStatsLt(int)));
-    connect(this, SIGNAL(requestAwaySb(int)), game, SLOT(gatherAwayGameStatsSb(int)));
-    connect(this, SIGNAL(requestHomeSb(int)), game, SLOT(gatherHomeGameStatsSb(int)));
+    connect(&homeLt, SIGNAL(clicked()), game, SLOT(gatherHomePitcherRecapLt()));
+    connect(&awayLt, SIGNAL(clicked()), game, SLOT(gatherAwayPitcherRecapLt()));
+    connect(&homeSB, SIGNAL(clicked()), game, SLOT(gatherHomePitcherSb()));
+    connect(&awaySB, SIGNAL(clicked()), game, SLOT(gatherAwayPitcherSb()));
 
     connect(this, SIGNAL(pitcherSeason(bool)), pg, SLOT(displayGraphic(bool)));
 

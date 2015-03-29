@@ -8,5 +8,6 @@
         <file alias="YellowBase.png">images/YellowBase.png</file>
         <file alias="Field.png">images/AllAccessField.png</file>
         <file alias="Pitcher.png">images/Pitcher graphic.png</file>
+        <file alias="LowerThird.png">images/StatsGraphic.png</file>
     </qresource>
 </RCC>

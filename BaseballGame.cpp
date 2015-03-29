@@ -12,6 +12,7 @@ BaseballGame::BaseballGame(QString awayName, QString homeName, QColor awayColor,
     sb(awayColor, homeColor, awayName, homeName, sponsor, /*&gameClock,*/ awayRank, homeRank, awayLogo),
     lt (awayColor, homeColor, screenWidth) {
     isFinal = false;
+    awayBatter = homeBatter= 0;
     awayScore = 0;
     homeScore = 0;
     homeHits = 0;
@@ -19,6 +20,7 @@ BaseballGame::BaseballGame(QString awayName, QString homeName, QColor awayColor,
     period = 0;
     awayErrors = 0;
     homeErrors = 0;
+    onFirst = onSecond = onThird = false;
     inningMod = "Bot";
     //connect(&gameClock, SIGNAL(clockExpired()), this, SLOT(toggleClock()));
     //connect(&timer, SIGNAL(timeout()), &gameClock, SLOT(tick()));
@@ -30,14 +32,15 @@ BaseballGame::BaseballGame(QString awayName, QString homeName, QColor awayColor,
     connect(this, SIGNAL(secondBaseStatus(bool)), &sb, SLOT(toggleSecondBase(bool)));
     connect(this, SIGNAL(thirdBaseStatus(bool)), &sb, SLOT(toggleThirdBase(bool)));
     connect(this, SIGNAL(basesCleared()), &sb, SLOT(clearBases()));
+    connect(this, SIGNAL(updateCount(int,int,int)), &sb, SLOT(updateCount(int,int,int)));
 
     // Make teams...
     homeTeam = new BaseballTeam();
     awayTeam = new BaseballTeam();
 
-    connect(homeTeam, SIGNAL(battingOrderChanged(QList<BaseballPlayer*>,QList<QString>)),
+    connect(homeTeam, SIGNAL(battingOrderChanged()),
             this, SLOT(updateBatterNoAdvance()));
-    connect(awayTeam, SIGNAL(battingOrderChanged(QList<BaseballPlayer*>,QList<QString>)),
+    connect(awayTeam, SIGNAL(battingOrderChanged()),
             this, SLOT(updateBatterNoAdvance()));
 
     SeasonXMLHandler handler(homeTeam);
@@ -407,9 +410,10 @@ BaseballGame::advancePeriod() {
         period++;
     }
     isFinal = false;
-    clearCount();
+    //clearCount();
+    balls = strikes = 0;
     outs = 0;
-    emit outsChanged(outs);
+    emit updateCount(balls, strikes, outs);
     emit periodChanged(inningMod, period);
     updateBatterNoAdvance();
 }
@@ -425,6 +429,9 @@ BaseballGame::rewindPeriod() {
         emit batterChanged(awayTeam->getBatterByIndex(awayBatter)->getName());
     }
     isFinal = false;
+    balls = strikes = 0;
+    outs = 0;
+    emit updateCount(balls, strikes, outs);
     emit periodChanged(inningMod, period);
     updateBatterNoAdvance();
 }
@@ -561,7 +568,7 @@ void BaseballGame::ballThrown()
     BaseballPlayer* pitcher = getPitcher();
     pitcher->ballThrown(1);
     balls++;
-    emit ballsChanged(balls);
+    emit updateCount(balls, strikes, outs);
 }
 
 void BaseballGame::subBallThrown()
@@ -569,7 +576,7 @@ void BaseballGame::subBallThrown()
     BaseballPlayer* pitcher = getPitcher();
     pitcher->ballThrown(-1);
     balls--;
-    emit ballsChanged(balls);
+    emit updateCount(balls, strikes, outs);
 }
 
 void BaseballGame::strikeThrown()
@@ -577,7 +584,7 @@ void BaseballGame::strikeThrown()
     BaseballPlayer* pitcher = getPitcher();
     pitcher->strikeThrown(1);
     strikes++;
-    emit strikesChanged(strikes);
+    emit updateCount(balls, strikes, outs);
 }
 
 void BaseballGame::subStrikeThrown()
@@ -585,7 +592,7 @@ void BaseballGame::subStrikeThrown()
     BaseballPlayer* pitcher = getPitcher();
     pitcher->strikeThrown(-1);
     strikes--;
-    emit strikesChanged(strikes);
+    emit updateCount(balls, strikes, outs);
 }
 
 void BaseballGame::foulBall()
@@ -594,7 +601,7 @@ void BaseballGame::foulBall()
     pitcher->strikeThrown(1);
     if (strikes < 2) {
         strikes++;
-        emit strikesChanged(strikes);
+        emit updateCount(balls, strikes, outs);
     }
 }
 
@@ -609,7 +616,7 @@ void BaseballGame::out()
     BaseballPlayer* pitcher = getPitcher();
     pitcher->recordOut(1);
     outs++;
-    emit outsChanged(outs);
+    emit updateCount(balls, strikes, outs);
     checkOuts();
 }
 
@@ -618,14 +625,13 @@ void BaseballGame::subOut()
     BaseballPlayer* pitcher = getPitcher();
     pitcher->recordOut(-1);
     outs--;
-    emit outsChanged(outs);
+    emit updateCount(balls, strikes, outs);
 }
 
 void BaseballGame::clearCount()
 {
     balls = strikes = 0;
-    emit ballsChanged(0);
-    emit strikesChanged(0);
+    emit updateCount(balls, strikes, outs);
 }
 
 void BaseballGame::single()
@@ -712,6 +718,7 @@ void BaseballGame::walk()
     batter->applyWalk(1);
     advanceBatter();
     clearCount();
+    setOnFirst(true);
 }
 
 void BaseballGame::hitByPitch()
@@ -741,7 +748,7 @@ void BaseballGame::genOut()
     BaseballPlayer* pitcher = getPitcher();
     BaseballPlayer* batter = getBatter();
     batter->applyGenericOut();
-    pitcher->recordOut(1);
+    //pitcher->recordOut(1);
     advanceBatter();
     clearCount();
     out();
@@ -753,10 +760,10 @@ void BaseballGame::fielderChoice()
     BaseballPlayer* pitcher = getPitcher();
     BaseballPlayer* batter = getBatter();
     batter->applyGenericOut();
-    pitcher->recordOut(1);
+    //pitcher->recordOut(1);
     advanceBatter();
     clearCount();
-    setOnFirst(true);
+    //setOnFirst(true);
     out();
 }
 
@@ -766,7 +773,7 @@ void BaseballGame::doublePlay()
     BaseballPlayer* pitcher = getPitcher();
     BaseballPlayer* batter = getBatter();
     batter->applyGenericOut();
-    pitcher->recordOut(2);
+    //pitcher->recordOut(2);
     advanceBatter();
     clearCount();
     setOnFirst(false);
@@ -778,7 +785,7 @@ void BaseballGame::sacrifice()
 {
     strikeThrown();
     BaseballPlayer* pitcher = getPitcher();
-    pitcher->recordOut(1);
+    //pitcher->recordOut(1);
     advanceBatter();
     clearCount();
     out();

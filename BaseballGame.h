@@ -168,9 +168,7 @@ signals:
     void homeHitsChanged(int sog);
     void homeErrorsChanged(int errors);
     void awayErrorsChanged(int errors);
-    void ballsChanged(int b);
-    void strikesChanged(int s);
-    void outsChanged(int o);
+    void updateCount(int b, int s, int o);
     void batterChanged(QString name);
     void firstBaseStatus(bool on);
     void secondBaseStatus(bool on);

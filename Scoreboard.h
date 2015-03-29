@@ -40,8 +40,7 @@ public slots:
      void togglePpClocks();
      void hideBoard();
      void updateClock();
-     void updateCount(int b, int s);
-     void updateOut(int o);
+     void updateCount(int b, int s,int o);
      void updateBases();
      void clearBases();
      void delayed();
@@ -69,6 +68,8 @@ private:
      bool awayPP, homePP, neutralPP, pitchingChange, sponsor, firstBase, secondBase, thirdBase,
      scoreText, showPP, show, showPdAndClock, showClock, useTransparency, topOfInning;
 
+     void updateCount(int b, int s);
+     void updateOut(int o);
      void prepareColor();
      void prepareAwayName();
      Clock* clock;

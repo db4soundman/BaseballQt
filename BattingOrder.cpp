@@ -2,8 +2,8 @@
 #include <QGraphicsScene>
 #define GRADIENT_LEVEL .5
 #define COLUMN1_X 5
-#define COLUMN2_X 100
-#define COLUMN3_X 800
+#define COLUMN2_X 300
+#define COLUMN3_X 1150
 BattingOrder::BattingOrder(BaseballGame* game) : font(QFont("Arial",24, QFont::Bold))
 {
     setPixmap(QPixmap(":/images/Field.png"));
@@ -19,9 +19,11 @@ BattingOrder::BattingOrder(BaseballGame* game) : font(QFont("Arial",24, QFont::B
     homeGradient.setFinalStop(0,0);
     mainGradient.setStart(0,0);
     mainGradient.setFinalStop(0,pixmap().height());
+    awayTeam = game->getAwayTeam();
+    homeTeamP = game->getHomeTeam();
     prepareColor();
-    connect(game->getAwayTeam(), SIGNAL(battingOrderChanged(QList<BaseballPlayer*>,QList<QString>)), this, SLOT(setAwayOrder(QList<BaseballPlayer*>,QList<QString>)));
-    connect(game->getHomeTeam(), SIGNAL(battingOrderChanged(QList<BaseballPlayer*>,QList<QString>)), this, SLOT(setHomeOrder(QList<BaseballPlayer*>,QList<QString>)));
+    connect(game->getAwayTeam(), SIGNAL(battingOrderChanged()), this, SLOT(setAwayOrder()));
+    connect(game->getHomeTeam(), SIGNAL(battingOrderChanged()), this, SLOT(setHomeOrder()));
 }
 
 void BattingOrder::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -40,16 +42,16 @@ void BattingOrder::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     }
 }
 
-void BattingOrder::setAwayOrder(QList<BaseballPlayer *> ord, QList<QString> def)
+void BattingOrder::setAwayOrder()
 {
-    away = ord;
-    awayPos = def;
+    away = awayTeam->getBattingOrder();
+    awayPos = awayTeam->getOrderDefense();
 }
 
-void BattingOrder::setHomeOrder(QList<BaseballPlayer *> ord, QList<QString> def)
+void BattingOrder::setHomeOrder()
 {
-    home = ord;
-    homePos = def;
+    home = homeTeamP->getBattingOrder();
+    homePos = homeTeamP->getOrderDefense();
 }
 
 void BattingOrder::displayGraphic(bool team)
