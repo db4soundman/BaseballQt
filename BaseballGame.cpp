@@ -96,7 +96,7 @@ BaseballPlayer *BaseballGame::getBatter()
 
 void
 BaseballGame::showAnnouncers() {
-    if (announcers.contains("and") || announcers.contains("&")) {
+    if (announcers.contains(" and ") || announcers.contains("&")) {
         sb.changeTopBarText("Commentators: " + announcers);
     }
     else {
@@ -835,6 +835,7 @@ void BaseballGame::setOuts(int value)
 
 QString BaseballGame::getInningText()
 {
+    if (period == 0) return "Starts soon";
     QString periodStr = QString::number(period);
     if (periodStr.endsWith("11"))
       periodStr += "th";
