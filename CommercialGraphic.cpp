@@ -77,14 +77,14 @@ void CommercialGraphic::paint(QPainter* painter, const QStyleOptionGraphicsItem*
         painter->fillRect(WIDTH*.75, 0, CENTER_OFFSET, RECT_HEIGHT*2, QColor(1,1,1, 100));
 
 
-        painter->drawText(WIDTH*.75, 0, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, awayScore);
-        painter->drawText(WIDTH*.75, RECT_HEIGHT, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, homeScore);
+        painter->drawText(WIDTH*.75 - CENTER_OFFSET, 0, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, awayScore);
+        painter->drawText(WIDTH*.75 - CENTER_OFFSET, RECT_HEIGHT, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, homeScore);
 
-        painter->drawText(WIDTH*.75+ CENTER_OFFSET, 0, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, hitsAway);
+        painter->drawText(WIDTH*.75 + CENTER_OFFSET, 0, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, hitsAway);
         painter->drawText(WIDTH*.75 +CENTER_OFFSET, RECT_HEIGHT, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, hitsHome);
 
         painter->drawText(WIDTH*.75 + CENTER_OFFSET +CENTER_OFFSET, 0, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, errorsAway);
-        painter->drawText(WIDTH*.75 + CENTER_OFFSET + CENTER_OFFSET, RECT_HEIGHT, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, errorsHome);
+        painter->drawText(WIDTH*.75 + CENTER_OFFSET + CENTER_OFFSET + CENTER_OFFSET, RECT_HEIGHT, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, errorsHome);
 
 
         painter->drawPixmap(WIDTH/2 - 200, RECT_HEIGHT*2, WIDTH/2 - (WIDTH/2- 400), BLACK_BAR_HEIGHT, blackBar);
