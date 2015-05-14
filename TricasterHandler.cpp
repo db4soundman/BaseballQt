@@ -123,7 +123,6 @@ void TricasterHandler::addAlphaRect(int x, int y, int w, int h)
 void TricasterHandler::removeAlphaRect(int x, int y, int w, int h)
 {
     transparentRects.removeAll(QRect(x,y,w,h));
-    //updatePortion(x,w,y,h);
 }
 
 void TricasterHandler::drawTransparentRectangle()

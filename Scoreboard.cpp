@@ -134,7 +134,7 @@ Scoreboard::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                               count);
             painter->drawText(CLOCK_FIELD_X + CLOCK_FIELD_WIDTH*2/3, 3, CLOCK_FIELD_WIDTH/3, 48, Qt::AlignCenter,
                               QString::number(out) + " OUT");
-            painter->fillRect(CLOCK_FIELD_X, topOfInning ? 3 : 48-5, CLOCK_FIELD_WIDTH/3, 5, QColor(255,255,0));
+            painter->fillRect(CLOCK_FIELD_X, topOfInning ? 3 : 48-5, CLOCK_FIELD_WIDTH/3, 5, QColor(1,1,1));
 
         }
         else {
