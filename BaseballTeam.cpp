@@ -54,7 +54,6 @@ void BaseballTeam::setPitcher(int index)
             defense[0] = pitcher;
         else defense.append(pitcher);
         emit pitcherChanged(pitcher);
-        emit defenseChanged();
     }
 }
 

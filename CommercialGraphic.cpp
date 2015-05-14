@@ -58,7 +58,7 @@ void CommercialGraphic::paint(QPainter* painter, const QStyleOptionGraphicsItem*
 
         painter->setFont(descriptiveFont);
         painter->drawText(WIDTH / 4, -BLACK_BAR_HEIGHT, WIDTH/4, BLACK_BAR_HEIGHT, Qt::AlignCenter, maaText);
-        painter->drawText(WIDTH*.75, -BLACK_BAR_HEIGHT, CENTER_OFFSET-10, BLACK_BAR_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, "R");
+        painter->drawText(WIDTH*.75 - CENTER_OFFSET, -BLACK_BAR_HEIGHT, CENTER_OFFSET-10, BLACK_BAR_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, "R");
         painter->drawText(WIDTH*.75+ CENTER_OFFSET, -BLACK_BAR_HEIGHT, CENTER_OFFSET-10, BLACK_BAR_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, "H");
         painter->drawText(WIDTH*.75 + CENTER_OFFSET +CENTER_OFFSET, -BLACK_BAR_HEIGHT, CENTER_OFFSET-10, BLACK_BAR_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, "E");
 
@@ -74,16 +74,16 @@ void CommercialGraphic::paint(QPainter* painter, const QStyleOptionGraphicsItem*
         painter->drawPixmap(WIDTH/4, RECT_HEIGHT, blockText);
         painter->setOpacity(1);
 
-        painter->fillRect(WIDTH*.75, 0, CENTER_OFFSET, RECT_HEIGHT*2, QColor(1,1,1, 100));
+        painter->fillRect(WIDTH*.75 - CENTER_OFFSET, 0, CENTER_OFFSET, RECT_HEIGHT*2, QColor(1,1,1, 100));
 
 
         painter->drawText(WIDTH*.75 - CENTER_OFFSET, 0, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, awayScore);
         painter->drawText(WIDTH*.75 - CENTER_OFFSET, RECT_HEIGHT, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, homeScore);
 
         painter->drawText(WIDTH*.75 + CENTER_OFFSET, 0, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, hitsAway);
-        painter->drawText(WIDTH*.75 +CENTER_OFFSET, RECT_HEIGHT, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, hitsHome);
+        painter->drawText(WIDTH*.75 + CENTER_OFFSET, RECT_HEIGHT, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, hitsHome);
 
-        painter->drawText(WIDTH*.75 + CENTER_OFFSET +CENTER_OFFSET, 0, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, errorsAway);
+        painter->drawText(WIDTH*.75 + CENTER_OFFSET + CENTER_OFFSET + CENTER_OFFSET, 0, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, errorsAway);
         painter->drawText(WIDTH*.75 + CENTER_OFFSET + CENTER_OFFSET + CENTER_OFFSET, RECT_HEIGHT, CENTER_OFFSET-10, RECT_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, errorsHome);
 
 

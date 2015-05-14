@@ -50,9 +50,11 @@ Lineups::Lineups(BaseballGame *game)
         myLayout->addWidget(box, i, 3);
     }
     connect(this, SIGNAL(awayDefenseUpdate(QList<int>)), game->getAwayTeam(), SLOT(setDefense(QList<int>)));
+    connect(game->getAwayTeam(), SIGNAL(pitcherChanged(BaseballPlayer*)), this, SLOT(awayLineupChanged()));
     connect(this, SIGNAL(awayBattingOrderUpdate(QList<int>,QList<QString>)), game->getAwayTeam(), SLOT(setBattingOrder(QList<int>,QList<QString>)));
     connect(this, SIGNAL(homeBattingOrderUpdate(QList<int>,QList<QString>)), game->getHomeTeam(), SLOT(setBattingOrder(QList<int>,QList<QString>)));
     connect(this, SIGNAL(homeDefenseUpdate(QList<int>)), game->getHomeTeam(), SLOT(setDefense(QList<int>)));
+    connect(game->getHomeTeam(), SIGNAL(pitcherChanged(BaseballPlayer*)), this, SLOT(homeLineupChanged()));
     setLayout(myLayout);
     homeLineupChanged();
     awayLineupChanged();
