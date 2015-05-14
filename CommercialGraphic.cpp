@@ -60,7 +60,7 @@ void CommercialGraphic::paint(QPainter* painter, const QStyleOptionGraphicsItem*
         painter->drawText(WIDTH / 4, -BLACK_BAR_HEIGHT, WIDTH/4, BLACK_BAR_HEIGHT, Qt::AlignCenter, maaText);
         painter->drawText(WIDTH*.75 - CENTER_OFFSET, -BLACK_BAR_HEIGHT, CENTER_OFFSET-10, BLACK_BAR_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, "R");
         painter->drawText(WIDTH*.75+ CENTER_OFFSET, -BLACK_BAR_HEIGHT, CENTER_OFFSET-10, BLACK_BAR_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, "H");
-        painter->drawText(WIDTH*.75 + CENTER_OFFSET +CENTER_OFFSET, -BLACK_BAR_HEIGHT, CENTER_OFFSET-10, BLACK_BAR_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, "E");
+        painter->drawText(WIDTH*.75 + CENTER_OFFSET + CENTER_OFFSET + CENTER_OFFSET, -BLACK_BAR_HEIGHT, CENTER_OFFSET-10, BLACK_BAR_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, "E");
 
         painter->fillRect(0, 0, WIDTH, RECT_HEIGHT, awayTeamGradient);
         painter->fillRect(0, RECT_HEIGHT, WIDTH, RECT_HEIGHT, homeTeamGradient);
