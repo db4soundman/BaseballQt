@@ -18,7 +18,7 @@ BattingOrder::BattingOrder(BaseballGame* game) : font(QFont("Arial",24, QFont::B
     homeGradient.setStart(0,-30);
     homeGradient.setFinalStop(0,0);
     mainGradient.setStart(0,0);
-    mainGradient.setFinalStop(0,pixmap().height() / 2);
+    mainGradient.setFinalStop(0,pixmap().height() / 2 + 32);
     awayTeam = game->getAwayTeam();
     homeTeamP = game->getHomeTeam();
     prepareColor();
@@ -31,7 +31,7 @@ void BattingOrder::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     if (show) {
         painter->setFont(font);
         painter->fillRect(0,-30,pixmap().width(),30, homeTeam? homeGradient : awayGradient);
-        painter->fillRect(0,0, pixmap().width(), pixmap().height() / 2, mainGradient);
+        painter->fillRect(0,0, pixmap().width(), pixmap().height() / 2 + 28, mainGradient);
         painter->setPen(QColor(255,255,255));
         painter->drawText(0,-30, pixmap().width(), 30, Qt::AlignCenter,homeTeam? homeName : awayName);
         for (int i = 0; i < 9; i++) {
