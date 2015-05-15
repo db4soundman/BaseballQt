@@ -129,12 +129,15 @@ Scoreboard::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
         painter->setPen(QColor(1,1,1));
         painter->fillRect(CLOCK_FIELD_X, 3, CLOCK_FIELD_WIDTH,48, clockGradient);
         if (showPdAndClock) {
+            painter->fillRect(CLOCK_FIELD_X, 3, CLOCK_FIELD_WIDTH/3,48, topOfInning ? awayGradient : homeGradient);
+            painter->setPen(QColor(255,255,255));
             painter->drawText(CLOCK_FIELD_X, 3, CLOCK_FIELD_WIDTH/3, 48, Qt::AlignCenter, inning);
+            painter->setPen(QColor(1,1,1));
             painter->drawText(CLOCK_FIELD_X + CLOCK_FIELD_WIDTH/3, 3, CLOCK_FIELD_WIDTH/3, 48, Qt::AlignCenter,
                               count);
             painter->drawText(CLOCK_FIELD_X + CLOCK_FIELD_WIDTH*2/3, 3, CLOCK_FIELD_WIDTH/3, 48, Qt::AlignCenter,
                               QString::number(out) + " OUT");
-            painter->fillRect(CLOCK_FIELD_X, topOfInning ? 3 : 48-5, CLOCK_FIELD_WIDTH/3, 5, QColor(1,1,1));
+            //painter->fillRect(CLOCK_FIELD_X, topOfInning ? 3 : 48-5, CLOCK_FIELD_WIDTH/3, 5, QColor(1,1,1));
 
         }
         else {

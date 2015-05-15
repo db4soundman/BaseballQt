@@ -482,5 +482,11 @@ void BaseballPlayer::setPos(const QString &value)
     pos = value;
 }
 
+QString BaseballPlayer::getTodaysPitchCount()
+{
+    return QString::number(pitchCount) + " PITCHES, " + QString::number(ballsThrown) + " BALLS, "+
+               QString::number(strikesThrown) + " STRIKES";
+}
+
 
 

@@ -176,6 +176,7 @@ signals:
     void basesCleared();
     void showDefense(bool team);
     void showBatters(bool team);
+    void pitchCountUpdate(QString);
 
 private:
     QString homeName, awayName, sponsor, announcers, homeRank,

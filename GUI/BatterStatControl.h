@@ -16,9 +16,10 @@ signals:
 
 private slots:
     void updateBatterLabel(QString player);
+    void updatePitcherText(QString pc);
 
 private:
-    QLabel currentBatter;
+    QLabel currentBatter, currentPitcher;
     QPushButton displayLt, displayBar;
 };
 

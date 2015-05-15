@@ -156,6 +156,8 @@ public:
     QString getPos() const;
     void setPos(const QString &value);
 
+    QString getTodaysPitchCount();
+
 private:
     QString name, uni, year, pos;
     // Batting

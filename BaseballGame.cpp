@@ -469,6 +469,7 @@ BaseballGame::advancePeriod() {
     emit updateCount(balls, strikes, outs);
     emit periodChanged(inningMod, period);
     updateBatterNoAdvance();
+    emit pitchCountUpdate(getPitcher()->getName() + ": " + getPitcher()->getTodaysPitchCount());
 }
 
 void
@@ -488,6 +489,7 @@ BaseballGame::rewindPeriod() {
     emit updateCount(balls, strikes, outs);
     emit periodChanged(inningMod, period);
     updateBatterNoAdvance();
+    emit pitchCountUpdate(getPitcher()->getName() + ": " + getPitcher()->getTodaysPitchCount());
 }
 
 void BaseballGame::addScore(int value)
@@ -623,6 +625,7 @@ void BaseballGame::ballThrown()
     pitcher->ballThrown(1);
     balls++;
     emit updateCount(balls, strikes, outs);
+    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
 }
 
 void BaseballGame::subBallThrown()
@@ -631,6 +634,7 @@ void BaseballGame::subBallThrown()
     pitcher->ballThrown(-1);
     balls--;
     emit updateCount(balls, strikes, outs);
+    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
 }
 
 void BaseballGame::strikeThrown()
@@ -639,6 +643,7 @@ void BaseballGame::strikeThrown()
     pitcher->strikeThrown(1);
     strikes++;
     emit updateCount(balls, strikes, outs);
+    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
 }
 
 void BaseballGame::subStrikeThrown()
@@ -647,6 +652,7 @@ void BaseballGame::subStrikeThrown()
     pitcher->strikeThrown(-1);
     strikes--;
     emit updateCount(balls, strikes, outs);
+    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
 }
 
 void BaseballGame::foulBall()
@@ -657,12 +663,14 @@ void BaseballGame::foulBall()
         strikes++;
         emit updateCount(balls, strikes, outs);
     }
+    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
 }
 
 void BaseballGame::subFoulBall()
 {
     BaseballPlayer* pitcher = getPitcher();
     pitcher->strikeThrown(-1);
+    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
 }
 
 void BaseballGame::out()
@@ -672,6 +680,7 @@ void BaseballGame::out()
     outs++;
     emit updateCount(balls, strikes, outs);
     checkOuts();
+    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
 }
 
 void BaseballGame::subOut()
@@ -680,6 +689,7 @@ void BaseballGame::subOut()
     pitcher->recordOut(-1);
     outs--;
     emit updateCount(balls, strikes, outs);
+    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
 }
 
 void BaseballGame::clearCount()

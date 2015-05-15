@@ -4,7 +4,7 @@
 BatterStatControl::BatterStatControl(BaseballGame* game) {
     displayLt.setText("Show as Lower Third");
     displayBar.setText("Show on Stat Bar");
-
+    QVBoxLayout* layout = new QVBoxLayout();
     QHBoxLayout* main = new QHBoxLayout();
     main->addWidget(&currentBatter);
     main->addWidget(&displayLt);
@@ -18,11 +18,19 @@ BatterStatControl::BatterStatControl(BaseballGame* game) {
 
 
     connect(game, SIGNAL(batterChanged(QString)), this, SLOT(updateBatterLabel(QString)));
-    setLayout(main);
+    connect(game, SIGNAL(pitchCountUpdate(QString)), this, SLOT(updatePitcherText(QString)));
+    layout->addLayout(main);
+    layout->addWidget(&currentPitcher);
+    setLayout(layout);
 }
 
 
 void BatterStatControl::updateBatterLabel(QString player)
 {
     currentBatter.setText("Now Batting: " + player);
+}
+
+void BatterStatControl::updatePitcherText(QString pc)
+{
+    currentPitcher.setText(pc);
 }
