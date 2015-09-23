@@ -40,10 +40,20 @@ return false;
 
 QString
 GameXmlHandler::correctName(QString name) {
-if (!name.contains(",")) {
-    return name.toUpper();
-}
-QString goodName = (name.mid(name.indexOf(",")) + " " +
-                    name.left(name.indexOf(",")));
-return goodName.toUpper().trimmed();
+    if (!name.contains(",")) {
+        name = name.toUpper();
+    }
+    else if (name.contains(", ")){
+        std::string goodName = name.toStdString();
+        QString firstName = QString::fromStdString(goodName.substr(goodName.find(" ") + 1, goodName.length()));
+        QString lastName = QString::fromStdString(goodName.substr(0, goodName.find(",")));
+        name = firstName.toUpper() + " " + lastName.toUpper();
+    }
+    else if (name.contains(",")) {
+        std::string goodName = name.toStdString();
+        QString firstName = QString::fromStdString(goodName.substr(goodName.find(",") + 1, goodName.length()));
+        QString lastName = QString::fromStdString(goodName.substr(0, goodName.find(",")));
+        name = firstName.toUpper() + " " + lastName.toUpper();
+    }
+    return name;
 }
