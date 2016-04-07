@@ -15,7 +15,7 @@ class Scoreboard : public QObject, public QGraphicsPixmapItem {
     Q_OBJECT
 public:
      Scoreboard(QColor awayCol, QColor homeCol, QString awayTeam, QString homeTeam,
-                 QString sponsorText, QString pAwayRank, QString pHomeRank, QString pawayLogo);
+                 QString sponsorText, QString pAwayRank, QString pHomeRank, QPixmap pawayLogo);
      void paint(QPainter * painter,
                 const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 

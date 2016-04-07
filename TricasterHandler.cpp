@@ -3,7 +3,7 @@
 #include <QHostAddress>
 #include <QMessageBox>
 
-TricasterHandler::TricasterHandler(QString ip, QGraphicsView *view, QColor pAlphaBlack) :
+TricasterHandler::TricasterHandler(QString ip, int port, QGraphicsView *view, QColor pAlphaBlack) :
     alphaBlack(pAlphaBlack)
 {
     screen = view;
@@ -12,7 +12,7 @@ TricasterHandler::TricasterHandler(QString ip, QGraphicsView *view, QColor pAlph
     // Connect
     QHostAddress triCasterIp(ip);
     unsigned int blah = triCasterIp.toIPv4Address();
-    AirSend_request_connection(tricaster, blah, 7001);
+    AirSend_request_connection(tricaster, blah, port);
     /*tricaster = AirSend_Create(1920, 1080,3000,1001,false, 16.0/9.0, false, 0,0);
     // Connect
     QHostAddress ip("10.44.0.171");
@@ -25,6 +25,9 @@ TricasterHandler::TricasterHandler(QString ip, QGraphicsView *view, QColor pAlph
         ::memset(&pixels[i + 2], 0, 1);
         ::memset(&pixels[i + 3], 0, 1);
     }
+}
+TricasterHandler::~TricasterHandler() {
+    AirSend_Destroy(tricaster);
 }
 
 void TricasterHandler::srun() {

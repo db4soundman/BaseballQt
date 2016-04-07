@@ -14,8 +14,8 @@ class TricasterHandler : public QThread
 {
     Q_OBJECT
 public:
-    TricasterHandler(QString ip, QGraphicsView* view, QColor pAlphaBlack);
-
+    TricasterHandler(QString ip, int port, QGraphicsView* view, QColor pAlphaBlack);
+    ~TricasterHandler();
     void run();
 
 signals:

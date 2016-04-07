@@ -9,6 +9,7 @@
 #include "DefenseGraphic.h"
 #include "BattingOrder.h"
 #include "PitcherGraphic.h"
+#include <QImage>
 #include "CommercialGraphic.h"
 
 //#include "StatCrewScanner.h"
@@ -42,6 +43,8 @@ private:
     PitcherGraphic* pitcherVert;
     DefenseGraphic* defense;
     BattingOrder* battingOrderGraphic;
+
+    QImage getTrimmedAwayLogo(QString filePath);
 };
 
 #endif // MIAMIALLACCESSBASEBALL_H

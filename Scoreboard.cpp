@@ -23,7 +23,7 @@
 #define PP_BAR_HEIGHT 38
 
 Scoreboard::Scoreboard(QColor awayCol, QColor homeCol, QString awayTeam, QString homeTeam,
-                       QString sponsorText, /*Clock* clock,*/ QString pAwayRank, QString pHomeRank, QString pawayLogo) :
+                       QString sponsorText, /*Clock* clock,*/ QString pAwayRank, QString pHomeRank, QPixmap pawayLogo) :
     homeColor(homeCol), awayColor(awayCol), emptyBase(QPixmap(":/images/GrayBase.png")),
     filledBase(QPixmap(":/images/YellowBase.png")) {
     QFont font("Arial", 34, QFont::Bold);

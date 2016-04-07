@@ -6,7 +6,7 @@
 
 BaseballGame::BaseballGame(QString awayName, QString homeName, QColor awayColor, QColor homeColor,
                        QString awayXML, QString homeXML, QString sponsor, QString announcers,
-                       QString awayRank, QString homeRank, int screenWidth, QString awayLogo) :
+                       QString awayRank, QString homeRank, int screenWidth, QPixmap awayLogo) :
     awayName(awayName), homeName(homeName), sponsor(sponsor), announcers(announcers), awayColor(awayColor),
     homeColor(homeColor), awayRank(awayRank), homeRank(homeRank),
     sb(awayColor, homeColor, awayName, homeName, sponsor, /*&gameClock,*/ awayRank, homeRank, awayLogo),
