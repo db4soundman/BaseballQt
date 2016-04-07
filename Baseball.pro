@@ -17,7 +17,8 @@ INCLUDEPATH += GUI \
                Wizard \
             Standings \
             NCHCScoreboard \
-            GameStatEditors
+            GameStatEditors \
+            Profiles
 
 SOURCES += main.cpp\
         MainWindow.cpp \
@@ -56,7 +57,8 @@ SOURCES += main.cpp\
     DefenseGraphic.cpp \
     BattingOrder.cpp \
     PitcherGraphic.cpp \
-    GUI/PreGame.cpp
+    GUI/PreGame.cpp \
+    Profiles/Profile.cpp
 
 HEADERS  += MainWindow.h \
     Scoreboard.h \
@@ -95,7 +97,8 @@ HEADERS  += MainWindow.h \
     DefenseGraphic.h \
     BattingOrder.h \
     PitcherGraphic.h \
-    GUI/PreGame.h
+    GUI/PreGame.h \
+    Profiles/Profile.h
 
 
 

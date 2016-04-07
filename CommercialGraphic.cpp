@@ -35,7 +35,7 @@ CommercialGraphic::CommercialGraphic(BaseballGame* game, int width, QString pawa
 
     descriptiveFont = sponsorFont;
     prepareGradients(game->getAwayColor(), game->getHomeColor());
-    maaText = "Miami All-Access";
+    maaText = "Miami Baseball";
     clockStatus = SHOW_CLOCK;
 
     awayLogo = new QPixmap(pawayLogo);
