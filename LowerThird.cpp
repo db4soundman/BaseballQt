@@ -4,11 +4,11 @@
 #include <QGraphicsScene>
 #include <QRect>
 
-#define NAME_GRADIENT_LEVEL .7
+#define NAME_GRADIENT_LEVEL .3
 #define STAT_GRADIENT_LEVEL .7
-#define NAME_WIDTH 310
+#define NAME_WIDTH 575
 LowerThird::LowerThird(QColor awayColor, QColor homeColor, int screenWidth, QGraphicsItem* parent) : QGraphicsPixmapItem(parent),
-    name(""), number("number"), statFont("Arial", 32, QFont::Bold), nameFont("Arial", 32, QFont::Bold),
+    name(""), number("number"), statFont("Arial", 32, QFont::Bold), nameFont("Arial", 18, QFont::Bold),
     awayTeamMain(awayColor), homeTeamMain(homeColor) {
 #ifdef Q_OS_OSX
     statFont.setPointSize(36);
@@ -18,17 +18,17 @@ LowerThird::LowerThird(QColor awayColor, QColor homeColor, int screenWidth, QGra
     setPixmap(QPixmap(":/images/LowerThird.png"));
     statFontPointSize = statFont.pointSize();
     gradient.setStart(0, 0);
-    gradient.setFinalStop(0, 120);
+    gradient.setFinalStop(0, 50);
     homeNameGradient.setStart(0, 0);
-    homeNameGradient.setFinalStop(0, 120);
+    homeNameGradient.setFinalStop(0, 50);
     awayNameGradient.setStart(0, 0);
-    awayNameGradient.setFinalStop(0, 120);
+    awayNameGradient.setFinalStop(0, 50);
     statGradient.setStart(0, 47);
     statGradient.setFinalStop(0, 120);
-    homeStatGradient.setStart(0, 47);
-    homeStatGradient.setFinalStop(0, 120);
-    awayStatGradient.setStart(0, 47);
-    awayStatGradient.setFinalStop(0, 120);
+    homeStatGradient.setStart(0, 0);
+    homeStatGradient.setFinalStop(0, 50);
+    awayStatGradient.setStart(0, 0);
+    awayStatGradient.setFinalStop(0, 50);
     prepareColors();
     statistics.append("");
     statNames.append("");
@@ -43,32 +43,34 @@ LowerThird::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     Q_UNUSED(option);
     Q_UNUSED(widget);
     if (show) {
-        painter->drawPixmap(0, 0, this->pixmap());
-        painter->fillRect(-372, 0, 372, 120, gradient);
-        painter->fillRect(0, 47, 800, 72, statGradient);
-        painter->fillRect(0, 47, 800, 72, QColor(0, 0, 0, 60));
-
+     //   painter->drawPixmap(0, 0, this->pixmap());
+        painter->fillRect(0, 0, 1920, 50, gradient);
+        //painter->fillRect(0, 47, 800, 72, statGradient);
+        //painter->fillRect(0, 47, 800, 72, QColor(0, 0, 0, 60));
+        QString text = "";
         painter->setFont(nameFont);
         painter->setPen(QColor(255,255,255));
-        painter->drawText(-370, 0, NAME_WIDTH, 120, Qt::AlignVCenter, firstName + "\n" + lastName);
-        painter->drawText(-60, 0, 60, 60, Qt::AlignCenter, number);
-        painter->drawText(-60, 60, 60, 60, Qt::AlignCenter, year);
-        painter->setFont(statFont);
+        text += firstName + " " + lastName + "    " + number + " (" + year + ")    ";
+        //painter->drawText(600, 0, 75, 50, Qt::AlignVCenter | Qt::AlignRight, number + " (" + year + ")");
+        //painter->drawText(-60, 60, 60, 60, Qt::AlignCenter, year);
+   //     painter->setFont(statFont);
 
-        int rectWidth = 800/statistics.size();
+       // int rectWidth = 800/statistics.size();
+
         // Stat Labels
-        painter->setPen(QColor(1, 1, 1));
+ //       painter->setPen(QColor(1, 1, 1));
         for (int i = 0; i< statNames.size(); i++) {
-            painter->drawText(rectWidth * i, 0, rectWidth, 47, Qt::AlignCenter, statNames.at(i));
+            //painter->drawText(rectWidth * i, 0, rectWidth, 47, Qt::AlignCenter, statNames.at(i));
+            text += statistics.at(i) + " " + statNames.at(i) + "    ";
         }
-
-        painter->setPen(QColor(255, 255, 255));
+        //painter->drawText(700, 0, 1520, 50, Qt::AlignVCenter, text);
+        //painter->setPen(QColor(255, 255, 255));
         // Stat numbers
 
-        for (int i = 0; i< statistics.size(); i++) {
-            painter->drawText(rectWidth * i, 47, rectWidth, 72, Qt::AlignCenter | Qt::TextWordWrap, statistics.at(i));
-        }
-
+//        for (int i = 0; i< statistics.size(); i++) {
+//            painter->drawText(rectWidth * i, 47, rectWidth, 72, Qt::AlignCenter | Qt::TextWordWrap, statistics.at(i));
+//        }
+        painter->drawText(0, 0, 1920, 50, Qt::AlignCenter, text);
     }
     else if (showPp) {
         int availableWidth = centerPoint - 772;

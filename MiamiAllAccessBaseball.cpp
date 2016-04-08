@@ -69,10 +69,10 @@ MiamiAllAccessBaseball::exec() {
     scene->addItem(game->getLt());
     commercial = new CommercialGraphic(game, graphicsScreen.width(), awayImg);
     scene->addItem(commercial);
-    game->getLt()->setX((graphicsScreen.width() / 2) - 214);
-    game->getLt()->setY(graphicsScreen.height() - 160);
-    game->getSb()->setY(80);
-    game->getSb()->setX((graphicsScreen.width() / 2) - (game->getSb()->getRealWidth()/2));
+    game->getLt()->setX(0);
+    game->getLt()->setY(graphicsScreen.height() - 50);
+    game->getSb()->setY(graphicsScreen.height() - 100);
+    game->getSb()->setX(0);
     game->getSb()->setUseTransparency(usingTricaster);
     commercial->setY(graphicsScreen.height() - 350);
     tv = new QGraphicsView(scene);
