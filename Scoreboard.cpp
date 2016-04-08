@@ -195,8 +195,8 @@ Scoreboard::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
         if (pitchingChange) {
             painter->setPen(QColor(255, 255, 255));
             painter->setFont(defaultSponsorText);
-            painter->drawPixmap(CLOCK_FIELD_X,SCOREBOARD_HEIGHT,CLOCK_FIELD_WIDTH,PP_BAR_HEIGHT, *ppBar );
-            painter->drawText(CLOCK_FIELD_X + 8, SCOREBOARD_HEIGHT, CLOCK_FIELD_WIDTH, PP_BAR_HEIGHT, Qt::AlignLeft | Qt::AlignVCenter, "PITCHING CHANGE");
+            //painter->drawPixmap(CLOCK_FIELD_X,SCOREBOARD_HEIGHT,CLOCK_FIELD_WIDTH,PP_BAR_HEIGHT, *ppBar );
+            painter->drawText(CLOCK_FIELD_X, SPONSOR_BAR_Y, CLOCK_FIELD_WIDTH, PP_BAR_HEIGHT, Qt::AlignCenter, "PITCHING CHANGE");
         }
         painter->drawPixmap(DIAMOND_START, 20, 32, 32, thirdBase ? filledBase : emptyBase);
         painter->drawPixmap(DIAMOND_START + 17, 0, 32, 32, secondBase ? filledBase : emptyBase);
@@ -271,7 +271,7 @@ void Scoreboard::prepareAwayName()
 void
 Scoreboard::togglePitchingChange() {
     pitchingChange = !pitchingChange;
-    scene()->update(x() + CLOCK_FIELD_X, y() +SCOREBOARD_HEIGHT,CLOCK_FIELD_WIDTH,PP_BAR_HEIGHT);
+    scene()->update(x() + CLOCK_FIELD_X, y(),CLOCK_FIELD_WIDTH,SCOREBOARD_HEIGHT);
 }
 
 void
@@ -299,7 +299,7 @@ void Scoreboard::updateOut(int o)
 
 void Scoreboard::updateBases()
 {
-    scene()->update(x() + DIAMOND_START, y(), 32 * 3, SCOREBOARD_WIDTH);
+    scene()->update(x() + DIAMOND_START, y(), 32 * 3, SCOREBOARD_HEIGHT);
 }
 
 void Scoreboard::clearBases()

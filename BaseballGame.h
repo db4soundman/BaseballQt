@@ -101,6 +101,10 @@ public:
     void setOnThird(bool value);
 
 public slots:
+    void makeFirstSecond();
+    void makeFirstThird();
+    void makeSecondThird();
+    void makeLoaded();
     void advancePeriod();
     void rewindPeriod();
     //void toggleClock();

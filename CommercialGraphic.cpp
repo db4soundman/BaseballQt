@@ -89,12 +89,8 @@ void CommercialGraphic::paint(QPainter* painter, const QStyleOptionGraphicsItem*
 
         painter->drawPixmap(WIDTH/2 - 200, RECT_HEIGHT*2, WIDTH/2 - (WIDTH/2- 400), BLACK_BAR_HEIGHT, blackBar);
         painter->setFont(descriptiveFont);
-        if (clockStatus == FINAL) {
-            painter->drawText(WIDTH/2 - 200, RECT_HEIGHT*2, WIDTH/2 - (WIDTH/2- 400), BLACK_BAR_HEIGHT, Qt::AlignCenter, "FINAL");
-        }
-        else {
-            painter->drawText(WIDTH/2 - 200, RECT_HEIGHT*2, WIDTH/2 - (WIDTH/2- 400), BLACK_BAR_HEIGHT, Qt::AlignCenter, clock);
-        }
+        painter->drawText(WIDTH/2 - 200, RECT_HEIGHT*2, WIDTH/2 - (WIDTH/2- 400), BLACK_BAR_HEIGHT, Qt::AlignCenter, clock);
+
     }
 }
 
@@ -106,9 +102,10 @@ void CommercialGraphic::prepareAndShow()
     hitsAway = QString::number(baseballGame->getAwayHits());
     errorsAway = QString::number(baseballGame->getAwayErrors());
     errorsHome = QString::number(baseballGame->getHomeErrors());
-    clock = clockStatus == SHOW_CLOCK? baseballGame->getInningText() : "FINAL";
+    clock = clockStatus == SHOW_CLOCK? baseballGame->getInningText() : clock;
+    clock = clock.replace("Top", "START").replace("Bot", "MID");
     show = true;
-    //updateClock();
+    updateClock();
     scene()->update(0,y() - BLACK_BAR_HEIGHT,1920,1080);
 }
 
@@ -120,7 +117,7 @@ void CommercialGraphic::updateClock()
             //scene()->update(x() + WIDTH/2 - 200, y() + RECT_HEIGHT*2, WIDTH/2 - (WIDTH/2- 400), BLACK_BAR_HEIGHT);
         }
         else if (clockStatus == INTERMISSION) {
-            clock = "INT";
+            clock = "DELAYED";
         }
         else {
             clock = "FINAL";

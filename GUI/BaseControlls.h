@@ -19,8 +19,9 @@ public slots:
     void updateThird(bool on);
     void clearBases();
 
+
 private:
-    QPushButton first, second, third, clear;
+    QPushButton first, second, third, clear, firstSecond, firstThird, secondThird, loaded;
 
 };
 

@@ -710,6 +710,7 @@ void BaseballGame::single()
     setOnFirst(true);
     advanceBatter();
     clearCount();
+    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
 }
 
 void BaseballGame::double2b()
@@ -724,6 +725,7 @@ void BaseballGame::double2b()
     setOnSecond(true);
     advanceBatter();
     clearCount();
+    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
 }
 
 void BaseballGame::triple()
@@ -738,6 +740,7 @@ void BaseballGame::triple()
     setOnThird(true);
     advanceBatter();
     clearCount();
+    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
 }
 
 void BaseballGame::homeRun()
@@ -759,6 +762,7 @@ void BaseballGame::homeRun()
     advanceBatter();
     clearCount();
     clearBases();
+    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
 }
 
 void BaseballGame::strikeOut()
@@ -771,6 +775,7 @@ void BaseballGame::strikeOut()
     advanceBatter();
     clearCount();
     out();
+    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
 }
 
 void BaseballGame::walk()
@@ -783,6 +788,7 @@ void BaseballGame::walk()
     advanceBatter();
     clearCount();
     setOnFirst(true);
+    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
 }
 
 void BaseballGame::hitByPitch()
@@ -794,6 +800,7 @@ void BaseballGame::hitByPitch()
     setOnFirst(true);
     advanceBatter();
     clearCount();
+    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
 }
 
 void BaseballGame::reachOnError()
@@ -805,6 +812,7 @@ void BaseballGame::reachOnError()
     addError();
     advanceBatter();
     clearCount();
+    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
 }
 
 void BaseballGame::genOut()
@@ -817,6 +825,7 @@ void BaseballGame::genOut()
     advanceBatter();
     clearCount();
     out();
+    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
 }
 
 void BaseballGame::fielderChoice()
@@ -830,6 +839,7 @@ void BaseballGame::fielderChoice()
     clearCount();
     //setOnFirst(true);
     out();
+    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
 }
 
 void BaseballGame::doublePlay()
@@ -844,6 +854,7 @@ void BaseballGame::doublePlay()
     setOnFirst(false);
     out();
     out();
+    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
 }
 
 void BaseballGame::sacrifice()
@@ -854,6 +865,7 @@ void BaseballGame::sacrifice()
     advanceBatter();
     clearCount();
     out();
+    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
 }
 bool BaseballGame::getOnThird() const
 {
@@ -864,6 +876,34 @@ void BaseballGame::setOnThird(bool value)
 {
     onThird = value;
     emit thirdBaseStatus(onThird);
+}
+
+void BaseballGame::makeFirstSecond()
+{
+    setOnFirst(true);
+    setOnSecond(true);
+    setOnThird(false);
+}
+
+void BaseballGame::makeFirstThird()
+{
+    setOnFirst(true);
+    setOnSecond(false);
+    setOnThird(true);
+}
+
+void BaseballGame::makeSecondThird()
+{
+    setOnFirst(false);
+    setOnSecond(true);
+    setOnThird(true);
+}
+
+void BaseballGame::makeLoaded()
+{
+    setOnFirst(true);
+    setOnSecond(true);
+    setOnThird(true);
 }
 
 bool BaseballGame::getOnSecond() const

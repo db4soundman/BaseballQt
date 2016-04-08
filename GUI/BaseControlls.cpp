@@ -8,16 +8,28 @@ BaseControlls::BaseControlls(BaseballGame *game)
     second.setText("2B: OFF");
     third.setText("3B: OFF");
     clear.setText("Clear Bases");
+    firstSecond.setText("1B & 2B");
+    firstThird.setText("1B & 3B");
+    secondThird.setText("2B & 3B");
+    loaded.setText("Bases Loaded");
 
     myLayout->addWidget(&first, 1, 2);
     myLayout->addWidget(&second, 0, 1);
     myLayout->addWidget(&third, 1, 0);
     myLayout->addWidget(&clear, 2,1);
+    myLayout->addWidget(&firstSecond, 3,0);
+    myLayout->addWidget(&firstThird, 4,0);
+    myLayout->addWidget(&secondThird, 3, 1);
+    myLayout->addWidget(&loaded, 4, 1);
 
     connect(&first, SIGNAL(clicked()), game, SLOT(updateFirstBaseStatus()));
     connect(&second, SIGNAL(clicked()), game, SLOT(updateSecondBaseStatus()));
     connect(&third, SIGNAL(clicked()), game, SLOT(updateThirdBaseStatus()));
     connect(&clear, SIGNAL(clicked()), game, SLOT(clearBases()));
+    connect(&firstSecond, SIGNAL(clicked()), game, SLOT(makeFirstSecond()));
+    connect(&firstThird, SIGNAL(clicked()), game, SLOT(makeFirstThird()));
+    connect(&secondThird, SIGNAL(clicked()), game, SLOT(makeSecondThird()));
+    connect(&loaded, SIGNAL(clicked()), game, SLOT(makeLoaded()));
 
     connect(game, SIGNAL(firstBaseStatus(bool)), this, SLOT(updateFirst(bool)));
     connect(game, SIGNAL(secondBaseStatus(bool)), this, SLOT(updateSecond(bool)));

@@ -9,7 +9,7 @@ ClockControls::ClockControls(BaseballGame* game, CommercialGraphic* comGraphic) 
     nextPd.setText("Next Inning");
     prevPd.setText("Previous Inning");
     count.setText("Count");
-    intermission.setText("INT");
+    intermission.setText("DELAY");
     final.setText("FINAL");
     pitchingChange.setText("Pitching Change");
     main->addWidget(&label);    
@@ -19,6 +19,7 @@ ClockControls::ClockControls(BaseballGame* game, CommercialGraphic* comGraphic) 
     main->addWidget(&final);
     main->addWidget(&pitchingChange);
     main->addWidget(&advanceBatter);
+    main->addWidget(&intermission);
 
 
     //connect(&run, SIGNAL(clicked()), game, SLOT(toggleClock()));
@@ -33,6 +34,8 @@ ClockControls::ClockControls(BaseballGame* game, CommercialGraphic* comGraphic) 
     connect(&count, SIGNAL(clicked()), comGraphic, SLOT(showClock()));
     connect(&final, SIGNAL(clicked()), game->getSb(), SLOT(final()));
     connect(&final, SIGNAL(clicked()), comGraphic, SLOT(finalTime()));
+    connect(&intermission, SIGNAL(clicked()), game->getSb(), SLOT(delayed()));
+    connect(&intermission, SIGNAL(clicked()), comGraphic, SLOT(intermissionTime()));
     connect(&advanceBatter, SIGNAL(clicked()), game, SLOT(advanceBatter()));
     setLayout(main);
 
