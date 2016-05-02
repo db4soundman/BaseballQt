@@ -1,0 +1,4 @@
+IP=10.44.1.67
+ANNOUNCER=Randy Hollowell
+SPONSOR=Miami College Sports LIVE
+COMMERCIAL_TITLE=Miami Baseball

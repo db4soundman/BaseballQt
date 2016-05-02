@@ -2,6 +2,7 @@
 #define CONTROLPANEL_H
 
 #include <QWidget>
+//#include <QGroupBox>
 #include "BaseballGame.h"
 #include "DisplayControls.h"
 #include "AtBatResults.h"

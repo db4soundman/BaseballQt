@@ -17,6 +17,9 @@ public:
     void paint(QPainter * painter,
                const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 
+    QString getMaaText() const;
+    void setMaaText(const QString &value);
+
 signals:
 
 public slots:
@@ -39,7 +42,6 @@ private:
     void checkAwayFont();
     void prepareGradients(QColor awayColor, QColor homeColor);
     QPixmap homeLogo, *awayLogo;
-    // yep, a test
 };
 
 #endif // COMMERCIALGRAPHIC_H

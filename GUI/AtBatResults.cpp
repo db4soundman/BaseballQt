@@ -2,6 +2,7 @@
 #include <QGridLayout>
 
 AtBatResults::AtBatResults(BaseballGame* game) {
+    setTitle("At Bat Result");
     QGridLayout* main = new QGridLayout();
     single.setText("1B");
     double2b.setText("2B");

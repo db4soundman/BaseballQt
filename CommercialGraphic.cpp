@@ -157,6 +157,16 @@ void CommercialGraphic::hide()
         scene()->update(0,y() - BLACK_BAR_HEIGHT,1920,1080);
     }
 }
+QString CommercialGraphic::getMaaText() const
+{
+    return maaText;
+}
+
+void CommercialGraphic::setMaaText(const QString &value)
+{
+    maaText = value;
+}
+
 
 void CommercialGraphic::checkAwayFont()
 {

@@ -9,25 +9,28 @@
 
 MiamiAllAccessBaseball::MiamiAllAccessBaseball(int& argc, char* argv[]) :
     QApplication (argc, argv) {
-    setApplicationName("Miami All-Access Baseball");
+    setApplicationName("Miami Baseball");
 }
 
 QString
 MiamiAllAccessBaseball::getAppDirPath() {
-    return QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+    return QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"/"+(applicationName().replace(" ",""));
 }
 
 void
 MiamiAllAccessBaseball::checkAppDirectory() {
-    QDir appDir(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
+    QDir appDir(getAppDirPath());
     if (!appDir.exists()) {
-        appDir.mkdir(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
+        appDir.mkpath(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+        QFile settings(":/settings");
+        settings.copy(appDir.absolutePath()+"/settings.txt");
     }
+    params = Params((QString("settings.txt")).toStdString());
 }
 
 int
 MiamiAllAccessBaseball::exec() {
-    //checkAppDirectory();
+    checkAppDirectory();
 
     // Make vars, create wizard.
     scene = new QGraphicsScene();
@@ -39,11 +42,11 @@ MiamiAllAccessBaseball::exec() {
     bool usingTricaster = true;
     homeColor.setRgb(226, 24, 54);
     bg.setRgb(0,120,0);
-    announcer = "Randy Hollowell";
-    sponsor = "Miami IMG Sports Network";
+    announcer = QString::fromStdString(params.stringValue("ANNOUNCER"));
+    sponsor = QString::fromStdString(params.stringValue("SPONSOR"));
     homeName = "MIAMI";
     homeShort = "MIAMI";
-    tricasterIp = "";
+    tricasterIp = QString::fromStdString(params.stringValue("IP"));
     QDesktopWidget desktop;
 
     SetupWizard wizard(&awayName, &homeName, &awayFile, &homeFile, &sponsor,
@@ -68,9 +71,10 @@ MiamiAllAccessBaseball::exec() {
 
     scene->addItem(game->getLt());
     commercial = new CommercialGraphic(game, graphicsScreen.width(), awayImg);
+    commercial->setMaaText(QString::fromStdString(params.stringValue("COMMERCIAL_TITLE")));
     scene->addItem(commercial);
     game->getLt()->setX(0);
-    game->getLt()->setY(graphicsScreen.height() - 50);
+    game->getLt()->setY(graphicsScreen.height() - 150);
     game->getSb()->setY(graphicsScreen.height() - 100);
     game->getSb()->setX(0);
     game->getSb()->setUseTransparency(usingTricaster);

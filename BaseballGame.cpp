@@ -581,20 +581,23 @@ void BaseballGame::updateBatterNoAdvance()
 
 void BaseballGame::updateFirstBaseStatus()
 {
-    onFirst = !onFirst;
-    emit firstBaseStatus(onFirst);
+    setOnFirst(true);
+    setOnSecond(false);
+    setOnThird(false);
 }
 
 void BaseballGame::updateSecondBaseStatus()
 {
-    onSecond = !onSecond;
-    emit secondBaseStatus(onSecond);
+    setOnFirst(false);
+    setOnSecond(true);
+    setOnThird(false);
 }
 
 void BaseballGame::updateThirdBaseStatus()
 {
-    onThird = !onThird;
-    emit thirdBaseStatus(onThird);
+    setOnFirst(false);
+    setOnSecond(false);
+    setOnThird(true);
 }
 
 void BaseballGame::clearBases()

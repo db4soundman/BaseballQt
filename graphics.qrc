@@ -9,5 +9,6 @@
         <file alias="Field.png">images/AllAccessField.png</file>
         <file alias="Pitcher.png">images/Pitcher graphic.png</file>
         <file alias="LowerThird.png">images/StatsGraphic.png</file>
+        <file alias="settings">settings.txt</file>
     </qresource>
 </RCC>

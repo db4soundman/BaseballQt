@@ -2,11 +2,12 @@
 #define ATBATRESULTS_H
 
 #include <QWidget>
+#include <QGroupBox>
 #include "BaseballGame.h"
 #include <QPushButton>
 #include <QLabel>
 
-class AtBatResults : public QWidget {
+class AtBatResults : public QGroupBox {
     Q_OBJECT
 public:
     AtBatResults(BaseballGame* game);

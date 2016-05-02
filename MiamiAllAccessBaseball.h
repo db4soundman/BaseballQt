@@ -11,7 +11,7 @@
 #include "PitcherGraphic.h"
 #include <QImage>
 #include "CommercialGraphic.h"
-
+#include "Params.h"
 //#include "StatCrewScanner.h"
 #include "TricasterHandler.h"
 
@@ -43,6 +43,7 @@ private:
     PitcherGraphic* pitcherVert;
     DefenseGraphic* defense;
     BattingOrder* battingOrderGraphic;
+    Params params;
 
     QImage getTrimmedAwayLogo(QString filePath);
 };

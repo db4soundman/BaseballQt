@@ -6,13 +6,12 @@
 
 QT       += core gui network
 QT += xml
-QMAKE_MAC_SDK = macosx10.9
+CONFIG += c++11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Graphics
 TEMPLATE = app
-DEFINES *= QT_USE_QSTRINGBUILDER
 INCLUDEPATH += GUI \
                Wizard \
             Standings \
@@ -58,7 +57,8 @@ SOURCES += main.cpp\
     BattingOrder.cpp \
     PitcherGraphic.cpp \
     GUI/PreGame.cpp \
-    Profiles/Profile.cpp
+    Profiles/Profile.cpp \
+    Params.cpp
 
 HEADERS  += MainWindow.h \
     Scoreboard.h \
@@ -98,7 +98,8 @@ HEADERS  += MainWindow.h \
     BattingOrder.h \
     PitcherGraphic.h \
     GUI/PreGame.h \
-    Profiles/Profile.h
+    Profiles/Profile.h \
+    Params.h
 
 
 

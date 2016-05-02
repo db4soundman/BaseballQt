@@ -2,10 +2,12 @@
 #define BASECONTROLLS_H
 
 #include <QWidget>
+#include <QGroupBox>
 #include <QPushButton>
+#include <QLabel>
 #include "BaseballGame.h"
 
-class BaseControlls : public QWidget
+class BaseControlls : public QGroupBox
 {
     Q_OBJECT
 public:
@@ -22,7 +24,8 @@ public slots:
 
 private:
     QPushButton first, second, third, clear, firstSecond, firstThird, secondThird, loaded;
-
+    QLabel firstLabel, secondLabel, thirdLabel;
+    //QLabel
 };
 
 #endif // BASECONTROLLS_H

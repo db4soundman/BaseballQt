@@ -28,7 +28,8 @@ void PitcherGraphic::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
         painter->fillRect(0,-30,pixmap().width(),30, homeTeam? homeGradient : awayGradient);
         painter->fillRect(0,0, pixmap().width(), pixmap().height() + 100, mainGradient);
         painter->setPen(QColor(255,255,255));
-        painter->drawText(0,-30, pixmap().width(), 30, Qt::AlignCenter, player->getName());
+        painter->drawText(0,-30, 48, 30, Qt::AlignCenter, player->getUni());
+        painter->drawText(48,-30, pixmap().width()-48, 30, Qt::AlignCenter, player->getName());
         painter->drawText(15, 42* 1, 240, 30, Qt::AlignLeft, "APP");
         painter->drawText(15,  42* 2, 240, 30, Qt::AlignLeft, "GS/SV");
         painter->drawText(15,  42* 3, 240, 30, Qt::AlignLeft, "W-L");
