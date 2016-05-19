@@ -12,6 +12,13 @@ MiamiAllAccessBaseball::MiamiAllAccessBaseball(int& argc, char* argv[]) :
     setApplicationName("Miami Baseball");
 }
 
+MiamiAllAccessBaseball::~MiamiAllAccessBaseball()
+{
+    if (tricaster != nullptr) {
+        delete tricaster;
+    }
+}
+
 QString
 MiamiAllAccessBaseball::getAppDirPath() {
     return QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"/"+(applicationName().replace(" ",""));

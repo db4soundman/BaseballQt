@@ -17,9 +17,13 @@ public slots:
     void updateHomeScore(int score);
     void updateAwayScore(int score);
     void updatePeriod(QString mod, int newPd);
+    void updateAwayHits(int h);
+    void updateHomeHits(int h);
+    void updateAwayErrors(int e);
+    void updateHomeErrors(int e);
 
 private:
-    QLabel awayTeamName, awayTeamScore, homeTeamName, homeTeamScore, pd, time;
+    QLabel awayTeamName, awayTeamScore, homeTeamName, homeTeamScore, pd, time, ah,ae, hh, he;
     //Clock* clock;
 
 };

@@ -18,6 +18,7 @@
 class MiamiAllAccessBaseball : public QApplication {
 public:
     MiamiAllAccessBaseball(int &argc, char *argv[]);
+    ~MiamiAllAccessBaseball();
 
     /**
      * @brief getAppDirPath Gets the file path to the application
