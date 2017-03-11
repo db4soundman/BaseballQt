@@ -2,6 +2,7 @@
 #include <QGridLayout>
 Lineups::Lineups(BaseballGame *game)
 {
+    setTitle("Lineups");
     QStringList positions;
     positions.append(" P");
     positions.append(" C");

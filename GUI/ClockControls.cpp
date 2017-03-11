@@ -4,7 +4,7 @@
 
 ClockControls::ClockControls(BaseballGame* game, CommercialGraphic* comGraphic) {
     QVBoxLayout* main = new QVBoxLayout();
-    label.setText("Clock Controls");
+    setTitle("Clock Controls");
     advanceBatter.setText("Next Batter");
     nextPd.setText("Next Inning");
     prevPd.setText("Previous Inning");
@@ -12,6 +12,7 @@ ClockControls::ClockControls(BaseballGame* game, CommercialGraphic* comGraphic) 
     intermission.setText("DELAY");
     final.setText("FINAL");
     pitchingChange.setText("Pitching Change");
+    pitchingChange.setEnabled(false);
     main->addWidget(&label);    
     main->addWidget(&nextPd);
     main->addWidget(&prevPd);

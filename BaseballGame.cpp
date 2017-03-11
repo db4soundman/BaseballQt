@@ -175,8 +175,14 @@ void BaseballGame::gatherBatterGraphic()
      numbers.append(QString::number(player->getWalks()));
      numbers.append(QString::number(player->getStrikeouts()));
 
+     QString bats = player->getBats();
+     if (bats == "S" || bats.isEmpty()) {
+         QString throws = getPitcher()->getThrows();
+         bats = throws == "R" ? "L" : "R";
+     }
+
      lt.prepareForDisplay(player->getName(),player->getUni(), player->getPos(),
-                          labels, numbers, inningMod == "Bot");
+                          labels, numbers, inningMod == "Bot", bats);
 }
 
 void BaseballGame::gatherBatterSeasonSb()
@@ -271,8 +277,14 @@ void BaseballGame::gatherHomeSeasonStatsLt(int index)
     numbers.append(QString::number(player->getWalks()));
     numbers.append(QString::number(player->getStrikeouts()));
 
+    QString bats = player->getBats();
+    if (bats == "S" || bats.isEmpty()) {
+        QString throws = getPitcher()->getThrows();
+        bats = throws == "R" ? "L" : "R";
+    }
+
     lt.prepareForDisplay(player->getName(), player->getUni(), player->getYear(),
-                         labels, numbers, true);
+                         labels, numbers, true, bats);
 }
 
 void BaseballGame::gatherHomeSeasonStatsSb(int index)
@@ -351,8 +363,13 @@ void BaseballGame::gatherAwaySeasonStatsLt(int index)
     numbers.append(QString::number(player->getWalks()));
     numbers.append(QString::number(player->getStrikeouts()));
 
+    QString bats = player->getBats();
+    if (bats == "S" || bats.isEmpty()) {
+        QString throws = getPitcher()->getThrows();
+        bats = throws == "R" ? "L" : "R";
+    }
     lt.prepareForDisplay(player->getName(), player->getUni(), player->getYear(),
-                         labels, numbers, false);
+                         labels, numbers, false, bats);
 }
 
 void BaseballGame::gatherAwaySeasonStatsSb(int index)
@@ -542,7 +559,7 @@ void BaseballGame::addError()
 
 void BaseballGame::subError()
 {
-    if (inningMod == "Top") {
+    if (inningMod != "Top") {
         awayErrors--;
         emit awayErrorsChanged(awayErrors);
     }
@@ -608,6 +625,9 @@ void BaseballGame::clearBases()
 
 void BaseballGame::decideTeamForDefense()
 {
+    if (period == 0) {
+        advancePeriod();
+    }
     if (inningMod == "Top") {
         emit showDefense(true);
     }
@@ -616,6 +636,9 @@ void BaseballGame::decideTeamForDefense()
 
 void BaseballGame::decideTeamForBattingOrder()
 {
+    if (period == 0) {
+        advancePeriod();
+    }
     if (inningMod != "Top") {
         emit showBatters(true);
     }
@@ -624,6 +647,9 @@ void BaseballGame::decideTeamForBattingOrder()
 
 void BaseballGame::ballThrown()
 {
+    if (period == 0) {
+        advancePeriod();
+    }
     BaseballPlayer* pitcher = getPitcher();
     pitcher->ballThrown(1);
     balls++;
@@ -642,6 +668,9 @@ void BaseballGame::subBallThrown()
 
 void BaseballGame::strikeThrown()
 {
+    if (period == 0) {
+        advancePeriod();
+    }
     BaseballPlayer* pitcher = getPitcher();
     pitcher->strikeThrown(1);
     strikes++;
@@ -660,6 +689,9 @@ void BaseballGame::subStrikeThrown()
 
 void BaseballGame::foulBall()
 {
+    if (period == 0) {
+        advancePeriod();
+    }
     BaseballPlayer* pitcher = getPitcher();
     pitcher->strikeThrown(1);
     if (strikes < 2) {

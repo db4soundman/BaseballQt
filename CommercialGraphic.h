@@ -9,7 +9,7 @@
 #include <QPainter>
 #include <QGraphicsTextItem>
 
-class CommercialGraphic : public QObject, public QGraphicsPixmapItem {
+class CommercialGraphic : public QObject, public QGraphicsRectItem {
     Q_OBJECT
 public:
     CommercialGraphic(BaseballGame* game, int width, QPixmap pawayLogo, QGraphicsItem *parent = 0);
@@ -31,14 +31,14 @@ public slots:
     void hide();
 
 private:
-    QPixmap blackBar;
-    QLinearGradient homeTeamGradient, awayTeamGradient;
+    QPixmap networkLogo;
+    QLinearGradient homeTeamGradient, awayTeamGradient, blackGradient;
     BaseballGame* baseballGame;
     bool show, inGame;
     QGraphicsTextItem* away, *home;
     QString homeScore, awayScore, maaText, clock, hitsHome, hitsAway, errorsHome, errorsAway;
     QFont descriptiveFont;
-    int clockStatus, WIDTH, NAME_WIDTH;
+    int clockStatus, awayHeightOffset, awayWidthOffset;
     void checkAwayFont();
     void prepareGradients(QColor awayColor, QColor homeColor);
     QPixmap homeLogo, *awayLogo;

@@ -7,6 +7,8 @@ BaseballPlayer::BaseballPlayer() {
     outs= ap= gs= wins= losses= saves= hitsAllowed= runsAllowed= er= bb= kOut = pStrikeOutsToday= pWalksToday=0;
     era = "0.00";
     pos = "";
+    bats = "";
+    throws = "";
 }
 
 
@@ -486,6 +488,26 @@ QString BaseballPlayer::getTodaysPitchCount()
 {
     return QString::number(pitchCount) + " PITCHES, " + QString::number(ballsThrown) + " BALLS, "+
                QString::number(strikesThrown) + " STRIKES";
+}
+
+QString BaseballPlayer::getBats() const
+{
+    return bats;
+}
+
+void BaseballPlayer::setBats(const QString &value)
+{
+    bats = value;
+}
+
+QString BaseballPlayer::getThrows() const
+{
+    return throws;
+}
+
+void BaseballPlayer::setThrows(const QString &value)
+{
+    throws = value;
 }
 
 

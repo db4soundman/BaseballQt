@@ -65,7 +65,7 @@ void DefenseGraphic::hideGraphic()
 {
     if (show) {
         show = false;
-        scene()->update(x(), y(), pixmap().width(), pixmap().height());
+        scene()->update();
     }
 }
 
@@ -78,10 +78,9 @@ void DefenseGraphic::prepareColor() {
     QColor end(red, green, blue);
     if (end == QColor(0,0,0))
         end = QColor(1,1,1);
-    homeGradient.setColorAt(.4, homeColor);
-    homeGradient.setColorAt(.6, homeColor);
+    homeGradient.setColorAt(0, homeColor);
     homeGradient.setColorAt(1, end);
-    homeGradient.setColorAt(0, end);
+
 
     red = -1*awayColor.red() *GRADIENT_LEVEL + awayColor.red();
     green = -1*awayColor.green() *GRADIENT_LEVEL + awayColor.green();
@@ -89,9 +88,9 @@ void DefenseGraphic::prepareColor() {
     QColor end2(red, green, blue);
     if (end2 == QColor(0,0,0))
         end2 = QColor(1,1,1);
-    awayGradient.setColorAt(.4, awayColor);
-    awayGradient.setColorAt(.6, awayColor);
+
+    awayGradient.setColorAt(0, awayColor);
     awayGradient.setColorAt(1, end2);
-    awayGradient.setColorAt(0, end2);
+
 }
 

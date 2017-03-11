@@ -1,7 +1,7 @@
 #ifndef LOWERTHIRD_H
 #define LOWERTHIRD_H
 
-#include <QGraphicsPixmapItem>
+#include <QGraphicsRectItem>
 #include <QLinearGradient>
 #include <QPainter>
 #include <QObject>
@@ -10,7 +10,7 @@
 #include <QFont>
 #include <QColor>
 
-class LowerThird : public QObject, public QGraphicsPixmapItem {
+class LowerThird : public QObject, public QGraphicsRectItem {
     Q_OBJECT
 public:
     LowerThird(QColor awayColor, QColor homeColor, int screenWidth, QGraphicsItem* parent = 0);
@@ -25,11 +25,10 @@ public slots:
     void showLt();
     void showPpComp();
     void prepareForDisplay(QString name, QString number, QString year, QList<QString> statLabels,
-                           QList<QString> statValues, bool homeTeam);
+                           QList<QString> statValues, bool homeTeam, QString side="R");
     void prepareForCustomLt(QString name, QString number, QString year, QList<QString> statLabels,
                            QList<QString> statValues, bool homeTeam);
-    void prepareForPpComp(QString awayName, QString awayLabel, QString awayStat,
-                          QString homeName, QString homeLabel, QString homeStat);
+
 private:
     QList<QString> statNames;
     QList<QString> statistics;

@@ -2,9 +2,10 @@
 #define PITCHERGRAPHIC_H
 
 #include <QObject>
+#include <QGraphicsRectItem>
 #include "BaseballGame.h"
 
-class PitcherGraphic : public QObject, public QGraphicsPixmapItem
+class PitcherGraphic : public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
 public:
@@ -23,9 +24,10 @@ private:
     bool show, homeTeam;
 
     void prepareColor();
+    void prepareFontSize();
     QColor awayColor, homeColor;
-    QLinearGradient homeGradient, awayGradient, mainGradient;
-    QFont font;
+    QLinearGradient homeGradient, homeStatGradient, awayGradient, awayStatGradient, mainGradient;
+    QFont font, nameFont;
 };
 
 #endif // PITCHERGRAPHIC_H

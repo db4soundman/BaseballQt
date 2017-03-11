@@ -1,8 +1,9 @@
 #ifndef LINEUPS_H
 #define LINEUPS_H
 #include <QComboBox>
+#include <QGroupBox>
 #include "BaseballGame.h"
-class Lineups : public QWidget
+class Lineups : public QGroupBox
 {
     Q_OBJECT
 public:

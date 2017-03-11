@@ -3,6 +3,7 @@
 #include <QGridLayout>
 
 CountControl::CountControl(BaseballGame* game) {
+    setTitle("Count Controls");
     QGridLayout* main = new QGridLayout();
     outSub.setText("Out - 1");
     outPlus.setText("Out + 1");

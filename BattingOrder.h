@@ -1,9 +1,9 @@
 #ifndef BATTINGORDER_H
 #define BATTINGORDER_H
 
-#include <QGraphicsPixmapItem>
+#include <QGraphicsRectItem>
 #include "BaseballGame.h"
-class BattingOrder : public QObject, public QGraphicsPixmapItem
+class BattingOrder : public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
 public:

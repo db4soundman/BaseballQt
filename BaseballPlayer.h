@@ -158,8 +158,14 @@ public:
 
     QString getTodaysPitchCount();
 
+    QString getBats() const;
+    void setBats(const QString &value);
+
+    QString getThrows() const;
+    void setThrows(const QString &value);
+
 private:
-    QString name, uni, year, pos;
+    QString name, uni, year, pos, bats, throws;
     // Batting
     int gp, sacFly, ab, r, h, rbi, hr, walks, strikeouts, doubles, triples,
     hbp, abToday, rToday, hToday, rbiToday, hrToday, walksToday, strikeoutsToday, hbpToday;

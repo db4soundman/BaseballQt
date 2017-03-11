@@ -1,12 +1,12 @@
 #ifndef COUNTCONTROL_H
 #define COUNTCONTROL_H
 
-#include <QWidget>
+#include <QGroupBox>
 #include "BaseballGame.h"
 #include <QPushButton>
 #include <QLabel>
 
-class CountControl : public QWidget {
+class CountControl : public QGroupBox {
     Q_OBJECT
 public:
     CountControl(BaseballGame* game);

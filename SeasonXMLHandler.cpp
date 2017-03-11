@@ -17,6 +17,8 @@ bool SeasonXMLHandler::startElement(const QString& namespaceURI,
         currPlayer->setUni(atts.value("uni"));
         currPlayer->setYear(atts.value("year"));
         currPlayer->setGp(atts.value("gp").toInt());
+        currPlayer->setBats(atts.value("bats"));
+        currPlayer->setThrows(atts.value("throws"));
     }
 
     else if (qName == "hitting" && inPlayer) {

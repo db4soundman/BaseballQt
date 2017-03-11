@@ -4,31 +4,34 @@
 #include <QGraphicsScene>
 #include <QRect>
 
-#define NAME_GRADIENT_LEVEL .3
-#define STAT_GRADIENT_LEVEL .7
-#define NAME_WIDTH 575
-LowerThird::LowerThird(QColor awayColor, QColor homeColor, int screenWidth, QGraphicsItem* parent) : QGraphicsPixmapItem(parent),
-    name(""), number("number"), statFont("Arial", 32, QFont::Bold), nameFont("Arial", 18, QFont::Bold),
+#define NAME_GRADIENT_LEVEL .5
+#define STAT_GRADIENT_LEVEL .3
+#define WIDTH 300
+#define HEIGHT 250
+#define NAME_HEIGHT 34
+#define NAME_WIDTH 260
+LowerThird::LowerThird(QColor awayColor, QColor homeColor, int screenWidth, QGraphicsItem* parent) : QGraphicsRectItem(parent),
+    name(""), number("number"), statFont("Arial", 18, QFont::Bold), nameFont("Arial", 20, QFont::Bold),
     awayTeamMain(awayColor), homeTeamMain(homeColor) {
 #ifdef Q_OS_OSX
     statFont.setPointSize(36);
     nameFont.setPointSize(36);
     #endif
     fontPointSize = nameFont.pointSize();
-    setPixmap(QPixmap(":/images/LowerThird.png"));
+    setRect(0,0,WIDTH,HEIGHT);
     statFontPointSize = statFont.pointSize();
     gradient.setStart(0, 0);
-    gradient.setFinalStop(0, 50);
+    gradient.setFinalStop(0, NAME_HEIGHT);
     homeNameGradient.setStart(0, 0);
-    homeNameGradient.setFinalStop(0, 50);
+    homeNameGradient.setFinalStop(0, NAME_HEIGHT);
     awayNameGradient.setStart(0, 0);
-    awayNameGradient.setFinalStop(0, 50);
-    statGradient.setStart(0, 47);
-    statGradient.setFinalStop(0, 120);
-    homeStatGradient.setStart(0, 0);
-    homeStatGradient.setFinalStop(0, 50);
-    awayStatGradient.setStart(0, 0);
-    awayStatGradient.setFinalStop(0, 50);
+    awayNameGradient.setFinalStop(0, NAME_HEIGHT);
+    statGradient.setStart(0, NAME_HEIGHT);
+    statGradient.setFinalStop(0, HEIGHT);
+    homeStatGradient.setStart(0, NAME_HEIGHT);
+    homeStatGradient.setFinalStop(0, HEIGHT);
+    awayStatGradient.setStart(0, NAME_HEIGHT);
+    awayStatGradient.setFinalStop(0, HEIGHT);
     prepareColors();
     statistics.append("");
     statNames.append("");
@@ -44,73 +47,31 @@ LowerThird::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     Q_UNUSED(widget);
     if (show) {
      //   painter->drawPixmap(0, 0, this->pixmap());
-        painter->fillRect(0, 0, 1920, 50, gradient);
-        //painter->fillRect(0, 47, 800, 72, statGradient);
-        //painter->fillRect(0, 47, 800, 72, QColor(0, 0, 0, 60));
-        QString text = "";
-        painter->setFont(nameFont);
+        painter->fillRect(0, 0, WIDTH, NAME_HEIGHT, gradient);
+        painter->fillRect(0, NAME_HEIGHT, WIDTH, HEIGHT - NAME_HEIGHT, statGradient);
+
         painter->setPen(QColor(255,255,255));
-        text += firstName + " " + lastName + "    " + number + " (" + year + ")    ";
-        //painter->drawText(600, 0, 75, 50, Qt::AlignVCenter | Qt::AlignRight, number + " (" + year + ")");
-        //painter->drawText(-60, 60, 60, 60, Qt::AlignCenter, year);
-   //     painter->setFont(statFont);
+        painter->setFont(nameFont);
+        painter->drawText(25,0,NAME_WIDTH,NAME_HEIGHT, Qt::AlignCenter, name);
+        painter->setFont(statFont);
+        painter->drawText(0, 0, WIDTH, NAME_HEIGHT, Qt::AlignVCenter | Qt::AlignLeft, " " + number);
+        painter->drawText(0, 0, WIDTH, NAME_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, year + " ");
+        painter->setFont(statFont);
 
        // int rectWidth = 800/statistics.size();
 
         // Stat Labels
- //       painter->setPen(QColor(1, 1, 1));
         for (int i = 0; i< statNames.size(); i++) {
-            //painter->drawText(rectWidth * i, 0, rectWidth, 47, Qt::AlignCenter, statNames.at(i));
-            text += statistics.at(i) + " " + statNames.at(i) + "    ";
+            painter->drawText(0, NAME_HEIGHT + 15 + i * 34, WIDTH/3, 24, Qt::AlignCenter, statNames.at(i));
+            painter->drawText(2*WIDTH/3, NAME_HEIGHT + 15 + i * 34, WIDTH/3, 24, Qt::AlignCenter, statistics.at(i));
         }
-        //painter->drawText(700, 0, 1520, 50, Qt::AlignVCenter, text);
-        //painter->setPen(QColor(255, 255, 255));
-        // Stat numbers
-
-//        for (int i = 0; i< statistics.size(); i++) {
-//            painter->drawText(rectWidth * i, 47, rectWidth, 72, Qt::AlignCenter | Qt::TextWordWrap, statistics.at(i));
-//        }
-        painter->drawText(0, 0, 1920, 50, Qt::AlignCenter, text);
-    }
-    else if (showPp) {
-        int availableWidth = centerPoint - 772;
-        painter->drawPixmap(availableWidth / 2 - this->x() + 372, 0, 400, 120, this->pixmap());
-        painter->fillRect(availableWidth / 2 - this->x(), 0, 372, 120, awayNameGradient);
-        painter->fillRect(availableWidth / 2 - this->x() + 372, 47, 400, 72, awayStatGradient);
-        painter->fillRect(availableWidth / 2 - this->x() + 372, 47, 400, 72, QColor(0, 0, 0, 60));
-        painter->setFont(nameFont);
-        painter->setPen(QColor(255, 255, 255));
-        painter->drawText(availableWidth / 2 - this->x(), 0, 372, 120, Qt::AlignCenter, awayName);
-        QFont ppFont("Arial", 22, QFont::Bold);
-#ifdef Q_OS_OSX
-        ppFont.setPointSize(28);
-#endif
-        painter->setFont(ppFont);
-        painter->drawText(availableWidth / 2 - this->x() + 372, 47, 400, 72, Qt::AlignCenter, awayStat);
-        painter->setFont(statFont);
-        painter->setPen(QColor(1, 1, 1));
-        painter->drawText(availableWidth / 2 - this->x() + 372, 0, 400, 47, Qt::AlignCenter, awayLabel);
-
-// --------------------------Home graphic-----------------------------------------
-        painter->drawPixmap(availableWidth/2+ (centerPoint - this->x()), 0, 400, 120, this->pixmap());
-        painter->fillRect(availableWidth/2+(centerPoint - this->x())+400, 0, 372, 120, homeNameGradient);
-        painter->fillRect(availableWidth/2+(centerPoint - this->x()), 47, 400, 72, homeStatGradient);
-        painter->fillRect(availableWidth/2+(centerPoint - this->x()), 47, 400, 72, QColor(0, 0, 0, 60));
-        painter->setFont(nameFont);
-        painter->setPen(QColor(255, 255, 255));
-        painter->drawText(availableWidth/2+(centerPoint - this->x())+400, 0, 372, 120, Qt::AlignCenter, homeName);
-        painter->setFont(ppFont);
-        painter->drawText(availableWidth/2+(centerPoint - this->x()), 47, 400, 72, Qt::AlignCenter, homeStat);
-        painter->setFont(statFont);
-        painter->setPen(QColor(1, 1, 1));
-        painter->drawText(availableWidth/2+(centerPoint - this->x()), 0, 400, 47, Qt::AlignCenter, homeLabel);
     }
 }
 
 void
 LowerThird::prepareForDisplay(QString name, QString number, QString year,
                               QList<QString> statLabels,
-                              QList<QString> statValues, bool homeTeam) {
+                              QList<QString> statValues, bool homeTeam, QString side) {
     this->name = name;
     if (name.contains(" ")) {
         firstName = name.left(name.indexOf(" "));
@@ -123,6 +84,13 @@ LowerThird::prepareForDisplay(QString name, QString number, QString year,
     }
     this->year = year;
     this->number = number;
+
+    if (side == "L") {
+        setX(110);
+    } else {
+        setX(1600);
+    }
+
     statNames = statLabels;
     statistics = statValues;
     gradient = homeTeam ? homeNameGradient : awayNameGradient;
@@ -153,29 +121,13 @@ void LowerThird::prepareForCustomLt(QString name, QString number, QString year,
     this->number = number;
     statNames = statLabels;
     statistics = statValues;
-    gradient = homeTeam ? homeNameGradient : awayNameGradient;
+    //gradient = homeTeam ? homeNameGradient : awayNameGradient;
     statGradient = homeTeam ? homeStatGradient : awayStatGradient;
     // Resize the font to be two lines ONLY if necessary...
     QFontMetrics fontSize(statFont);
-    if (fontSize.width(statistics[0]) > this->pixmap().width() - 100)
-        adjustFont();
+//    if (fontSize.width(statistics[0]) > this->pixmap().width() - 100)
+//        adjustFont();
     showLt();
-}
-
-void LowerThird::prepareForPpComp(QString awayName, QString awayLabel, QString awayStat,
-                                  QString homeName, QString homeLabel, QString homeStat) {
-    statFont.setPointSize(statFontPointSize);
-    this->awayName = awayName;
-    this->awayLabel = awayLabel;
-    this->awayStat = awayStat;
-    this->homeName = homeName;
-    this->homeLabel = homeLabel;
-    this->homeStat = homeStat;
-    firstName = awayName;
-    lastName = "";
-    prepareFontSize();
-    showPpComp();
-
 }
 
 
@@ -188,10 +140,8 @@ void LowerThird::prepareColors() {
     QColor end(red, green, blue);
     if (end == QColor(0,0,0))
         end = QColor(1,1,1);
-    homeNameGradient.setColorAt(0.45, homeTeamMain);
-    homeNameGradient.setColorAt(0.55, homeTeamMain);
+    homeNameGradient.setColorAt(0, homeTeamMain);
     homeNameGradient.setColorAt(1, end);
-    homeNameGradient.setColorAt(0, end);
 
     red = -1*homeTeamMain.red() *STAT_GRADIENT_LEVEL + homeTeamMain.red();
     green = -1*homeTeamMain.green() *STAT_GRADIENT_LEVEL + homeTeamMain.green();
@@ -199,9 +149,8 @@ void LowerThird::prepareColors() {
     end.setRgb(red, green, blue);
     if (end == QColor(0,0,0))
         end = QColor(1,1,1);
-    homeStatGradient.setColorAt(.5, homeTeamMain);
+    homeStatGradient.setColorAt(0, homeTeamMain);
     homeStatGradient.setColorAt(1, end);
-    homeStatGradient.setColorAt(0, end);
 
 // -------------------------------------Away Team--------------------------------
 
@@ -211,10 +160,8 @@ void LowerThird::prepareColors() {
     end.setRgb(red, green, blue);
     if (end == QColor(0,0,0))
         end = QColor(1,1,1);
-    awayNameGradient.setColorAt(0.45, awayTeamMain);
-    awayNameGradient.setColorAt(0.55, awayTeamMain);
+    awayNameGradient.setColorAt(0, awayTeamMain);
     awayNameGradient.setColorAt(1, end);
-    awayNameGradient.setColorAt(0, end);
 
     red = -1*awayTeamMain.red() *STAT_GRADIENT_LEVEL + awayTeamMain.red();
     green = -1*awayTeamMain.green() *STAT_GRADIENT_LEVEL + awayTeamMain.green();
@@ -222,17 +169,18 @@ void LowerThird::prepareColors() {
     end.setRgb(red, green, blue);
     if (end == QColor(0,0,0))
         end = QColor(1,1,1);
-    awayStatGradient.setColorAt(.5, awayTeamMain);
+    awayStatGradient.setColorAt(0, awayTeamMain);
     awayStatGradient.setColorAt(1, end);
-    awayStatGradient.setColorAt(0, end);
+
+    gradient.setColorAt(0, QColor(50,50,50));
+    gradient.setColorAt(1, QColor(25,25,25));
 }
 
 void
 LowerThird::prepareFontSize() {
     int subtraction = 1;
     QFontMetrics fontSize(nameFont);
-    while (fontSize.width(firstName) > NAME_WIDTH ||
-           fontSize.width(lastName) > NAME_WIDTH) {
+    while (fontSize.width(name) > NAME_WIDTH - 20) {
         QFont tempFont("Arial", fontPointSize - subtraction, QFont::Bold);
         //nameFont.setPointSize(fontPointSize - subtraction);
         subtraction++;
@@ -250,20 +198,19 @@ void LowerThird::adjustFont()
 #endif
     int subtraction = 1;
     QFontMetrics fontSize(statFont);
-    while (fontSize.width(statistics[0]) > this->pixmap().width() * 2 - 100) {
-        QFont tempFont("Arial", statFont.pointSize() - subtraction, QFont::Bold);
-        subtraction++;
-        statFont = tempFont;
-        QFontMetrics temp(statFont);
-        fontSize = temp;
-    }
+//    while (fontSize.width(statistics[0]) > this->pixmap().width() * 2 - 100) {
+//        QFont tempFont("Arial", statFont.pointSize() - subtraction, QFont::Bold);
+//        subtraction++;
+//        statFont = tempFont;
+//        QFontMetrics temp(statFont);
+//        fontSize = temp;
+//    }
 }
 
 void
 LowerThird::hideLt() {
-    if (show || showPp) {
+    if (show) {
         show = false;
-        showPp = false;
         scene()->update();
     }
 }
@@ -271,13 +218,10 @@ LowerThird::hideLt() {
 void
 LowerThird::showLt() {
     show = true;
-    showPp = false;
     scene()->update();
 }
 
 void LowerThird::showPpComp()
 {
-    showPp = true;
-    show = false;
-    scene()->update();
+
 }

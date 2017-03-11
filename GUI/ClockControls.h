@@ -2,12 +2,13 @@
 #define CLOCKCONTROLS_H
 
 #include <QWidget>
+#include <QGroupBox>
 #include <QPushButton>
 #include <QLabel>
 #include "BaseballGame.h"
 #include "CommercialGraphic.h"
 
-class ClockControls : public QWidget {
+class ClockControls : public QGroupBox {
     Q_OBJECT
 public:
     ClockControls(BaseballGame* game, CommercialGraphic* comGraphic);

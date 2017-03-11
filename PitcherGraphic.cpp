@@ -1,19 +1,29 @@
 #include "PitcherGraphic.h"
 #include <QGraphicsScene>
 #define GRADIENT_LEVEL .5
+#define WIDTH 350
+#define HEIGHT 517
+#define NAME_HEIGHT 30
+
 PitcherGraphic::PitcherGraphic(BaseballGame *game) : font(QFont("Arial",24, QFont::Bold))
 {
-    setPixmap(QPixmap(":/images/Pitcher.png"));
+
+    setRect(0,0,WIDTH, HEIGHT);
     homeTeam = true;
     show = false;
     awayColor = game->getAwayColor();
     homeColor = game->getHomeColor();
-    awayGradient.setStart(0,-30);
-    awayGradient.setFinalStop(0,0);
-    homeGradient.setStart(0,-30);
-    homeGradient.setFinalStop(0,0);
-    mainGradient.setStart(0,0);
-    mainGradient.setFinalStop(0, pixmap().height() + 100);
+    awayGradient.setStart(0,0);
+    awayGradient.setFinalStop(0,NAME_HEIGHT);
+    homeGradient.setStart(0,0);
+    homeGradient.setFinalStop(0,NAME_HEIGHT);
+    mainGradient.setStart(0,NAME_HEIGHT);
+    mainGradient.setFinalStop(0, HEIGHT);
+    homeStatGradient.setStart(0,NAME_HEIGHT);
+    homeStatGradient.setFinalStop(0, HEIGHT);
+    awayStatGradient.setStart(0,NAME_HEIGHT);
+    awayStatGradient.setFinalStop(0, HEIGHT);
+    nameFont = font;
 
     connect(game->getAwayTeam(), SIGNAL(pitcherChanged(BaseballPlayer*)), this, SLOT(setAwayPitcher(BaseballPlayer*)));
     connect(game->getHomeTeam(), SIGNAL(pitcherChanged(BaseballPlayer*)), this, SLOT(setHomePitcher(BaseballPlayer*)));
@@ -25,11 +35,13 @@ void PitcherGraphic::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     if (show) {
         BaseballPlayer* player = homeTeam? homePitcher : awayPitcher;
         painter->setFont(font);
-        painter->fillRect(0,-30,pixmap().width(),30, homeTeam? homeGradient : awayGradient);
-        painter->fillRect(0,0, pixmap().width(), pixmap().height() + 100, mainGradient);
+        painter->fillRect(0,0,WIDTH,NAME_HEIGHT, homeTeam? homeGradient : awayGradient);
+        painter->fillRect(0,NAME_HEIGHT, WIDTH, HEIGHT - NAME_HEIGHT, homeTeam? homeStatGradient : awayStatGradient);
         painter->setPen(QColor(255,255,255));
-        painter->drawText(0,-30, 48, 30, Qt::AlignCenter, player->getUni());
-        painter->drawText(48,-30, pixmap().width()-48, 30, Qt::AlignCenter, player->getName());
+        painter->drawText(0,0, 48, NAME_HEIGHT, Qt::AlignCenter, player->getUni());
+        painter->setFont(nameFont);
+        painter->drawText(48,0, WIDTH - 48, NAME_HEIGHT, Qt::AlignCenter, player->getName());
+        painter->setFont(font);
         painter->drawText(15, 42* 1, 240, 30, Qt::AlignLeft, "APP");
         painter->drawText(15,  42* 2, 240, 30, Qt::AlignLeft, "GS/SV");
         painter->drawText(15,  42* 3, 240, 30, Qt::AlignLeft, "W-L");
@@ -68,14 +80,16 @@ void PitcherGraphic::displayGraphic(bool team)
 {
     homeTeam = team;
     show = true;
-    scene()->update(0,0,1920,1080);
+    nameFont.setPointSize(24);
+    prepareFontSize();
+    scene()->update(x(),y(),WIDTH,HEIGHT);
 }
 
 void PitcherGraphic::hideGraphic()
 {
     if (show) {
         show =false;
-        scene()->update(0,0,1920,1080);
+        scene()->update(x(),y(),WIDTH,HEIGHT);
     }
 }
 
@@ -89,10 +103,11 @@ void PitcherGraphic::prepareColor()
     QColor end(red, green, blue);
     if (end == QColor(0,0,0))
         end = QColor(1,1,1);
-    homeGradient.setColorAt(.4, homeColor);
-    homeGradient.setColorAt(.6, homeColor);
+    homeGradient.setColorAt(0, homeColor);
     homeGradient.setColorAt(1, end);
-    homeGradient.setColorAt(0, end);
+    homeStatGradient.setColorAt(0, homeColor);
+    homeStatGradient.setColorAt(1, end);
+
 
     red = -1*awayColor.red() *GRADIENT_LEVEL + awayColor.red();
     green = -1*awayColor.green() *GRADIENT_LEVEL + awayColor.green();
@@ -100,13 +115,28 @@ void PitcherGraphic::prepareColor()
     QColor end2(red, green, blue);
     if (end2 == QColor(0,0,0))
         end2 = QColor(1,1,1);
-    awayGradient.setColorAt(.4, awayColor);
-    awayGradient.setColorAt(.6, awayColor);
+    awayGradient.setColorAt(0, awayColor);
     awayGradient.setColorAt(1, end2);
-    awayGradient.setColorAt(0, end2);
+    awayStatGradient.setColorAt(0, awayColor);
+    awayStatGradient.setColorAt(1, end2);
+
 
     mainGradient.setColorAt(0, QColor(25,25,25));
     mainGradient.setColorAt(.5, QColor(83,83,83));
     mainGradient.setColorAt(1, QColor(25,25,25));
 }
 
+void
+PitcherGraphic::prepareFontSize() {
+    int subtraction = 1;
+    QFontMetrics fontSize(nameFont);
+    BaseballPlayer* player = homeTeam? homePitcher : awayPitcher;
+    while (fontSize.width(player->getName()) > WIDTH - 58) {
+        QFont tempFont("Arial", 24 - subtraction, QFont::Bold);
+        //nameFont.setPointSize(fontPointSize - subtraction);
+        subtraction++;
+        nameFont = tempFont;
+        QFontMetrics temp(nameFont);
+        fontSize = temp;
+    }
+}

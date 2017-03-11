@@ -10,6 +10,7 @@
 MiamiAllAccessBaseball::MiamiAllAccessBaseball(int& argc, char* argv[]) :
     QApplication (argc, argv) {
     setApplicationName("Miami Baseball");
+    tricaster = nullptr;
 }
 
 MiamiAllAccessBaseball::~MiamiAllAccessBaseball()
@@ -28,11 +29,11 @@ void
 MiamiAllAccessBaseball::checkAppDirectory() {
     QDir appDir(getAppDirPath());
     if (!appDir.exists()) {
-        appDir.mkpath(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
-        QFile settings(":/settings");
+        appDir.mkpath(getAppDirPath());
+        QFile settings(":/images/settings");
         settings.copy(appDir.absolutePath()+"/settings.txt");
     }
-    params = Params((QString("settings.txt")).toStdString());
+    params = Params((QString(getAppDirPath() + "/settings.txt")).toStdString());
 }
 
 int
@@ -60,7 +61,7 @@ MiamiAllAccessBaseball::exec() {
                        &announcer, &awayRank, &homeRank, &awayColor, &homeColor,
                        &bg, &usingTricaster, &awayLogo, &tricasterIp, &awayShort, &homeShort, &port);
     wizard.exec();
-    QRect graphicsScreen = usingTricaster ? QRect(0,0,1920,1080) : desktop.screenGeometry(1);
+    QRect graphicsScreen = usingTricaster ? QRect(0,0,1920,1080) : desktop.screenGeometry(0);
     QImage img = getTrimmedAwayLogo(awayLogo);
     QPixmap awayImg = QPixmap::fromImage(img);
     game = new BaseballGame(awayName, homeName, awayColor, homeColor,
@@ -80,11 +81,12 @@ MiamiAllAccessBaseball::exec() {
     commercial = new CommercialGraphic(game, graphicsScreen.width(), awayImg);
     commercial->setMaaText(QString::fromStdString(params.stringValue("COMMERCIAL_TITLE")));
     scene->addItem(commercial);
-    game->getLt()->setX(0);
-    game->getLt()->setY(graphicsScreen.height() - 150);
-    game->getSb()->setY(graphicsScreen.height() - 100);
-    game->getSb()->setX(0);
+    game->getLt()->setX(1600);
+    game->getLt()->setY(graphicsScreen.height() - 500);
+    game->getSb()->setY(graphicsScreen.height() - 200);
+    game->getSb()->setX(20);
     game->getSb()->setUseTransparency(usingTricaster);
+    commercial->setX(1920/2 - 160);
     commercial->setY(graphicsScreen.height() - 350);
     tv = new QGraphicsView(scene);
     scene->addItem(defense);
@@ -93,7 +95,7 @@ MiamiAllAccessBaseball::exec() {
 
     defense->setX(1278 / 4);
     defense->setY(810/4);
-    battingOrderGraphic->setX(1278/4);
+    battingOrderGraphic->setX(1920-610);
     battingOrderGraphic->setY(810/4);
     pitcherVert->setX(1920 * 3 /4);\
     pitcherVert->setY(1080 / 2 - 388/2);

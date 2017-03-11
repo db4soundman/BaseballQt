@@ -1,7 +1,7 @@
 #ifndef SCOREBOARD_H
 #define SCOREBOARD_H
 
-#include <QGraphicsPixmapItem>
+#include <QGraphicsRectItem>
 #include <QGraphicsTextItem>
 #include <QObject>
 #include <QPainter>
@@ -11,7 +11,7 @@
 #include "Clock.h"
 #include <QString>
 
-class Scoreboard : public QObject, public QGraphicsPixmapItem {
+class Scoreboard : public QObject, public QGraphicsRectItem {
     Q_OBJECT
 public:
      Scoreboard(QColor awayCol, QColor homeCol, QString awayTeam, QString homeTeam,
@@ -51,10 +51,9 @@ public slots:
      void toggleThirdBase(bool on);
 
 private:
-     QPixmap* ppBar;
-     QPixmap* topBar;
      QPixmap* homeLogo, *awayLogo;
-     QPixmap emptyBase, filledBase;
+     //QPixmap emptyBase, filledBase;
+     QPixmap watermark;
      QColor homeColor, awayColor;
      QGraphicsTextItem* homeName;
      QGraphicsTextItem* awayName;
@@ -74,7 +73,7 @@ private:
      void prepareAwayName();
      Clock* clock;
      QFont defaultSponsorText;
-     int homeRankOffset, awayRankOffset, homeLogoOffset, awayLogoOffset, out;
+     int homeRankOffset, awayRankOffset, homeLogoOffset, awayLogoHeightOffset,awayLogoWidthOffset, out;
 
 };
 
