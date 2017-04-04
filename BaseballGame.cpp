@@ -333,7 +333,7 @@ void BaseballGame::gatherAwayGameStatsLt(int index)
     numbers.append(QString::number(player->getRbiToday()));
     numbers.append(QString::number(player->getWalksToday()));
     numbers.append(QString::number(player->getStrikeoutsToday()));
-    lt.prepareForDisplay(player->getName(), player->getUni(), player->getUni(),
+    lt.prepareForDisplay(player->getName(), player->getUni(), player->getYear(),
                          labels, numbers, false);
 }
 
