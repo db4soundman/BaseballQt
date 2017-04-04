@@ -9,7 +9,7 @@
 #define WIDTH 300
 #define HEIGHT 250
 #define NAME_HEIGHT 34
-#define NAME_WIDTH 260
+#define NAME_WIDTH 245
 LowerThird::LowerThird(QColor awayColor, QColor homeColor, int screenWidth, QGraphicsItem* parent) : QGraphicsRectItem(parent),
     name(""), number("number"), statFont("Arial", 18, QFont::Bold), nameFont("Arial", 20, QFont::Bold),
     awayTeamMain(awayColor), homeTeamMain(homeColor) {
@@ -52,7 +52,7 @@ LowerThird::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
         painter->setPen(QColor(255,255,255));
         painter->setFont(nameFont);
-        painter->drawText(25,0,NAME_WIDTH,NAME_HEIGHT, Qt::AlignCenter, name);
+        painter->drawText(30,0,NAME_WIDTH,NAME_HEIGHT, Qt::AlignCenter, name);
         painter->setFont(statFont);
         painter->drawText(0, 0, WIDTH, NAME_HEIGHT, Qt::AlignVCenter | Qt::AlignLeft, " " + number);
         painter->drawText(0, 0, WIDTH, NAME_HEIGHT, Qt::AlignVCenter | Qt::AlignRight, year + " ");
