@@ -9,6 +9,7 @@
 #include <windows.h>
 #include "AirSend_api.h"
 #include <QImage>
+#include <QRectF>
 
 class TricasterHandler : public QThread
 {
@@ -27,6 +28,8 @@ public slots:
     void updatePortion(QList<QRectF> rects);
     void addAlphaRect(int x, int y, int w, int h);
     void removeAlphaRect(int x, int y, int w, int h);
+    void addNoTransparencyZone(QRect r);
+    void removeNoTransparencyZone(QRect r);
 
 private:
     void drawTransparentRectangle();
@@ -36,6 +39,7 @@ private:
     BYTE* pixels;
     QImage view;
     QList<QRect> transparentRects;
+    QList<QRect> noTransparencyZones;
 };
 
 #endif // TRICASTERHANDLER_H

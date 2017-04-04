@@ -112,6 +112,7 @@ void CommercialGraphic::prepareAndShow()
     clock = clock.replace("Top", "START").replace("Bot", "MID");
     show = true;
     updateClock();
+    emit addNoTransparencyZone(QRect(x(), V_TEAM_Y + y(), LOGO_WIDTH, TEAM_HEIGHT));
     scene()->update(x(),y(),WIDTH, HEIGHT);
 }
 
@@ -160,6 +161,7 @@ void CommercialGraphic::hide()
 {
     if (show) {
         show = false;
+        emit removeNoTransparencyZone(QRect(x(), V_TEAM_Y + y(), LOGO_WIDTH, TEAM_HEIGHT));
         scene()->update(x(), y(), WIDTH, HEIGHT);
     }
 }

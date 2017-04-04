@@ -21,6 +21,8 @@ public:
     void setMaaText(const QString &value);
 
 signals:
+    void addNoTransparencyZone(QRect r);
+    void removeNoTransparencyZone(QRect r);
 
 public slots:
     void prepareAndShow();

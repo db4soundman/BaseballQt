@@ -469,6 +469,7 @@ Scoreboard::toggleShowBoard() {
     show = true;
     //if (useTransparency)
         //emit transparentField(x(), y()-49,SCOREBOARD_WIDTH,49);
+    emit addNoTransparencyZone(QRect(x() + V_TEAM_BOX_STARTX, y() + V_TEAM_BOX_STARTY, LOGO_WIDTH, TEAM_BOX_HEIGHT));
     scene()->update(x(), y(), rect().width(), rect().height());
 }
 
@@ -484,6 +485,7 @@ Scoreboard::hideBoard() {
     if (show) {
         show = false;
         //emit removeTransparentField(x(), y()-49,SCOREBOARD_WIDTH,49);
+        emit removeNoTransparencyZone(QRect(x() + V_TEAM_BOX_STARTX, y() + V_TEAM_BOX_STARTY, LOGO_WIDTH, TEAM_BOX_HEIGHT));
         scene()->update(x(), y(), rect().width(), rect().height());
     }
 }
