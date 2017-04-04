@@ -31,6 +31,9 @@ public:
 
     void checkAppDirectory();
 
+    static QPixmap getImgFromResources(QString name, int maxHeight, int maxWidth = 1920);
+    static QPixmap getImgFromESPN(QString name, int maxHeight, int maxWidth = 1920);
+
     int exec();
 
 private:
@@ -46,7 +49,7 @@ private:
     BattingOrder* battingOrderGraphic;
     Params params;
 
-    QImage getTrimmedAwayLogo(QString filePath);
+    static QImage getTrimmedLogo(QString filePath);
 };
 
 #endif // MIAMIALLACCESSBASEBALL_H

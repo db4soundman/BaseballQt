@@ -7,5 +7,6 @@
         <file alias="Pitcher.png">images/Pitcher graphic.png</file>
         <file alias="settings">settings.txt</file>
         <file alias="Watermark.png">images/MiamiRedhawksCom.png</file>
+        <file alias="NOLOGO.png">images/nologo.png</file>
     </qresource>
 </RCC>

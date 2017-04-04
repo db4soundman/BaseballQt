@@ -36,6 +36,28 @@ MiamiAllAccessBaseball::checkAppDirectory() {
     params = Params((QString(getAppDirPath() + "/settings.txt")).toStdString());
 }
 
+QPixmap MiamiAllAccessBaseball::getImgFromResources(QString name, int maxHeight, int maxWidth)
+{
+    QPixmap img(name);
+    img = img.scaledToHeight(maxHeight, Qt::SmoothTransformation);
+
+    if (img.width() > maxWidth) {
+        return img.scaledToWidth(maxWidth, Qt::SmoothTransformation);
+    }
+    return img;
+}
+
+QPixmap MiamiAllAccessBaseball::getImgFromESPN(QString name, int maxHeight, int maxWidth)
+{
+    QPixmap img = QPixmap::fromImage(getTrimmedLogo(name));
+    img = img.scaledToHeight(maxHeight, Qt::SmoothTransformation);
+
+    if (img.width() > maxWidth) {
+        return img.scaledToWidth(maxWidth, Qt::SmoothTransformation);
+    }
+    return img;
+}
+
 int
 MiamiAllAccessBaseball::exec() {
     checkAppDirectory();
@@ -62,7 +84,7 @@ MiamiAllAccessBaseball::exec() {
                        &bg, &usingTricaster, &awayLogo, &tricasterIp, &awayShort, &homeShort, &port);
     wizard.exec();
     QRect graphicsScreen = usingTricaster ? QRect(0,0,1920,1080) : desktop.screenGeometry(0);
-    QImage img = getTrimmedAwayLogo(awayLogo);
+    QImage img = getTrimmedLogo(awayLogo);
     QPixmap awayImg = QPixmap::fromImage(img);
     game = new BaseballGame(awayName, homeName, awayColor, homeColor,
                           awayFile, homeFile, sponsor, announcer, awayRank,
@@ -116,11 +138,15 @@ MiamiAllAccessBaseball::exec() {
         connect(scene, SIGNAL(changed(QList<QRectF>)), tricaster, SLOT(updatePortion(QList<QRectF>)));
         connect(game->getSb(), SIGNAL(transparentField(int,int,int,int)), tricaster, SLOT(addAlphaRect(int,int,int,int)));
         connect(game->getSb(), SIGNAL(removeTransparentField(int,int,int,int)), tricaster, SLOT(removeAlphaRect(int,int,int,int)));
+        connect(game->getSb(), SIGNAL(addNoTransparencyZone(QRect)), tricaster, SLOT(addNoTransparencyZone(QRect)));
+        connect(commercial, SIGNAL(addNoTransparencyZone(QRect)), tricaster, SLOT(addNoTransparencyZone(QRect)));
+        connect(game->getSb(),SIGNAL(removeNoTransparencyZone(QRect)), tricaster, SLOT(removeNoTransparencyZone(QRect)));
+        connect(commercial,SIGNAL(removeNoTransparencyZone(QRect)), tricaster, SLOT(removeNoTransparencyZone(QRect)));
     }
     return QApplication::exec();
 }
 
-QImage MiamiAllAccessBaseball::getTrimmedAwayLogo(QString filePath)
+QImage MiamiAllAccessBaseball::getTrimmedLogo(QString filePath)
 {
     int tX, tY, bX, bY;
     tX = (tY = (bX = (bY = -1)));

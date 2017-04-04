@@ -17,7 +17,8 @@ INCLUDEPATH += GUI \
             Standings \
             NCHCScoreboard \
             GameStatEditors \
-            Profiles
+            Profiles \
+            Schedule
 
 SOURCES += main.cpp\
         MainWindow.cpp \
@@ -57,8 +58,14 @@ SOURCES += main.cpp\
     BattingOrder.cpp \
     PitcherGraphic.cpp \
     GUI/PreGame.cpp \
+    Params.cpp \
+    Schedule/scheduleentry.cpp \
+    Schedule/schedulegraphic.cpp \
+    Schedule/schedulegui.cpp \
     Profiles/Profile.cpp \
-    Params.cpp
+    Standings/StandingsEntry.cpp \
+    Standings/StandingsGraphic.cpp \
+    Standings/StandingsWidget.cpp
 
 HEADERS  += MainWindow.h \
     Scoreboard.h \
@@ -98,8 +105,14 @@ HEADERS  += MainWindow.h \
     BattingOrder.h \
     PitcherGraphic.h \
     GUI/PreGame.h \
+    Params.h \
+    Schedule/scheduleentry.h \
+    Schedule/schedulegraphic.h \
+    Schedule/schedulegui.h \
     Profiles/Profile.h \
-    Params.h
+    Standings/StandingsEntry.h \
+    Standings/StandingsGraphic.h \
+    Standings/StandingsWidget.h
 
 
 
@@ -109,3 +122,14 @@ RESOURCES += \
 INCLUDEPATH += $$PWD/
 DEPENDPATH += $$PWD/
 unix|win32: LIBS += -L$$PWD/ -lProcessingAirSendx86
+
+DISTFILES += \
+    ProcessingAirSendx86.lib \
+    Processing.AirSend.CLR.x86.dll \
+    Processing.AirSend.x86.dll \
+    images/GrayBase.png \
+    images/Scoreboard.png \
+    images/StatsGraphic.png \
+    images/YellowBase.png \
+    .gitignore \
+    README.md
