@@ -103,10 +103,10 @@ MiamiAllAccessBaseball::exec() {
     commercial = new CommercialGraphic(game, graphicsScreen.width(), awayImg);
     commercial->setMaaText(QString::fromStdString(params.stringValue("COMMERCIAL_TITLE")));
     scene->addItem(commercial);
-    game->getLt()->setX(1600);
-    game->getLt()->setY(graphicsScreen.height() - 500);
+    game->getLt()->setX(100);
     game->getSb()->setY(graphicsScreen.height() - 200);
-    game->getSb()->setX(20);
+    game->getLt()->setY(game->getSb()->y() - 250);
+    game->getSb()->setX(100);
     game->getSb()->setUseTransparency(usingTricaster);
     commercial->setX(1920/2 - 160);
     commercial->setY(graphicsScreen.height() - 350);
@@ -119,8 +119,11 @@ MiamiAllAccessBaseball::exec() {
     defense->setY(810/4);
     battingOrderGraphic->setX(1920-610);
     battingOrderGraphic->setY(810/4);
-    pitcherVert->setX(1920 * 3 /4);\
+    pitcherVert->setX(1920 * 3 /4);
     pitcherVert->setY(1080 / 2 - 388/2);
+    scene->addItem(&scheduleGraphic);
+    scheduleGraphic.setX(100);
+    scheduleGraphic.setY(650);
 
     tv->setGeometry(graphicsScreen);
     tv->setSceneRect(0, 0,graphicsScreen.width(), graphicsScreen.height());

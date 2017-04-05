@@ -48,6 +48,7 @@ private:
     DefenseGraphic* defense;
     BattingOrder* battingOrderGraphic;
     Params params;
+    ScheduleGraphic scheduleGraphic;
 
     static QImage getTrimmedLogo(QString filePath);
 };

@@ -25,7 +25,7 @@ public slots:
     void showLt();
     void showPpComp();
     void prepareForDisplay(QString name, QString number, QString year, QList<QString> statLabels,
-                           QList<QString> statValues, bool homeTeam, QString side="R");
+                           QList<QString> statValues, bool homeTeam, QString side="L");
     void prepareForCustomLt(QString name, QString number, QString year, QList<QString> statLabels,
                            QList<QString> statValues, bool homeTeam);
 

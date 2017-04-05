@@ -86,7 +86,7 @@ LowerThird::prepareForDisplay(QString name, QString number, QString year,
     this->number = number;
 
     if (side == "L") {
-        setX(110);
+        setX(100);
     } else {
         setX(1600);
     }

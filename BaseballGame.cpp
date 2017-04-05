@@ -175,14 +175,8 @@ void BaseballGame::gatherBatterGraphic()
      numbers.append(QString::number(player->getWalks()));
      numbers.append(QString::number(player->getStrikeouts()));
 
-     QString bats = player->getBats();
-     if (bats == "S" || bats.isEmpty()) {
-         QString throws = getPitcher()->getThrows();
-         bats = throws == "R" ? "L" : "R";
-     }
-
      lt.prepareForDisplay(player->getName(),player->getUni(), player->getPos(),
-                          labels, numbers, inningMod == "Bot", bats);
+                          labels, numbers, inningMod == "Bot", "L");
 }
 
 void BaseballGame::gatherBatterSeasonSb()
@@ -277,14 +271,8 @@ void BaseballGame::gatherHomeSeasonStatsLt(int index)
     numbers.append(QString::number(player->getWalks()));
     numbers.append(QString::number(player->getStrikeouts()));
 
-    QString bats = player->getBats();
-    if (bats == "S" || bats.isEmpty()) {
-        QString throws = getPitcher()->getThrows();
-        bats = throws == "R" ? "L" : "R";
-    }
-
     lt.prepareForDisplay(player->getName(), player->getUni(), player->getYear(),
-                         labels, numbers, true, bats);
+                         labels, numbers, true, "L");
 }
 
 void BaseballGame::gatherHomeSeasonStatsSb(int index)
