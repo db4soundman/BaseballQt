@@ -810,6 +810,7 @@ void BaseballGame::walk()
     batter->applyWalk(1);
     advanceBatter();
     clearCount();
+    advanceRunnersOnWalk();
     setOnFirst(true);
     emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
 }
@@ -820,10 +821,28 @@ void BaseballGame::hitByPitch()
     BaseballPlayer* pitcher = getPitcher();
     BaseballPlayer* batter = getBatter();
     batter->applyWalk(2);
+    advanceRunnersOnWalk();
     setOnFirst(true);
     advanceBatter();
     clearCount();
     emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
+}
+
+void BaseballGame::advanceRunnersOnWalk() {
+    bool on1st = getOnFirst();
+    bool on2nd = getOnSecond();
+    bool on3rd = getOnThird();
+
+    if (on1st) {
+        if (on2nd) {
+            if (on3rd) {
+                addScore(1);
+            }
+            setOnThird(true);
+        }
+        setOnSecond(true);
+    }
+
 }
 
 void BaseballGame::reachOnError()

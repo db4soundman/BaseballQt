@@ -200,6 +200,7 @@ private:
     void subHomeHit();
     void subAwayHit();
     void checkOuts();
+    void advanceRunnersOnWalk();
     BaseballPlayer* getPitcher();
     BaseballPlayer* getBatter();
     // GUI is separate class
