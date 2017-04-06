@@ -35,6 +35,7 @@ ScheduleGUI::ScheduleGUI()
 
     connect(&showButton, SIGNAL(clicked()), this, SLOT(prepareToShow()));
     connect(&showButton, SIGNAL(clicked()), this, SLOT(close()));
+    connect(&reloadButton, SIGNAL(clicked(bool)), this, SLOT(loadSchedule()));
     setLayout(manager);
 }
 
