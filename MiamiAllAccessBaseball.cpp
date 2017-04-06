@@ -117,7 +117,7 @@ MiamiAllAccessBaseball::exec() {
 
     defense->setX(1278 / 4);
     defense->setY(810/4);
-    battingOrderGraphic->setX(1920-610);
+    battingOrderGraphic->setX(1920-700);
     battingOrderGraphic->setY(810/4);
     pitcherVert->setX(1920 * 3 /4);
     pitcherVert->setY(1080 / 2 - 388/2);
