@@ -71,10 +71,10 @@ void CommercialGraphic::paint(QPainter* painter, const QStyleOptionGraphicsItem*
         //painter->drawText(WIDTH/4, 0, NAME_WIDTH*2, TEAM_HEIGHT, Qt::AlignCenter, away->toPlainText());
         //painter->drawPixmap(WIDTH - CENTER_OFFSET - 100 - awayLogo.width(), 20, awayLogo);
 
-        painter->drawPixmap(awayWidthOffset, V_TEAM_Y + awayHeightOffset, *awayLogo);
+        painter->drawPixmap((networkLogo.width()/2 - awayLogo->width()/2), V_TEAM_Y + awayHeightOffset, *awayLogo);
         painter->setFont(home->font());
         //painter->drawText(WIDTH/4, TEAM_HEIGHT, NAME_WIDTH*2, TEAM_HEIGHT, Qt::AlignCenter, home->toPlainText());
-        painter->drawPixmap(0, H_TEAM_Y, homeLogo);
+        painter->drawPixmap(networkLogo.width() / 2 - homeLogo.width()/2, H_TEAM_Y, homeLogo);
 
         //painter->fillRect(WIDTH*.75 - CENTER_OFFSET, 0, CENTER_OFFSET, TEAM_HEIGHT*2, QColor(1,1,1, 100));
 
