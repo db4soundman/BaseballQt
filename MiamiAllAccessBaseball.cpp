@@ -123,7 +123,7 @@ MiamiAllAccessBaseball::exec() {
     pitcherVert->setY(1080 / 2 - 388/2);
     scene->addItem(&scheduleGraphic);
     scheduleGraphic.setX(100);
-    scheduleGraphic.setY(650);
+    scheduleGraphic.setY(game->getSb()->y() - 300);
 
     tv->setGeometry(graphicsScreen);
     tv->setSceneRect(0, 0,graphicsScreen.width(), graphicsScreen.height());
@@ -133,6 +133,7 @@ MiamiAllAccessBaseball::exec() {
     tv->setFrameShape(QFrame::NoFrame);
 
     controlPanel = new MainWindow(game, commercial, pitcherVert, defense, battingOrderGraphic);
+    controlPanel->attachScheduleGraphic(&scheduleGraphic);
     controlPanel->show();
     if (!usingTricaster)
         tv->showFullScreen();

@@ -15,16 +15,19 @@ class ScheduleGUI : public QWidget
 public:
     ScheduleGUI();
 
+
+    
 signals:
     void show(QList<ScheduleEntry> games, bool seriesSched);
 
 private slots:
     void prepareToShow();
+    void loadSchedule();
 
 private:
     QButtonGroup group;
     QRadioButton series, game;
-    QPushButton showButton;
+    QPushButton showButton, reloadButton;
     QSpinBox numToShow;
     QList<ScheduleEntry> schedule;
 };

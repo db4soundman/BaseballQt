@@ -6,39 +6,59 @@
 #include <QDate>
 #include <QVBoxLayout>
 
+#define MONTH 0
+#define DAY 1
+#define VS_AT 2
+#define OPPONENT 3
+#define TIME 4
+#define STREAM 5
+
 ScheduleGUI::ScheduleGUI()
 {
     series.setText("Series View");
-    series.setChecked(true);
+    series.setChecked(false);
     game.setText("Game View");
-    game.setChecked(false);
+    game.setChecked(true);
     group.addButton(&series);
     group.addButton(&game);
     showButton.setText("Show");
+    reloadButton.setText("Reload Schdule");
     QVBoxLayout* manager = new QVBoxLayout();
     manager->addWidget(&numToShow);
-    manager->addWidget(&series);
-    manager->addWidget(&game);
+//    manager->addWidget(&series);
+//    manager->addWidget(&game);
+    manager->addWidget(&reloadButton);
     manager->addWidget(&showButton);
 
+    loadSchedule();
+    numToShow.setMinimum(1);
+
+    connect(&showButton, SIGNAL(clicked()), this, SLOT(prepareToShow()));
+    connect(&showButton, SIGNAL(clicked()), this, SLOT(close()));
+    setLayout(manager);
+}
+
+void ScheduleGUI::loadSchedule()
+{
     QFile csv(MiamiAllAccessBaseball::getAppDirPath() + "/schedule.csv");
     csv.open(QIODevice::ReadOnly);
     QTextStream stream(&csv);
     stream.readLine();
-    int month = QDate::currentDate().month();
-    int date = QDate::currentDate().day();
+    const int month = QDate::currentDate().month();
+    const int date = QDate::currentDate().day();
+    schedule.clear();
     while (!stream.atEnd()) {
         QStringList data = stream.readLine().split(',');
-        QString tMonth = data[0].split('/')[0];
+        QString tMonth = data[MONTH].split('/')[0];
         int schedMonth = QDate::fromString(tMonth, "MMM").month();
-        int day1 = data[2].split('/')[0].toInt();
-        int day2 = data[2].contains("/") ? data[2].split('/')[1].toInt():
+        int day1 = data[DAY].split('/')[0].toInt();
+        int day2 = data[DAY].contains("/") ? data[DAY].split('/')[1].toInt():
                 -1;
         // Same month, look at days
         if (schedMonth == month) {
             if (date < day1) {
-                ScheduleEntry entry(data[0],data[1].toInt(),QString::number(day1),data[3],
-                        data[4], data[5], data[7], QString::number(day2), data[6], data[8]);
+                ScheduleEntry entry(data[MONTH],1,QString::number(day1),data[VS_AT],
+                        data[OPPONENT], data[TIME], data[STREAM]);//, QString::number(day2), data[6], data[8]);
                 schedule.append(entry);
             } else if ( date < day2) {
                 ScheduleEntry entry(data[0],1,QString::number(day2),data[3],
@@ -48,18 +68,13 @@ ScheduleGUI::ScheduleGUI()
         }
         // schedMonth in future
         else if ( month < schedMonth ) {
-            ScheduleEntry entry(data[0],data[1].toInt(),QString::number(day1),data[3],
-                    data[4], data[5], data[7], QString::number(day2), data[6], data[8]);
+            ScheduleEntry entry(data[MONTH],1,QString::number(day1),data[VS_AT],
+                    data[OPPONENT], data[TIME], data[STREAM]);//, QString::number(day2), data[6], data[8]);
             schedule.append(entry);
         }
     }
     numToShow.setValue(std::min(2, schedule.length()));
     numToShow.setMaximum(std::min(8, schedule.length()));
-    numToShow.setMinimum(1);
-
-    connect(&showButton, SIGNAL(clicked()), this, SLOT(prepareToShow()));
-    connect(&showButton, SIGNAL(clicked()), this, SLOT(close()));
-    setLayout(manager);
 }
 
 void ScheduleGUI::prepareToShow()

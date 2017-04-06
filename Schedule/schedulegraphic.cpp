@@ -3,7 +3,7 @@
 #include "MiamiAllAccessBaseball.h"
 #include <QGraphicsScene>
 
-#define WIDTH 700
+#define WIDTH 650
 #define HEIGHT 300
 
 
@@ -68,21 +68,21 @@ void ScheduleGraphic::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
                 }
             }
             else {
-                painter->drawText(450, y, 60, 30, 0, schedule[i].getTime1());
+                painter->drawText(350, y, 60, 30, 0, schedule[i].getTime1());
                 QPixmap logo1 = getPixmap(schedule[i].getMedia1());
-                painter->drawPixmap(520, y, logo1.width(), logo1.height(), logo1);
+                painter->drawPixmap(420, y, logo1.width(), logo1.height(), logo1);
             }
         }
     }
 }
 
-void ScheduleGraphic::toggleShow()
+void ScheduleGraphic::showGraphic()
 {
     show = true;
     scene()->update(x(), y(), WIDTH, HEIGHT);
 }
 
-void ScheduleGraphic::hide()
+void ScheduleGraphic::hideGraphic()
 {
     if (show) {
         show = false;
@@ -98,6 +98,6 @@ void ScheduleGraphic::receiveData(QList<ScheduleEntry> sched, bool seriesSched)
 
 QPixmap &ScheduleGraphic::getPixmap(QString logo)
 {
-    if (logo == "CBSSN") return broadcastLogo;
+    if (logo == "YES") return broadcastLogo;
     return none;
 }

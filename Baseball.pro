@@ -65,7 +65,8 @@ SOURCES += main.cpp\
     Profiles/Profile.cpp \
     Standings/StandingsEntry.cpp \
     Standings/StandingsGraphic.cpp \
-    Standings/StandingsWidget.cpp
+    Standings/StandingsWidget.cpp \
+    graphic.cpp
 
 HEADERS  += MainWindow.h \
     Scoreboard.h \
@@ -112,7 +113,8 @@ HEADERS  += MainWindow.h \
     Profiles/Profile.h \
     Standings/StandingsEntry.h \
     Standings/StandingsGraphic.h \
-    Standings/StandingsWidget.h
+    Standings/StandingsWidget.h \
+    graphic.h
 
 
 

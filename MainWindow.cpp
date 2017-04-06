@@ -12,12 +12,19 @@ MainWindow::MainWindow(BaseballGame* game, CommercialGraphic* comGraphic, Pitche
     ltCreator(game->getLt()) {
     setCentralWidget(&panel);
     //setMaximumWidth(800);
-    //makeMenu(game);
+    makeMenu(game);
 
 }
 
 MainWindow::~MainWindow() {
 
+}
+
+void MainWindow::attachScheduleGraphic(ScheduleGraphic *pSched)
+{
+    connect(&scheduleGui, SIGNAL(show(QList<ScheduleEntry>,bool)), pSched, SLOT(receiveData(QList<ScheduleEntry>,bool)));
+    connect(&scheduleGui, SIGNAL(show(QList<ScheduleEntry>,bool)), pSched, SLOT(showGraphic()));
+    panel.getDispControls()->addGraphicToHide(pSched);
 }
 
 void MainWindow::makeMenu(BaseballGame* game)
@@ -34,14 +41,17 @@ void MainWindow::makeMenu(BaseballGame* game)
     awayMenu->addAction(awayTeamEdit);
 
     QMenu* homeMenu = new QMenu(game->getHomeName());
-    QAction* homePlayerEditor = new QAction("Edit Player Stats", this);
-    connect(homePlayerEditor, SIGNAL(triggered()), &homePlayerEdit, SLOT(updateSpinBoxes()));
-    connect(homePlayerEditor, SIGNAL(triggered()), &homePlayerEdit, SLOT(show()));
-    homeMenu->addAction(homePlayerEditor);
-    QAction* homeTeamEdit = new QAction("Edit Team Stats", this);
-    connect(homeTeamEdit, SIGNAL(triggered()), &homeEdit, SLOT(updateSpinBoxes()));
-    connect(homeTeamEdit, SIGNAL(triggered()), &homeEdit, SLOT(show()));
-    homeMenu->addAction(homeTeamEdit);
+//    QAction* homePlayerEditor = new QAction("Edit Player Stats", this);
+//    connect(homePlayerEditor, SIGNAL(triggered()), &homePlayerEdit, SLOT(updateSpinBoxes()));
+//    connect(homePlayerEditor, SIGNAL(triggered()), &homePlayerEdit, SLOT(show()));
+//    homeMenu->addAction(homePlayerEditor);
+//    QAction* homeTeamEdit = new QAction("Edit Team Stats", this);
+//    connect(homeTeamEdit, SIGNAL(triggered()), &homeEdit, SLOT(updateSpinBoxes()));
+//    connect(homeTeamEdit, SIGNAL(triggered()), &homeEdit, SLOT(show()));
+//    homeMenu->addAction(homeTeamEdit);
+    QAction* scheduleEdit = new QAction("Schedule", this);
+    connect(scheduleEdit, SIGNAL(triggered(bool)), &scheduleGui, SLOT(show()));
+    homeMenu->addAction(scheduleEdit);
 
     QMenu* lowerThirdMenu = new QMenu("Lower Third");
     QAction* customLtCreator = new QAction("Create custom Lt", this);
@@ -50,9 +60,9 @@ void MainWindow::makeMenu(BaseballGame* game)
     lowerThirdMenu->addAction(customLtCreator);
 
 
-    menuBar()->addMenu(awayMenu);
+    //menuBar()->addMenu(awayMenu);
     menuBar()->addMenu(homeMenu);
-    menuBar()->addMenu(lowerThirdMenu);
+    //menuBar()->addMenu(lowerThirdMenu);
 
 
 }

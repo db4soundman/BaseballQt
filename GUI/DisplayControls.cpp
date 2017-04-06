@@ -67,6 +67,13 @@ DisplayControls::DisplayControls(BaseballGame* game, CommercialGraphic* comGraph
 
 }
 
+void DisplayControls::addGraphicToHide(Graphic *graphic)
+{
+    connect(&hideButton,SIGNAL(clicked(bool)), graphic, SLOT(hideGraphic()));
+    connect(&sbButton, SIGNAL(clicked()), graphic, SLOT(hideGraphic()));
+    connect(&hideLT, SIGNAL(clicked()), graphic, SLOT(hideGraphic()));
+}
+
 void DisplayControls::prepareCustomText() {
     emit showCustomText(customtext.text());
 }

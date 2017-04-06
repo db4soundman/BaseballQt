@@ -30,3 +30,8 @@ ControlPanel::ControlPanel(BaseballGame* game, CommercialGraphic* comGraphic, Pi
     mainLayout->addLayout(rightColumn);
     setLayout(mainLayout);
 }
+
+DisplayControls *ControlPanel::getDispControls()
+{
+    return &dispControls;
+}

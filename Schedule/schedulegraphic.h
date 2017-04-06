@@ -7,8 +7,9 @@
 #include <QPainter>
 #include <QLinearGradient>
 #include <QPixmap>
+#include "graphic.h"
 
-class ScheduleGraphic : public QObject, public QGraphicsRectItem {
+class ScheduleGraphic : public Graphic, public QGraphicsRectItem {
     Q_OBJECT
 public:
     ScheduleGraphic(QGraphicsItem* parent = 0);
@@ -17,8 +18,8 @@ public:
                const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 
 public slots:
-    void toggleShow();
-    void hide();
+    void showGraphic();
+    void hideGraphic();
     void receiveData(QList<ScheduleEntry> sched, bool seriesSched);
 
 private:

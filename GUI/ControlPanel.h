@@ -24,6 +24,8 @@ class ControlPanel : public QWidget {
 public:
     ControlPanel(BaseballGame* game, CommercialGraphic* comGraphic, PitcherGraphic* pg, DefenseGraphic* dg, BattingOrder* bog);
 
+    DisplayControls* getDispControls();
+
 private:
     DisplayControls dispControls;
     AtBatResults atBatResults;
