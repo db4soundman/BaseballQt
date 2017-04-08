@@ -6,8 +6,8 @@
 #include <QMenu>
 #include <QMenuBar>
 
-MainWindow::MainWindow(BaseballGame* game, CommercialGraphic* comGraphic, PitcherGraphic *pg, DefenseGraphic *dg, BattingOrder *bog)
-    : panel(game, comGraphic,pg, dg, bog),
+MainWindow::MainWindow(BaseballGame* game, CommercialGraphic* comGraphic, PitcherGraphic *pg, DefenseGraphic *dg, BattingOrder *bog, LineScore *lineScore)
+    : panel(game, comGraphic,pg, dg, bog, lineScore),
     awayPlayerEdit(game, false), homePlayerEdit(game, true), awayEdit(game->getAwayTeam()), homeEdit(game->getHomeTeam()),
     ltCreator(game->getLt()) {
     setCentralWidget(&panel);
@@ -65,4 +65,9 @@ void MainWindow::makeMenu(BaseballGame* game)
     //menuBar()->addMenu(lowerThirdMenu);
 
 
+}
+
+void MainWindow::attachGraphicToHide(Graphic *graphic)
+{
+    panel.getDispControls()->addGraphicToHide(graphic);
 }

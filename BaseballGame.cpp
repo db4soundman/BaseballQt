@@ -22,6 +22,8 @@ BaseballGame::BaseballGame(QString awayName, QString homeName, QColor awayColor,
     homeErrors = 0;
     onFirst = onSecond = onThird = false;
     inningMod = "Bot";
+    awayScoreByInning.append(0);
+    homeScoreByInning.append(0);
     //connect(&gameClock, SIGNAL(clockExpired()), this, SLOT(toggleClock()));
     //connect(&timer, SIGNAL(timeout()), &gameClock, SLOT(tick()));
 
@@ -460,6 +462,21 @@ BaseballGame::subHomeHit() {
 
 void
 BaseballGame::advancePeriod() {
+    QList<int> scoreByInning = inningMod == "Top"? awayScoreByInning : homeScoreByInning;
+    int score = inningMod == "Top"? awayScore : homeScore;
+    if (period > 0) {
+           if (scoreByInning.length() <= period) {
+               if (inningMod == "Top") {
+                awayLineScore.append(score - scoreByInning.last());
+                awayScoreByInning.append(score);
+               }
+               else {
+                   homeLineScore.append(score - scoreByInning.last());
+                   homeScoreByInning.append(score);
+               }
+           }
+    }
+
     if (inningMod == "Top")
         inningMod = "Bot";
     else {
@@ -908,6 +925,16 @@ void BaseballGame::sacrifice()
     clearCount();
     out();
     emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
+}
+
+QList<int> BaseballGame::getHomeLineScore() const
+{
+    return homeLineScore;
+}
+
+QList<int> BaseballGame::getAwayLineScore() const
+{
+    return awayLineScore;
 }
 bool BaseballGame::getOnThird() const
 {

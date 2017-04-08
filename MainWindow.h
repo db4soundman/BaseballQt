@@ -17,11 +17,12 @@
 #include "schedulegraphic.h"
 #include "schedulegui.h"
 #include "graphic.h"
+#include "LineScore.h"
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
-    MainWindow(BaseballGame* game, CommercialGraphic* comGraphic, PitcherGraphic* pg, DefenseGraphic* dg, BattingOrder* bog);
+    MainWindow(BaseballGame* game, CommercialGraphic* comGraphic, PitcherGraphic* pg, DefenseGraphic* dg, BattingOrder* bog, LineScore* lineScore);
     ~MainWindow();
 
     void attachScheduleGraphic(ScheduleGraphic* pSched);

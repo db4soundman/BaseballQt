@@ -1,24 +1,20 @@
-#ifndef COMMERCIALGRAPHIC_H
-#define COMMERCIALGRAPHIC_H
+#ifndef LINESCORE_H
+#define LINESCORE_H
 
-#include <QGraphicsPixmapItem>
-#include <QPixmap>
-#include <QFont>
-#include "BaseballGame.h"
+#include "graphic.h"
+#include <QGraphicsRectItem>
 #include <QLinearGradient>
-#include <QPainter>
-#include <QGraphicsTextItem>
+#include "BaseballGame.h"
 
-class CommercialGraphic : public QObject, public QGraphicsRectItem {
+class LineScore : public Graphic, public QGraphicsRectItem
+{
     Q_OBJECT
 public:
-    CommercialGraphic(BaseballGame* game, int width, QPixmap pawayLogo, QGraphicsItem *parent = 0);
+    LineScore(BaseballGame* pGame, QPixmap pawayLogo, QObject *parent = 0);
 
     void paint(QPainter * painter,
                const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 
-    QString getMaaText() const;
-    void setMaaText(const QString &value);
 
 signals:
     void addNoTransparencyZone(QRect r);
@@ -30,15 +26,15 @@ public slots:
     void showClock();
     void intermissionTime();
     void finalTime();
-    void hide();
+    void hideGraphic();
 
 private:
     QPixmap networkLogo;
     QLinearGradient homeTeamGradient, awayTeamGradient, blackGradient;
     BaseballGame* baseballGame;
-    bool show;
+    bool show, inGame;
     QGraphicsTextItem* away, *home;
-    QString homeScore, awayScore, maaText, clock, hitsHome, hitsAway, errorsHome, errorsAway;
+    QString homeScore, awayScore, clock, hitsHome, hitsAway, errorsHome, errorsAway;
     QFont descriptiveFont;
     int clockStatus, awayHeightOffset, awayWidthOffset;
     void checkAwayFont();
@@ -46,4 +42,4 @@ private:
     QPixmap homeLogo, *awayLogo;
 };
 
-#endif // COMMERCIALGRAPHIC_H
+#endif // LINESCORE_H

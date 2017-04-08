@@ -10,11 +10,12 @@
 #include "BattingOrder.h"
 #include "DefenseGraphic.h"
 #include "graphic.h"
+#include "LineScore.h"
 
 class DisplayControls : public QWidget {
     Q_OBJECT
 public:
-    DisplayControls(BaseballGame* game,CommercialGraphic* comGraphic, PitcherGraphic* pg, DefenseGraphic* dg, BattingOrder* bog);
+    DisplayControls(BaseballGame* game,CommercialGraphic* comGraphic, LineScore* lineScore);
     void addGraphicToHide(Graphic* graphic);
 
 public slots:
@@ -25,7 +26,7 @@ signals:
 
 private:
     QLineEdit customtext;
-    QPushButton customButton, announcersButton, commericalButton, sbButton, hideButton, sponsorButton, hideLT;
+    QPushButton customButton, announcersButton, commericalButton, sbButton, hideButton, sponsorButton, hideLT, lineScoreButton;
     QString sponsorText;
 };
 

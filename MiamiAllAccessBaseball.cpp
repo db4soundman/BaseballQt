@@ -95,6 +95,7 @@ MiamiAllAccessBaseball::exec() {
     pitcherVert = new PitcherGraphic(game);
     defense = new DefenseGraphic(game);
     battingOrderGraphic = new BattingOrder(game);
+    lineScore = new LineScore(game, awayImg);
     connect(game, SIGNAL(showDefense(bool)), defense, SLOT(displayGraphic(bool)));
     connect(game, SIGNAL(showBatters(bool)), battingOrderGraphic, SLOT(displayGraphic(bool)));
     scene->addItem(game->getSb());
@@ -114,6 +115,9 @@ MiamiAllAccessBaseball::exec() {
     scene->addItem(defense);
     scene->addItem(pitcherVert);
     scene->addItem(battingOrderGraphic);
+    scene->addItem(lineScore);
+    lineScore->setX(graphicsScreen.width() / 2 - 310);
+    lineScore->setY(graphicsScreen.height() - 350);
 
     defense->setX(1278 / 4);
     defense->setY(810/4);
@@ -132,8 +136,11 @@ MiamiAllAccessBaseball::exec() {
     tv->setBackgroundBrush(bg);
     tv->setFrameShape(QFrame::NoFrame);
 
-    controlPanel = new MainWindow(game, commercial, pitcherVert, defense, battingOrderGraphic);
+    controlPanel = new MainWindow(game, commercial, pitcherVert, defense, battingOrderGraphic, lineScore);
     controlPanel->attachScheduleGraphic(&scheduleGraphic);
+    controlPanel->attachGraphicToHide(pitcherVert);
+    controlPanel->attachGraphicToHide(defense);
+    controlPanel->attachGraphicToHide(battingOrderGraphic);
     controlPanel->show();
     if (!usingTricaster)
         tv->showFullScreen();

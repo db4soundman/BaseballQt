@@ -14,6 +14,7 @@
 #include "Params.h"
 //#include "StatCrewScanner.h"
 #include "TricasterHandler.h"
+#include "LineScore.h"
 
 class MiamiAllAccessBaseball : public QApplication {
 public:
@@ -47,6 +48,7 @@ private:
     PitcherGraphic* pitcherVert;
     DefenseGraphic* defense;
     BattingOrder* battingOrderGraphic;
+    LineScore* lineScore;
     Params params;
     ScheduleGraphic scheduleGraphic;
 

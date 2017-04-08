@@ -4,8 +4,9 @@
 #include <QGraphicsPixmapItem>
 #include "BaseballGame.h"
 #include "BaseballPlayer.h"
+#include "graphic.h"
 
-class DefenseGraphic : public QObject, public QGraphicsPixmapItem
+class DefenseGraphic : public Graphic, public QGraphicsPixmapItem
 {
     Q_OBJECT
 public:

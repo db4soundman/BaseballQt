@@ -11,7 +11,7 @@ public:
 
 public slots:
 
-    virtual void showGraphic() = 0;
+   // virtual void showGraphic() = 0;
     virtual void hideGraphic() = 0;
 };
 

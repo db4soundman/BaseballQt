@@ -2,7 +2,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
-DisplayControls::DisplayControls(BaseballGame* game, CommercialGraphic* comGraphic, PitcherGraphic *pg, DefenseGraphic *dg, BattingOrder *bog) {
+DisplayControls::DisplayControls(BaseballGame* game, CommercialGraphic* comGraphic, LineScore *lineScore) {
     sponsorText = game->getSponsor();
     customtext.setReadOnly(false);
     customtext.setText("");
@@ -21,9 +21,11 @@ DisplayControls::DisplayControls(BaseballGame* game, CommercialGraphic* comGraph
     main->addLayout(fr);
 
     QHBoxLayout* sr = new QHBoxLayout();
+    lineScoreButton.setText("Line Score");
     commericalButton.setText("Commercial");
     sbButton.setText("Scoreboard");
     hideButton.setText("Hide All");
+    sr->addWidget(&lineScoreButton);
     sr->addWidget(&commericalButton);
     sr->addWidget(&sbButton);
     sr->addWidget(&hideLT);
@@ -39,31 +41,28 @@ DisplayControls::DisplayControls(BaseballGame* game, CommercialGraphic* comGraph
     connect(&customButton, SIGNAL(clicked()), this, SLOT(prepareCustomText()));
     connect(this, SIGNAL(showCustomText(QString)),
             game->getSb(), SLOT(changeTopBarText(QString)));
+
+    connect(&lineScoreButton, SIGNAL(clicked(bool)), lineScore, SLOT(prepareAndShow()));
+    connect(&lineScoreButton, SIGNAL(clicked()), game->getSb(), SLOT(hideBoard()));
+    connect(&lineScoreButton, SIGNAL(clicked()), game->getLt(), SLOT(hideLt()));
+    connect(&lineScoreButton, SIGNAL(clicked()), comGraphic, SLOT(hide()));
+
     connect(&commericalButton, SIGNAL(clicked()), comGraphic, SLOT(prepareAndShow()));
     connect(&commericalButton, SIGNAL(clicked()), game->getLt(), SLOT(hideLt()));
     connect(&commericalButton, SIGNAL(clicked()), game->getSb(), SLOT(hideBoard()));
-    connect(&commericalButton, SIGNAL(clicked()), pg, SLOT(hideGraphic()));
-    connect(&commericalButton, SIGNAL(clicked()), dg, SLOT(hideGraphic()));
-    connect(&commericalButton, SIGNAL(clicked()), bog, SLOT(hideGraphic()));
+    connect(&commericalButton, SIGNAL(clicked()), lineScore, SLOT(hideGraphic()));
 
     connect(&sbButton, SIGNAL(clicked()),game->getSb(), SLOT(toggleShowBoard()));
     connect(&sbButton, SIGNAL(clicked()), comGraphic, SLOT(hide()));
-    connect(&sbButton, SIGNAL(clicked()), pg, SLOT(hideGraphic()));
-    connect(&sbButton, SIGNAL(clicked()), dg, SLOT(hideGraphic()));
-    connect(&sbButton, SIGNAL(clicked()), bog, SLOT(hideGraphic()));
+    connect(&sbButton, SIGNAL(clicked()), lineScore, SLOT(hideGraphic()));
 
     connect(&hideLT, SIGNAL(clicked()), game->getLt(), SLOT(hideLt()));
-    connect(&hideLT, SIGNAL(clicked()), pg, SLOT(hideGraphic()));
-    connect(&hideLT, SIGNAL(clicked()), dg, SLOT(hideGraphic()));
-    connect(&hideLT, SIGNAL(clicked()), bog, SLOT(hideGraphic()));
 
     //hide
     connect(&hideButton, SIGNAL(clicked()), game->getSb(), SLOT(hideBoard()));
     connect(&hideButton, SIGNAL(clicked()), game->getLt(), SLOT(hideLt()));
     connect(&hideButton, SIGNAL(clicked()), comGraphic, SLOT(hide()));
-    connect(&hideButton, SIGNAL(clicked()), pg, SLOT(hideGraphic()));
-    connect(&hideButton, SIGNAL(clicked()), dg, SLOT(hideGraphic()));
-    connect(&hideButton, SIGNAL(clicked()), bog, SLOT(hideGraphic()));
+    connect(&hideButton, SIGNAL(clicked()), lineScore, SLOT(hideGraphic()));
 
 }
 
@@ -72,6 +71,8 @@ void DisplayControls::addGraphicToHide(Graphic *graphic)
     connect(&hideButton,SIGNAL(clicked(bool)), graphic, SLOT(hideGraphic()));
     connect(&sbButton, SIGNAL(clicked()), graphic, SLOT(hideGraphic()));
     connect(&hideLT, SIGNAL(clicked()), graphic, SLOT(hideGraphic()));
+    connect(&commericalButton, SIGNAL(clicked()), graphic, SLOT(hideGraphic()));
+    connect(&lineScoreButton, SIGNAL(clicked()), graphic, SLOT(hideGraphic()));
 }
 
 void DisplayControls::prepareCustomText() {

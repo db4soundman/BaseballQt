@@ -4,8 +4,9 @@
 #include <QObject>
 #include <QGraphicsRectItem>
 #include "BaseballGame.h"
+#include "graphic.h"
 
-class PitcherGraphic : public QObject, public QGraphicsRectItem
+class PitcherGraphic : public Graphic, public QGraphicsRectItem
 {
     Q_OBJECT
 public:

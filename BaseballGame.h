@@ -100,6 +100,10 @@ public:
     bool getOnThird() const;
     void setOnThird(bool value);
 
+    QList<int> getAwayLineScore() const;
+
+    QList<int> getHomeLineScore() const;
+
 public slots:
     void makeFirstSecond();
     void makeFirstThird();
@@ -194,6 +198,7 @@ private:
     BaseballTeam* awayTeam;
     Scoreboard sb;
     LowerThird lt;
+    QList<int> awayLineScore, homeLineScore, awayScoreByInning, homeScoreByInning;
 
     void addHomeHit();
     void addAwayHit();

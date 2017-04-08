@@ -3,7 +3,8 @@
 
 #include <QGraphicsRectItem>
 #include "BaseballGame.h"
-class BattingOrder : public QObject, public QGraphicsRectItem
+#include "graphic.h"
+class BattingOrder : public Graphic, public QGraphicsRectItem
 {
     Q_OBJECT
 public:

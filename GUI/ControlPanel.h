@@ -17,12 +17,13 @@
 #include "PitcherGraphic.h"
 #include "BattingOrder.h"
 #include "DefenseGraphic.h"
+#include "LineScore.h"
 
 
 class ControlPanel : public QWidget {
     Q_OBJECT
 public:
-    ControlPanel(BaseballGame* game, CommercialGraphic* comGraphic, PitcherGraphic* pg, DefenseGraphic* dg, BattingOrder* bog);
+    ControlPanel(BaseballGame* game, CommercialGraphic* comGraphic, PitcherGraphic* pg, DefenseGraphic* dg, BattingOrder* bog, LineScore* lineScore);
 
     DisplayControls* getDispControls();
 
