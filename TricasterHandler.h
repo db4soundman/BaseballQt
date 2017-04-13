@@ -1,6 +1,8 @@
 #ifndef TRICASTERHANDLER_H
 #define TRICASTERHANDLER_H
 
+//#define DEBUG
+
 #include <QThread>
 #include <QGraphicsView>
 #include <QColor>
@@ -22,9 +24,6 @@ public:
 signals:
 
 public slots:
-    void srun();
-    void ensureUpdate();
-    void updatePortion(int x, int y, int w, int h);
     void updatePortion(QList<QRectF> rects);
     void addAlphaRect(int x, int y, int w, int h);
     void removeAlphaRect(int x, int y, int w, int h);
@@ -40,6 +39,9 @@ private:
     QImage view;
     QList<QRect> transparentRects;
     QList<QRect> noTransparencyZones;
+#ifdef DEBUG
+    int x;
+#endif
 };
 
 #endif // TRICASTERHANDLER_H

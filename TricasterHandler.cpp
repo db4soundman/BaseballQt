@@ -2,6 +2,9 @@
 #include "AirSend_api.h"
 #include <QHostAddress>
 #include <QMessageBox>
+#ifdef DEBUG
+#include <QImage>
+#endif
 
 TricasterHandler::TricasterHandler(QString ip, int port, QGraphicsView *view, QColor pAlphaBlack) :
     alphaBlack(pAlphaBlack)
@@ -25,64 +28,14 @@ TricasterHandler::TricasterHandler(QString ip, int port, QGraphicsView *view, QC
         ::memset(&pixels[i + 2], 0, 1);
         ::memset(&pixels[i + 3], 0, 1);
     }
+#ifdef DEBUG
+    x=0;
+#endif
 }
 TricasterHandler::~TricasterHandler() {
     AirSend_Destroy(tricaster);
 }
 
-void TricasterHandler::srun() {
-    //this->terminate();
-    //this->wait();
-    QPixmap img = QPixmap::grabWidget(screen);
-    view = img.toImage();
-    //::memset( &pixels[1920*1080*2], 0, 1920*1080*2);
-     for (int i = 1920*1080*2; i < 1920*1080*4 - 1; i+=4) {
-         QColor pixel = view.pixel(i/4 % 1920, i/4 / 1920);
-         ::memset(&pixels[i], pixel.blue(), 1);
-         ::memset(&pixels[i + 1], pixel.green(), 1);
-         ::memset(&pixels[i + 2], pixel.red(), 1);
-         ::memset(&pixels[i + 3], pixel == alphaBlack ? 0 : 255, 1);
-     }
-    //QColor c = view.pixel(1920/2, 1080-80-30);
-  //  if (first) {
-        start();
-        //        first = false;
-}
-
-void TricasterHandler::ensureUpdate()
-{
-    QPixmap img = QPixmap::grabWidget(screen);
-    view = img.toImage();
-   // ::memset( &pixels[1920*1080*2], 0, 1920*1080*2);
-     for (int i = 1920*1080*2; i < 1920*1080*4 - 1; i+=4) {
-         QColor pixel = view.pixel(i/4 % 1920, i/4 / 1920);
-         ::memset(&pixels[i], pixel.blue(), 1);
-         ::memset(&pixels[i + 1], pixel.green(), 1);
-         ::memset(&pixels[i + 2], pixel.red(), 1);
-         ::memset(&pixels[i + 3], pixel == alphaBlack ? 0 : 255, 1);
-     }
-    //stopPoint = 5;
-     start();
-}
-
-void TricasterHandler::updatePortion(int x, int y, int w, int h)
-{
-    QPixmap img = QPixmap::grabWidget(screen);
-    view = img.toImage();
-    int endX = x + w;
-    for (int j = x; j < endX && j < 1920; j++) {
-        int endY = y + h;
-        for (int k = y; k < endY && k < 1080; k++) {
-            QColor pixel = view.pixel(j, k);
-            int arrIndex = (k * 1920 + j) * 4;
-            ::memset(&pixels[arrIndex], pixel.blue(), 1);
-            ::memset(&pixels[arrIndex+1], pixel.green(), 1);
-            ::memset(&pixels[arrIndex+2], pixel.red(), 1);
-            ::memset(&pixels[arrIndex+3], pixel == alphaBlack ? 0 : 255, 1);
-        }
-    }
-    start();
-}
 
 void TricasterHandler::updatePortion(QList<QRectF> rects)
 {
@@ -175,4 +128,16 @@ void TricasterHandler::run()
 {
     for (int i = 0; i < 2; i++)
         AirSend_add_frame_bgra(tricaster, pixels);
+#ifdef DEBUG
+    QImage img(1920,1080, QImage::Format_ARGB32);
+    for(int i = 0; i < 1920; i++) {
+        for(int j = 0; j < 1080; j++) {
+            int arrIndex = (j * 1920 + i) * 4;
+            QColor pixel(pixels[arrIndex + 2],pixels[arrIndex + 1], pixels[arrIndex + 0], pixels[arrIndex + 3]);
+            img.setPixelColor(i,j,pixel);
+        }
+    }
+    img.save("test" + QString::number(x) + ".png");
+    x++;
+#endif
 }

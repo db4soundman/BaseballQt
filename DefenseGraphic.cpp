@@ -58,14 +58,14 @@ void DefenseGraphic::displayGraphic(bool team)
 {
     homeTeam = team;
     show = true;
-    scene()->update(x(), y(), pixmap().width(), pixmap().height());
+    scene()->update(x(), y(), pixmap().width(), pixmap().height() + 30);
 }
 
 void DefenseGraphic::hideGraphic()
 {
     if (show) {
         show = false;
-        scene()->update();
+        scene()->update(0,0,1920,1080);
     }
 }
 
