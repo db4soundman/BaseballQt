@@ -313,7 +313,7 @@ Scoreboard::togglePitchingChange() {
 
 void
 Scoreboard::updateClock() {
-    scene()->update(this->x() + COUNT_X, this->y(),  CLOCK_FIELD_WIDTH, SCOREBOARD_HEIGHT);
+    scene()->update(this->x() + COUNT_X, this->y(),  SCOREBOARD_WIDTH / 2, SCOREBOARD_HEIGHT);
 }
 
 void Scoreboard::updateCount(int b, int s, int o)
