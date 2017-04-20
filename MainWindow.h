@@ -18,11 +18,12 @@
 #include "schedulegui.h"
 #include "graphic.h"
 #include "LineScore.h"
+#include "StandingsWidget.h"
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
-    MainWindow(BaseballGame* game, CommercialGraphic* comGraphic, PitcherGraphic* pg, DefenseGraphic* dg, BattingOrder* bog, LineScore* lineScore);
+    MainWindow(BaseballGame* game, CommercialGraphic* comGraphic, PitcherGraphic* pg, DefenseGraphic* dg, BattingOrder* bog, LineScore* lineScore, StandingsGraphic* sg);
     ~MainWindow();
 
     void attachScheduleGraphic(ScheduleGraphic* pSched);
@@ -36,7 +37,7 @@ private:
     TeamEditor awayEdit, homeEdit;
     LowerThirdCreator ltCreator;
     ScheduleGUI scheduleGui;
-
+    StandingsWidget standings;
 };
 
 #endif // MAINWINDOW_H

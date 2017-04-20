@@ -3,12 +3,13 @@
 
 #include <QGraphicsRectItem>
 #include "StandingsEntry.h"
+#include "graphic.h"
 #include <QList>
 #include <QPainter>
 #include <QPixmap>
 #include <QLinearGradient>
 
-class StandingsGraphic : public QObject, public QGraphicsRectItem {
+class StandingsGraphic : public Graphic, public QGraphicsRectItem {
     Q_OBJECT
 public:
     StandingsGraphic(QGraphicsRectItem *parent = 0);
@@ -19,11 +20,11 @@ public:
 public slots:
     void updateStandings(QList<StandingsEntry> list);
     void toggleShow();
-    void hide();
+    void hideGraphic();
 
 private:
-    QList<StandingsEntry> nchcStandings;
-    QPixmap nchcLogo;
+    QList<StandingsEntry> macStandings;
+    QPixmap macLogo;
     QLinearGradient bgGradient, pipe1, pipe2;
     bool show;
 

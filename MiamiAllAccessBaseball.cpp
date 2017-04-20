@@ -25,6 +25,11 @@ MiamiAllAccessBaseball::getAppDirPath() {
     return QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"/"+(applicationName().replace(" ",""));
 }
 
+QString MiamiAllAccessBaseball::getEspnImagesPath()
+{
+    return QStandardPaths::writableLocation(QStandardPaths::PicturesLocation)+"/IMS Images/Logos_Keyable/";
+}
+
 void
 MiamiAllAccessBaseball::checkAppDirectory() {
     QDir appDir(getAppDirPath());
@@ -49,6 +54,7 @@ QPixmap MiamiAllAccessBaseball::getImgFromResources(QString name, int maxHeight,
 
 QPixmap MiamiAllAccessBaseball::getImgFromESPN(QString name, int maxHeight, int maxWidth)
 {
+    name = getEspnImagesPath() + name;
     QPixmap img = QPixmap::fromImage(getTrimmedLogo(name));
     img = img.scaledToHeight(maxHeight, Qt::SmoothTransformation);
 
@@ -116,6 +122,9 @@ MiamiAllAccessBaseball::exec() {
     scene->addItem(pitcherVert);
     scene->addItem(battingOrderGraphic);
     scene->addItem(lineScore);
+    scene->addItem(&standings);
+    standings.setX(0);
+    standings.setY(100);
     lineScore->setX(graphicsScreen.width() / 2 - 310);
     lineScore->setY(graphicsScreen.height() - 350);
 
@@ -136,11 +145,12 @@ MiamiAllAccessBaseball::exec() {
     tv->setBackgroundBrush(bg);
     tv->setFrameShape(QFrame::NoFrame);
 
-    controlPanel = new MainWindow(game, commercial, pitcherVert, defense, battingOrderGraphic, lineScore);
+    controlPanel = new MainWindow(game, commercial, pitcherVert, defense, battingOrderGraphic, lineScore, &standings);
     controlPanel->attachScheduleGraphic(&scheduleGraphic);
     controlPanel->attachGraphicToHide(pitcherVert);
     controlPanel->attachGraphicToHide(defense);
     controlPanel->attachGraphicToHide(battingOrderGraphic);
+    controlPanel->attachGraphicToHide(&standings);
     controlPanel->show();
     if (!usingTricaster)
         tv->showFullScreen();

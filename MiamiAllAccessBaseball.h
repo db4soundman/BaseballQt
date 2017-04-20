@@ -15,6 +15,7 @@
 //#include "StatCrewScanner.h"
 #include "TricasterHandler.h"
 #include "LineScore.h"
+#include "StandingsGraphic.h"
 
 class MiamiAllAccessBaseball : public QApplication {
 public:
@@ -28,6 +29,7 @@ public:
      * directory.
      */
     static QString getAppDirPath();
+    static QString getEspnImagesPath();
 
 
     void checkAppDirectory();
@@ -51,6 +53,7 @@ private:
     LineScore* lineScore;
     Params params;
     ScheduleGraphic scheduleGraphic;
+    StandingsGraphic standings;
 
     static QImage getTrimmedLogo(QString filePath);
 };

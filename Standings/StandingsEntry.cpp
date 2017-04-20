@@ -1,12 +1,9 @@
 #include "StandingsEntry.h"
 
-StandingsEntry::StandingsEntry(QString name, int pWins, int pLosses, int pTies, int pShootoutWins) {
+StandingsEntry::StandingsEntry(QString name, int pWins, int pLosses) {
     teamName = name;
     wins = pWins;
     losses = pLosses;
-    ties = pTies;
-    shootoutWins = pShootoutWins;
-    setPoints();
 }
 
 QString StandingsEntry::getTeamName() const
@@ -45,25 +42,6 @@ void StandingsEntry::setTies(int value)
 {
     ties = value;
 }
-int StandingsEntry::getShootoutWins() const
-{
-    return shootoutWins;
-}
-
-void StandingsEntry::setShootoutWins(int value)
-{
-    shootoutWins = value;
-}
-int StandingsEntry::getPoints() const
-{
-    return points;
-}
-
-void StandingsEntry::setPoints()
-{
-    points = wins*3 + ties + shootoutWins;
-}
-
 
 
 

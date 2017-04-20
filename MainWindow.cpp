@@ -5,11 +5,12 @@
 #include <QAction>
 #include <QMenu>
 #include <QMenuBar>
+#include "MiamiAllAccessBaseball.h"
 
-MainWindow::MainWindow(BaseballGame* game, CommercialGraphic* comGraphic, PitcherGraphic *pg, DefenseGraphic *dg, BattingOrder *bog, LineScore *lineScore)
+MainWindow::MainWindow(BaseballGame* game, CommercialGraphic* comGraphic, PitcherGraphic *pg, DefenseGraphic *dg, BattingOrder *bog, LineScore *lineScore, StandingsGraphic *sg)
     : panel(game, comGraphic,pg, dg, bog, lineScore),
     awayPlayerEdit(game, false), homePlayerEdit(game, true), awayEdit(game->getAwayTeam()), homeEdit(game->getHomeTeam()),
-    ltCreator(game->getLt()) {
+    ltCreator(game->getLt()), standings(sg) {
     setCentralWidget(&panel);
     //setMaximumWidth(800);
     makeMenu(game);
@@ -29,6 +30,10 @@ void MainWindow::attachScheduleGraphic(ScheduleGraphic *pSched)
 
 void MainWindow::makeMenu(BaseballGame* game)
 {
+    QMenu* nchcMenu = new QMenu("MAC");
+    QAction* standingsAction = new QAction(QIcon(MiamiAllAccessBaseball::getImgFromResources(":/images/MAC.png", 16)), "Edit Standings", NULL);
+    nchcMenu->addAction(standingsAction);
+    connect(standingsAction, SIGNAL(triggered()), &standings, SLOT(show()));
 
     QMenu* awayMenu = new QMenu(game->getAwayName());
     QAction* awayPlayerEditor = new QAction("Edit Player Stats", this);
@@ -61,6 +66,7 @@ void MainWindow::makeMenu(BaseballGame* game)
 
 
     //menuBar()->addMenu(awayMenu);
+    menuBar()->addMenu(nchcMenu);
     menuBar()->addMenu(homeMenu);
     //menuBar()->addMenu(lowerThirdMenu);
 
