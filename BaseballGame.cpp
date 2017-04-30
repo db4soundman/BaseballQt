@@ -932,6 +932,18 @@ QList<int> BaseballGame::getHomeLineScore() const
     return homeLineScore;
 }
 
+QList<QString> BaseballGame::getDueUp()
+{
+    QList<QString> batters;
+    BaseballTeam* team = inningMod == "Bot" ? homeTeam : awayTeam;
+    int nextUp = inningMod == "Bot" ? homeBatter : awayBatter;
+    for (int i = 0; i < 3; i++) {
+        batters.append(team->getBatterByIndex(nextUp)->getName());
+        nextUp=(nextUp+1)%9;
+    }
+    return batters;
+}
+
 QList<int> BaseballGame::getAwayLineScore() const
 {
     return awayLineScore;

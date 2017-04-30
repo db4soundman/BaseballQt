@@ -104,6 +104,8 @@ public:
 
     QList<int> getHomeLineScore() const;
 
+    QList<QString> getDueUp();
+
 public slots:
     void makeFirstSecond();
     void makeFirstThird();

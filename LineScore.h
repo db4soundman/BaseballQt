@@ -34,11 +34,13 @@ private:
     BaseballGame* baseballGame;
     bool show, inGame;
     QGraphicsTextItem* away, *home;
-    QString homeScore, awayScore, clock, hitsHome, hitsAway, errorsHome, errorsAway;
+    QString homeScore, awayScore, clock, hitsHome, hitsAway, errorsHome, errorsAway, dueUpString;
+    QList<QString> dueUp;
     QFont descriptiveFont;
     int clockStatus, awayHeightOffset, awayWidthOffset;
-    void checkAwayFont();
+    QFont getDueUpFont();
     void prepareGradients(QColor awayColor, QColor homeColor);
+    void prepareDueUp();
     QPixmap homeLogo, *awayLogo;
 };
 

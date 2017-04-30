@@ -26,7 +26,7 @@ LineScore::LineScore(BaseballGame *pGame,  QPixmap pawayLogo, QObject *parent) :
         QFont font("Arial", 20, QFont::Bold);
         away = new QGraphicsTextItem(pGame->getAwayName());
         away->setFont(font);
-        checkAwayFont();
+        getDueUpFont();
         home = new QGraphicsTextItem(pGame->getHomeName());
         home->setFont(font);
         networkLogo = QPixmap(":/images/Watermark.png").scaledToWidth(200, Qt::SmoothTransformation);
@@ -105,8 +105,8 @@ void LineScore::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
 
         painter->fillRect(0, H_TEAM_Y + TEAM_HEIGHT, WIDTH, HEIGHT - (H_TEAM_Y + TEAM_HEIGHT), QColor(50,50,50));
-        painter->setFont(QFont("Arial", 16, QFont::Bold));
-        painter->drawText(0,  H_TEAM_Y + TEAM_HEIGHT, WIDTH, HEIGHT - (H_TEAM_Y + TEAM_HEIGHT), Qt::AlignCenter, clock);
+        painter->setFont(getDueUpFont());
+        painter->drawText(0,  H_TEAM_Y + TEAM_HEIGHT, WIDTH, HEIGHT - (H_TEAM_Y + TEAM_HEIGHT), Qt::AlignCenter, dueUpString);
 
     }
 
@@ -120,6 +120,8 @@ void LineScore::prepareAndShow()
     hitsAway = QString::number(baseballGame->getAwayHits());
     errorsAway = QString::number(baseballGame->getAwayErrors());
     errorsHome = QString::number(baseballGame->getHomeErrors());
+    dueUp = baseballGame->getDueUp();
+    prepareDueUp();
     clock = clockStatus == SHOW_CLOCK? baseballGame->getInningText() : clock;
     clock = clock.replace("Top", "START").replace("Bot", "MID");
     show = true;
@@ -179,9 +181,19 @@ void LineScore::hideGraphic()
     }
 }
 
-void LineScore::checkAwayFont()
+QFont LineScore::getDueUpFont()
 {
-
+    int pointSize = 16;
+    int subtraction = 0;
+    QFont font("Arial", pointSize, QFont::Bold);
+    QFontMetrics fontSize(font);
+    while (fontSize.width(dueUpString) > WIDTH - 10) {
+        QFont tempFont("Arial", pointSize - subtraction, QFont::Bold);
+        subtraction++;
+        QFontMetrics temp(tempFont);
+        fontSize = temp;
+    }
+    return QFont("Arial", pointSize - subtraction, QFont::Bold);
 }
 
 void LineScore::prepareGradients(QColor awayColor, QColor homeColor)
@@ -208,4 +220,9 @@ void LineScore::prepareGradients(QColor awayColor, QColor homeColor)
 
     blackGradient.setColorAt(0, QColor(50,50,50));
     blackGradient.setColorAt(1, QColor(25,25,25));
+}
+
+void LineScore::prepareDueUp()
+{
+    dueUpString = "DUE UP: " + dueUp[0].split(" ").last() +", " + dueUp[1].split(" ").last() + ", " + dueUp[2].split(" ").last();
 }
