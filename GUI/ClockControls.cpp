@@ -12,7 +12,6 @@ ClockControls::ClockControls(BaseballGame* game, CommercialGraphic* comGraphic) 
     intermission.setText("DELAY");
     final.setText("FINAL");
     pitchingChange.setText("Pitching Change");
-    pitchingChange.setEnabled(false);
     main->addWidget(&label);    
     main->addWidget(&nextPd);
     main->addWidget(&prevPd);

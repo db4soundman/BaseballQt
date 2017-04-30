@@ -175,7 +175,18 @@ Scoreboard::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
         painter->setPen(QColor(255, 255, 255));
         painter->drawText(V_TEAM_BOX_STARTX + LOGO_WIDTH, V_TEAM_BOX_STARTY, awayRankOffset - LOGO_WIDTH, TEAM_BOX_HEIGHT, Qt::AlignCenter,  awayRank->toPlainText());
         painter->setFont(awayName->font());
-        painter->drawText(V_TEAM_BOX_STARTX + 5 + awayRankOffset, V_TEAM_BOX_STARTY, TEAM_NAME_WIDTH, TEAM_BOX_HEIGHT, Qt::AlignVCenter, awayName->toPlainText());
+        QString aName;
+        if (pitchingChange && !topOfInning) {
+            aName = "PITCHING CHANGE";
+            painter->setFont(QFont("Arail",18, QFont::Bold));
+
+        }
+        else {
+            painter->setFont(awayName->font());
+            aName = awayName->toPlainText();
+        }
+        painter->drawText(V_TEAM_BOX_STARTX + 5 + awayRankOffset, V_TEAM_BOX_STARTY, TEAM_NAME_WIDTH, TEAM_BOX_HEIGHT, Qt::AlignVCenter,
+                          aName);
         // Away Score
         //painter->fillRect(375, TEAM_BOX_Y, 78, 42, scoreGradient);
 
@@ -187,13 +198,23 @@ Scoreboard::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
         painter->setPen(QColor(255,255,255));
         //painter->drawRect(H_TEAM_BOX_STARTX, H_TEAM_BOX_STARTY, TEAM_BOX_WIDTH, TEAM_BOX_HEIGHT);
         // Home logo
-        painter->setOpacity(.99);
+
         painter->drawPixmap(H_TEAM_BOX_STARTX, H_TEAM_BOX_STARTY + homeLogoOffset, *homeLogo);
-        painter->setOpacity(1);
+
         painter->setFont(homeRank->font());
         painter->drawText(H_TEAM_BOX_STARTX + LOGO_WIDTH, H_TEAM_BOX_STARTY, homeRankOffset - LOGO_WIDTH, TEAM_BOX_HEIGHT, Qt::AlignCenter, homeRank->toPlainText());
-        painter->setFont(homeName->font());
-        painter->drawText(H_TEAM_BOX_STARTX + 5 + homeRankOffset, H_TEAM_BOX_STARTY, TEAM_NAME_WIDTH, TEAM_BOX_HEIGHT, Qt::AlignVCenter, homeName->toPlainText());
+        QString hName;
+        if (pitchingChange && topOfInning) {
+            hName = "PITCHING CHANGE";
+            painter->setFont(QFont("Arail",18, QFont::Bold));
+        }
+        else {
+            painter->setFont(homeName->font());
+            hName = homeName->toPlainText();
+        }
+
+        painter->drawText(H_TEAM_BOX_STARTX + 5 + homeRankOffset, H_TEAM_BOX_STARTY, TEAM_NAME_WIDTH, TEAM_BOX_HEIGHT, Qt::AlignVCenter,
+                          hName);
         // Home Score
 //        painter->fillRect(730, TEAM_BOX_Y, 78, 42, scoreGradient);
 
@@ -204,13 +225,6 @@ Scoreboard::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
             painter->setPen(QColor(255, 255, 255));
             painter->setFont(topBarText->font());
            // painter->drawText(0,SPONSOR_BAR_Y,SCOREBOARD_WIDTH,SPONSOR_BAR_HEIGHT, Qt::AlignCenter, topBarText->toPlainText());
-        }
-
-        if (pitchingChange) {
-            painter->setPen(QColor(255, 255, 255));
-            painter->setFont(defaultSponsorText);
-            //painter->drawPixmap(CLOCK_FIELD_X,SCOREBOARD_HEIGHT,CLOCK_FIELD_WIDTH,PP_BAR_HEIGHT, *ppBar );
-            painter->drawText(CLOCK_FIELD_X, SPONSOR_BAR_Y, CLOCK_FIELD_WIDTH, PP_BAR_HEIGHT, Qt::AlignCenter, "PITCHING CHANGE");
         }
         painter->translate(DIAMOND_START + 20,40);
         // 3rd base
@@ -308,7 +322,7 @@ void Scoreboard::prepareAwayName()
 void
 Scoreboard::togglePitchingChange() {
     pitchingChange = !pitchingChange;
-    scene()->update(x() + CLOCK_FIELD_X, y(),CLOCK_FIELD_WIDTH,SCOREBOARD_HEIGHT);
+    scene()->update(x(), y(),SCOREBOARD_WIDTH,SCOREBOARD_HEIGHT);
 }
 
 void
