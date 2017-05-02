@@ -24,8 +24,10 @@ StandingsWidget::StandingsWidget(StandingsGraphic* graphic) {
     west.append("TOLEDO");
     west.append("WESTERN MICHIGAN");
     mainLayout->addWidget(new QLabel("Team"), 0, 0);
-    mainLayout->addWidget(new QLabel("Wins"), 0, 1);
-    mainLayout->addWidget(new QLabel("Losses"), 0, 2);
+    mainLayout->addWidget(new QLabel("Conf Wins"), 0, 1);
+    mainLayout->addWidget(new QLabel("Conf Losses"), 0, 2);
+    mainLayout->addWidget(new QLabel("Overall Wins"), 0, 3);
+    mainLayout->addWidget(new QLabel("Overall Losses"), 0, 4);
     QList<QStringList> data;
     QFile csv(MiamiAllAccessBaseball::getAppDirPath() + "/standings.txt");
     csv.open(QIODevice::ReadWrite);
@@ -34,8 +36,8 @@ StandingsWidget::StandingsWidget(StandingsGraphic* graphic) {
         data.append(stream.readLine().split(','));
     }
     csv.close();
-
-    for (int i = 0, x = 0; i < data.size(); i++, x++) {
+    int x = 0;
+    for (int i = 0; i < data.size(); i++, x++) {
         if (i == 0) {
             mainLayout->addWidget(new QLabel("East Division"), x+1, 0);
             x++;
@@ -54,12 +56,20 @@ StandingsWidget::StandingsWidget(StandingsGraphic* graphic) {
         spin = new QSpinBox();
         losses.append(spin);
         spin->setValue(data[i][2].toInt());
+        spin = new QSpinBox();
+        ovrWins.append(spin);
+        spin->setValue(data[i][3].isEmpty() ? 0 : data[i][2].toInt());
+        spin = new QSpinBox();
+        ovrLosses.append(spin);
+        spin->setValue(data[i][4].isEmpty() ? 0 : data[i][2].toInt());
         mainLayout->addWidget(teamSelectors.at(i), x+1, 0);
         mainLayout->addWidget(wins.at(i), x+1, 1);
         mainLayout->addWidget(losses.at(i), x+1, 2);
+        mainLayout->addWidget(ovrWins.at(i), x+1, 3);
+        mainLayout->addWidget(ovrLosses.at(i), x+1, 4);
     }
     if (data.size() == 0) {
-        for(int i = 0, x = 0; i < east.size() + west.size(); i++, x++) {
+        for(int i = 0; i < east.size() + west.size(); i++, x++) {
             if (i == 0) {
                 mainLayout->addWidget(new QLabel("East Division"), x+1, 0);
                 x++;
@@ -78,9 +88,17 @@ StandingsWidget::StandingsWidget(StandingsGraphic* graphic) {
             spin = new QSpinBox();
             losses.append(spin);
             spin->setValue(0);
+            spin = new QSpinBox();
+            ovrWins.append(spin);
+            spin->setValue(0);
+            spin = new QSpinBox();
+            ovrLosses.append(spin);
+            spin->setValue(0);
             mainLayout->addWidget(teamSelectors.at(i), x+1, 0);
             mainLayout->addWidget(wins.at(i), x+1, 1);
             mainLayout->addWidget(losses.at(i), x+1, 2);
+            mainLayout->addWidget(ovrWins.at(i), x+1, 3);
+            mainLayout->addWidget(ovrLosses.at(i), x+1, 4);
         }
     }
     QPushButton* closeButton = new QPushButton("Close");
@@ -92,9 +110,9 @@ StandingsWidget::StandingsWidget(StandingsGraphic* graphic) {
     connect(saveButton, SIGNAL(clicked(bool)), this, SLOT(saveStandings()));
     connect(showButton, SIGNAL(clicked()), this, SLOT(compileStandings()));
     connect(showButton, SIGNAL(clicked()), graphic, SLOT(toggleShow()));
-    mainLayout->addWidget(closeButton, 9, 3);
-    mainLayout->addWidget(saveButton, 9, 4);
-    mainLayout->addWidget(showButton, 9, 5);
+    mainLayout->addWidget(closeButton, x+1, 3);
+    mainLayout->addWidget(saveButton, x+1, 4);
+    mainLayout->addWidget(showButton, x+1, 5);
     setLayout(mainLayout);
 }
 
@@ -105,7 +123,8 @@ void StandingsWidget::saveStandings()
     QTextStream stream(&csv);
     for (int i = 0; i < teamSelectors.size(); i++) {
         stream << teamSelectors[i]->currentText() << "," << wins[i]->value()
-               << "," << losses[i]->value() << "\r\n";
+               << "," << losses[i]->value()<<"," << ovrWins[i]->value()<<
+               "," << ovrLosses[i]->value() << "\r\n";
     }
     csv.close();
 }
@@ -115,7 +134,7 @@ void StandingsWidget::compileStandings()
     QList<StandingsEntry> standings;
     for (int i = 0; i < teamSelectors.size(); i++) {
         StandingsEntry temp(teamSelectors.at(i)->currentText(), wins.at(i)->value(),
-                            losses.at(i)->value());
+                            losses.at(i)->value(), ovrWins[i]->value(), ovrLosses[i]->value());
         standings.append(temp);
     }
     emit shareStandings(standings);

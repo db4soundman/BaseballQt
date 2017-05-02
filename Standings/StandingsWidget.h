@@ -22,7 +22,7 @@ private slots:
 private:
     QGridLayout* mainLayout;
     QList<QComboBox*> teamSelectors;
-    QList<QSpinBox*> wins, losses, ties, shootoutWins;
+    QList<QSpinBox*> wins, losses, ties, ovrWins, ovrLosses;
 
 private slots:
     void compileStandings();

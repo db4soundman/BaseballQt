@@ -5,7 +5,7 @@
 
 class StandingsEntry {
 public:
-    StandingsEntry(QString name, int pWins, int pLosses);
+    StandingsEntry(QString name, int pWins, int pLosses, int pOvrWins = 0, int pOvrLosses = 0);
 
     QString getTeamName() const;
     void setTeamName(const QString& value);
@@ -19,9 +19,15 @@ public:
     int getTies() const;
     void setTies(int value);
 
+    int getOvrWins() const;
+    void setOvrWins(int value);
+
+    int getOvrLosses() const;
+    void setOvrLosses(int value);
+
 private:
     QString teamName;
-    int wins, losses, ties;
+    int wins, losses, ties, ovrWins, ovrLosses;
 
 };
 
