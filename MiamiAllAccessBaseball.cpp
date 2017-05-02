@@ -6,6 +6,7 @@
 #include <QDesktopWidget>
 #include <QAction>
 #include <QRect>
+#include <QMessageBox>
 
 MiamiAllAccessBaseball::MiamiAllAccessBaseball(int& argc, char* argv[]) :
     QApplication (argc, argv) {
@@ -68,103 +69,112 @@ int
 MiamiAllAccessBaseball::exec() {
     checkAppDirectory();
 
-    // Make vars, create wizard.
-    scene = new QGraphicsScene();
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Version Check");
+    msgBox.setText("You are using update 5, updated on May 2. Click 'No' if this is incorrect.");
+    msgBox.setStandardButtons(QMessageBox::Yes);
+    msgBox.addButton(QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    if(msgBox.exec() == QMessageBox::Yes){
 
-    QString awayName, homeName, awayRank, homeRank, homeFile, awayFile, sponsor, announcer,
-            awayLogo, tricasterIp, awayShort, homeShort;
-    QColor awayColor, homeColor,  bg;
-    int port;
-    bool usingTricaster = true;
-    homeColor.setRgb(226, 24, 54);
-    bg.setRgb(0,120,0);
-    announcer = QString::fromStdString(params.stringValue("ANNOUNCER"));
-    sponsor = QString::fromStdString(params.stringValue("SPONSOR"));
-    homeName = "MIAMI";
-    homeShort = "MIAMI";
-    tricasterIp = QString::fromStdString(params.stringValue("IP"));
-    QDesktopWidget desktop;
+        // Make vars, create wizard.
+        scene = new QGraphicsScene();
 
-    SetupWizard wizard(&awayName, &homeName, &awayFile, &homeFile, &sponsor,
-                       &announcer, &awayRank, &homeRank, &awayColor, &homeColor,
-                       &bg, &usingTricaster, &awayLogo, &tricasterIp, &awayShort, &homeShort, &port);
-    wizard.exec();
-    QRect graphicsScreen = usingTricaster ? QRect(0,0,1920,1080) : desktop.screenGeometry(0);
-    QImage img = getTrimmedLogo(awayLogo);
-    QPixmap awayImg = QPixmap::fromImage(img);
-    game = new BaseballGame(awayName, homeName, awayColor, homeColor,
-                          awayFile, homeFile, sponsor, announcer, awayRank,
-                          homeRank, graphicsScreen.width() + 1, awayImg);
-    if (usingTricaster)
-        bg.setRgb(0,0,0);
+        QString awayName, homeName, awayRank, homeRank, homeFile, awayFile, sponsor, announcer,
+                awayLogo, tricasterIp, awayShort, homeShort;
+        QColor awayColor, homeColor,  bg;
+        int port;
+        bool usingTricaster = true;
+        homeColor.setRgb(226, 24, 54);
+        bg.setRgb(0,120,0);
+        announcer = QString::fromStdString(params.stringValue("ANNOUNCER"));
+        sponsor = QString::fromStdString(params.stringValue("SPONSOR"));
+        homeName = "MIAMI";
+        homeShort = "MIAMI";
+        tricasterIp = QString::fromStdString(params.stringValue("IP"));
+        QDesktopWidget desktop;
 
-    pitcherVert = new PitcherGraphic(game);
-    defense = new DefenseGraphic(game);
-    battingOrderGraphic = new BattingOrder(game);
-    lineScore = new LineScore(game, awayImg);
-    connect(game, SIGNAL(showDefense(bool)), defense, SLOT(displayGraphic(bool)));
-    connect(game, SIGNAL(showBatters(bool)), battingOrderGraphic, SLOT(displayGraphic(bool)));
-    scene->addItem(game->getSb());
+        SetupWizard wizard(&awayName, &homeName, &awayFile, &homeFile, &sponsor,
+                           &announcer, &awayRank, &homeRank, &awayColor, &homeColor,
+                           &bg, &usingTricaster, &awayLogo, &tricasterIp, &awayShort, &homeShort, &port);
+        wizard.exec();
+        QRect graphicsScreen = usingTricaster ? QRect(0,0,1920,1080) : desktop.screenGeometry(0);
+        QImage img = getTrimmedLogo(awayLogo);
+        QPixmap awayImg = QPixmap::fromImage(img);
+        game = new BaseballGame(awayName, homeName, awayColor, homeColor,
+                                awayFile, homeFile, sponsor, announcer, awayRank,
+                                homeRank, graphicsScreen.width() + 1, awayImg);
+        if (usingTricaster)
+            bg.setRgb(0,0,0);
 
-    scene->addItem(game->getLt());
-    commercial = new CommercialGraphic(game, graphicsScreen.width(), awayImg);
-    commercial->setMaaText(QString::fromStdString(params.stringValue("COMMERCIAL_TITLE")));
-    scene->addItem(commercial);
-    game->getLt()->setX(100);
-    game->getSb()->setY(graphicsScreen.height() - 200);
-    game->getLt()->setY(game->getSb()->y() - 250);
-    game->getSb()->setX(100);
-    game->getSb()->setUseTransparency(usingTricaster);
-    commercial->setX(1920/2 - 160);
-    commercial->setY(graphicsScreen.height() - 350);
-    tv = new QGraphicsView(scene);
-    scene->addItem(defense);
-    scene->addItem(pitcherVert);
-    scene->addItem(battingOrderGraphic);
-    scene->addItem(lineScore);
-    scene->addItem(&standings);
-    standings.setX(0);
-    standings.setY(100);
-    lineScore->setX(graphicsScreen.width() / 2 - 310);
-    lineScore->setY(graphicsScreen.height() - 350);
+        pitcherVert = new PitcherGraphic(game);
+        defense = new DefenseGraphic(game);
+        battingOrderGraphic = new BattingOrder(game);
+        lineScore = new LineScore(game, awayImg);
+        connect(game, SIGNAL(showDefense(bool)), defense, SLOT(displayGraphic(bool)));
+        connect(game, SIGNAL(showBatters(bool)), battingOrderGraphic, SLOT(displayGraphic(bool)));
+        scene->addItem(game->getSb());
 
-    defense->setX(1278 / 4);
-    defense->setY(810/4);
-    battingOrderGraphic->setX(1920-700);
-    battingOrderGraphic->setY(810/4);
-    pitcherVert->setX(1920 * 3 /4);
-    pitcherVert->setY(1080 / 2 - 388/2);
-    scene->addItem(&scheduleGraphic);
-    scheduleGraphic.setX(100);
-    scheduleGraphic.setY(game->getSb()->y() - 300);
+        scene->addItem(game->getLt());
+        commercial = new CommercialGraphic(game, graphicsScreen.width(), awayImg);
+        commercial->setMaaText(QString::fromStdString(params.stringValue("COMMERCIAL_TITLE")));
+        scene->addItem(commercial);
+        game->getLt()->setX(100);
+        game->getSb()->setY(graphicsScreen.height() - 200);
+        game->getLt()->setY(game->getSb()->y() - 250);
+        game->getSb()->setX(100);
+        game->getSb()->setUseTransparency(usingTricaster);
+        commercial->setX(1920/2 - 160);
+        commercial->setY(graphicsScreen.height() - 350);
+        tv = new QGraphicsView(scene);
+        scene->addItem(defense);
+        scene->addItem(pitcherVert);
+        scene->addItem(battingOrderGraphic);
+        scene->addItem(lineScore);
+        scene->addItem(&standings);
+        standings.setX(0);
+        standings.setY(100);
+        lineScore->setX(graphicsScreen.width() / 2 - 310);
+        lineScore->setY(graphicsScreen.height() - 350);
 
-    tv->setGeometry(graphicsScreen);
-    tv->setSceneRect(0, 0,graphicsScreen.width(), graphicsScreen.height());
-    tv->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    tv->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    tv->setBackgroundBrush(bg);
-    tv->setFrameShape(QFrame::NoFrame);
+        defense->setX(1278 / 4);
+        defense->setY(810/4);
+        battingOrderGraphic->setX(1920-700);
+        battingOrderGraphic->setY(810/4);
+        pitcherVert->setX(1920 * 3 /4);
+        pitcherVert->setY(1080 / 2 - 388/2);
+        scene->addItem(&scheduleGraphic);
+        scheduleGraphic.setX(100);
+        scheduleGraphic.setY(game->getSb()->y() - 300);
 
-    controlPanel = new MainWindow(game, commercial, pitcherVert, defense, battingOrderGraphic, lineScore, &standings);
-    controlPanel->attachScheduleGraphic(&scheduleGraphic);
-    controlPanel->attachGraphicToHide(pitcherVert);
-    controlPanel->attachGraphicToHide(defense);
-    controlPanel->attachGraphicToHide(battingOrderGraphic);
-    controlPanel->attachGraphicToHide(&standings);
-    controlPanel->show();
-    if (!usingTricaster)
-        tv->showFullScreen();
-    else {
-        tricaster = new TricasterHandler(tricasterIp, port, tv, bg);
-        connect(scene, SIGNAL(changed(QList<QRectF>)), tricaster, SLOT(updatePortion(QList<QRectF>)));
-        connect(game->getSb(), SIGNAL(transparentField(int,int,int,int)), tricaster, SLOT(addAlphaRect(int,int,int,int)));
-        connect(game->getSb(), SIGNAL(removeTransparentField(int,int,int,int)), tricaster, SLOT(removeAlphaRect(int,int,int,int)));
-        connect(game->getSb(), SIGNAL(addNoTransparencyZone(QRect)), tricaster, SLOT(addNoTransparencyZone(QRect)));
-        connect(commercial, SIGNAL(addNoTransparencyZone(QRect)), tricaster, SLOT(addNoTransparencyZone(QRect)));
-        connect(game->getSb(),SIGNAL(removeNoTransparencyZone(QRect)), tricaster, SLOT(removeNoTransparencyZone(QRect)));
-        connect(commercial,SIGNAL(removeNoTransparencyZone(QRect)), tricaster, SLOT(removeNoTransparencyZone(QRect)));
+        tv->setGeometry(graphicsScreen);
+        tv->setSceneRect(0, 0,graphicsScreen.width(), graphicsScreen.height());
+        tv->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        tv->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        tv->setBackgroundBrush(bg);
+        tv->setFrameShape(QFrame::NoFrame);
+
+        controlPanel = new MainWindow(game, commercial, pitcherVert, defense, battingOrderGraphic, lineScore, &standings);
+        controlPanel->attachScheduleGraphic(&scheduleGraphic);
+        controlPanel->attachGraphicToHide(pitcherVert);
+        controlPanel->attachGraphicToHide(defense);
+        controlPanel->attachGraphicToHide(battingOrderGraphic);
+        controlPanel->attachGraphicToHide(&standings);
+        controlPanel->show();
+        if (!usingTricaster)
+            tv->showFullScreen();
+        else {
+            tricaster = new TricasterHandler(tricasterIp, port, tv, bg);
+            connect(scene, SIGNAL(changed(QList<QRectF>)), tricaster, SLOT(updatePortion(QList<QRectF>)));
+            connect(game->getSb(), SIGNAL(transparentField(int,int,int,int)), tricaster, SLOT(addAlphaRect(int,int,int,int)));
+            connect(game->getSb(), SIGNAL(removeTransparentField(int,int,int,int)), tricaster, SLOT(removeAlphaRect(int,int,int,int)));
+            connect(game->getSb(), SIGNAL(addNoTransparencyZone(QRect)), tricaster, SLOT(addNoTransparencyZone(QRect)));
+            connect(commercial, SIGNAL(addNoTransparencyZone(QRect)), tricaster, SLOT(addNoTransparencyZone(QRect)));
+            connect(game->getSb(),SIGNAL(removeNoTransparencyZone(QRect)), tricaster, SLOT(removeNoTransparencyZone(QRect)));
+            connect(commercial,SIGNAL(removeNoTransparencyZone(QRect)), tricaster, SLOT(removeNoTransparencyZone(QRect)));
+        }
+        return QApplication::exec();
     }
-    return QApplication::exec();
 }
 
 QImage MiamiAllAccessBaseball::getTrimmedLogo(QString filePath)
