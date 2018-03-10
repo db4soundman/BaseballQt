@@ -122,7 +122,7 @@ Scoreboard::Scoreboard(QColor awayCol, QColor homeCol, QString awayTeam, QString
 
     pitchingChange = false;
     showPP = false;
-    sponsor = true;
+    sponsor = false;
     showPdAndClock = true;
     showClock = true;
     count = "0-0";
@@ -171,22 +171,25 @@ Scoreboard::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
         //painter->drawRect(V_TEAM_BOX_STARTX , V_TEAM_BOX_STARTY, TEAM_BOX_WIDTH, TEAM_BOX_HEIGHT);
         // Away logo
         painter->drawPixmap(V_TEAM_BOX_STARTX + awayLogoWidthOffset, V_TEAM_BOX_STARTY + awayLogoHeightOffset, *awayLogo);
-        painter->setFont(awayRank->font());
-        painter->setPen(QColor(255, 255, 255));
-        painter->drawText(V_TEAM_BOX_STARTX + LOGO_WIDTH, V_TEAM_BOX_STARTY, awayRankOffset - LOGO_WIDTH, TEAM_BOX_HEIGHT, Qt::AlignCenter,  awayRank->toPlainText());
+
         painter->setFont(awayName->font());
         QString aName;
         if (pitchingChange && !topOfInning) {
             aName = "PITCHING CHANGE";
             painter->setFont(QFont("Arail",18, QFont::Bold));
-
+            painter->fillRect(V_TEAM_BOX_STARTX + LOGO_WIDTH, V_TEAM_BOX_STARTY, TEAM_BOX_WIDTH - LOGO_WIDTH, TEAM_BOX_HEIGHT, awayGradient );
+            painter->drawText(V_TEAM_BOX_STARTX + 5 + LOGO_WIDTH, V_TEAM_BOX_STARTY, TEAM_NAME_WIDTH, TEAM_BOX_HEIGHT, Qt::AlignVCenter,
+                              aName);
         }
         else {
+            painter->setFont(awayRank->font());
+            painter->setPen(QColor(255, 255, 255));
+            painter->drawText(V_TEAM_BOX_STARTX + LOGO_WIDTH, V_TEAM_BOX_STARTY, awayRankOffset - LOGO_WIDTH, TEAM_BOX_HEIGHT, Qt::AlignCenter,  awayRank->toPlainText());
             painter->setFont(awayName->font());
             aName = awayName->toPlainText();
+            painter->drawText(V_TEAM_BOX_STARTX + 5 + awayRankOffset, V_TEAM_BOX_STARTY, TEAM_NAME_WIDTH, TEAM_BOX_HEIGHT, Qt::AlignVCenter,
+                              aName);
         }
-        painter->drawText(V_TEAM_BOX_STARTX + 5 + awayRankOffset, V_TEAM_BOX_STARTY, TEAM_NAME_WIDTH, TEAM_BOX_HEIGHT, Qt::AlignVCenter,
-                          aName);
         // Away Score
         //painter->fillRect(375, TEAM_BOX_Y, 78, 42, scoreGradient);
 
@@ -207,14 +210,17 @@ Scoreboard::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
         if (pitchingChange && topOfInning) {
             hName = "PITCHING CHANGE";
             painter->setFont(QFont("Arail",18, QFont::Bold));
+            painter->fillRect(H_TEAM_BOX_STARTX+ LOGO_WIDTH, H_TEAM_BOX_STARTY, TEAM_BOX_WIDTH - LOGO_WIDTH, TEAM_BOX_HEIGHT, homeGradient);
+            painter->drawText(H_TEAM_BOX_STARTX + 5 + LOGO_WIDTH, H_TEAM_BOX_STARTY, TEAM_NAME_WIDTH, TEAM_BOX_HEIGHT, Qt::AlignVCenter,
+                              hName);
         }
         else {
             painter->setFont(homeName->font());
             hName = homeName->toPlainText();
+            painter->drawText(H_TEAM_BOX_STARTX + 5 + homeRankOffset, H_TEAM_BOX_STARTY, TEAM_NAME_WIDTH, TEAM_BOX_HEIGHT, Qt::AlignVCenter,
+                              hName);
         }
 
-        painter->drawText(H_TEAM_BOX_STARTX + 5 + homeRankOffset, H_TEAM_BOX_STARTY, TEAM_NAME_WIDTH, TEAM_BOX_HEIGHT, Qt::AlignVCenter,
-                          hName);
         // Home Score
 //        painter->fillRect(730, TEAM_BOX_Y, 78, 42, scoreGradient);
 
@@ -222,9 +228,10 @@ Scoreboard::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
         painter->drawText(H_TEAM_BOX_STARTX + TEAM_NAME_WIDTH, H_TEAM_BOX_STARTY, SCORE_WIDTH, TEAM_BOX_HEIGHT, Qt::AlignCenter, homeScore->toPlainText());
         if (sponsor) {
             //StatBarText
+            painter->fillRect(INNING_X, INNING_Y, SCOREBOARD_WIDTH,CLOCK_FIELD_HEIGHT, clockGradient);
             painter->setPen(QColor(255, 255, 255));
             painter->setFont(topBarText->font());
-           // painter->drawText(0,SPONSOR_BAR_Y,SCOREBOARD_WIDTH,SPONSOR_BAR_HEIGHT, Qt::AlignCenter, topBarText->toPlainText());
+            painter->drawText(INNING_X, INNING_Y, SCOREBOARD_WIDTH,CLOCK_FIELD_HEIGHT, Qt::AlignCenter, topBarText->toPlainText());
         }
         painter->translate(DIAMOND_START + 20,40);
         // 3rd base
@@ -402,18 +409,21 @@ Scoreboard::updateInning(QString mod, int pd) {
 void
 Scoreboard::showPd() {
     showPdAndClock = true;
+    sponsor = false;
     scene()->update(x() + INNING_X, y() + INNING_Y, SCOREBOARD_WIDTH, CLOCK_FIELD_HEIGHT);
 }
 
 void
 Scoreboard::final() {
     showPdAndClock = false;
+    sponsor = false;
     centeredTimeText = "FINAL";
     scene()->update(x() + INNING_X, y() + INNING_Y, SCOREBOARD_WIDTH, CLOCK_FIELD_HEIGHT);
 }
 
 void
 Scoreboard::changeTopBarText(QString text) {
+    sponsor = true;
     topBarText->setPlainText(text);
     int subtraction = 1;
     topBarText->setFont(QFont("Arial", 18, QFont::Bold));
@@ -425,24 +435,26 @@ Scoreboard::changeTopBarText(QString text) {
         QFontMetrics temp(topBarText->font());
         fontSize = temp;
     }
-    scene()->update(x(), y() + SPONSOR_BAR_Y,SCOREBOARD_WIDTH,SPONSOR_BAR_Y);
+    scene()->update(x() + INNING_X, y() + INNING_Y,SCOREBOARD_WIDTH,CLOCK_FIELD_HEIGHT);
 }
 
 void
 Scoreboard::displaySponsor() {
-    topBarText->setPlainText(sponsorText);
-    int subtraction = 1;
-    topBarText->setFont(defaultSponsorText);
-    QFontMetrics fontSize(topBarText->font());
-    while (fontSize.width(sponsorText) > SCOREBOARD_WIDTH - 10) {
-        QFont tempFont("Arial", defaultSponsorText.pointSize() - subtraction, QFont::Bold);
-        //topBarText->font().setPointSize(defaultSponsorText.pointSize()-subtraction);
-        subtraction++;
-        topBarText->setFont(tempFont);
-        QFontMetrics temp(topBarText->font());
-        fontSize = temp;
-    }
-    scene()->update(x(), y() + SPONSOR_BAR_Y,SCOREBOARD_WIDTH,SPONSOR_BAR_Y);
+//    topBarText->setPlainText(sponsorText);
+//    int subtraction = 1;
+//    topBarText->setFont(defaultSponsorText);
+//    QFontMetrics fontSize(topBarText->font());
+//    while (fontSize.width(sponsorText) > SCOREBOARD_WIDTH - 10) {
+//        QFont tempFont("Arial", defaultSponsorText.pointSize() - subtraction, QFont::Bold);
+//        //topBarText->font().setPointSize(defaultSponsorText.pointSize()-subtraction);
+//        subtraction++;
+//        topBarText->setFont(tempFont);
+//        QFontMetrics temp(topBarText->font());
+//        fontSize = temp;
+//    }
+//    scene()->update(x(), y() + SPONSOR_BAR_Y,SCOREBOARD_WIDTH,SPONSOR_BAR_Y);
+    sponsor=false;
+     scene()->update(x() + INNING_X, y() + INNING_Y,SCOREBOARD_WIDTH,CLOCK_FIELD_HEIGHT);
 }
 
 void Scoreboard::toggleFirstBase(bool on)

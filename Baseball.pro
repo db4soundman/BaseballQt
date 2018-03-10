@@ -10,7 +10,7 @@ CONFIG += c++11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = Graphics
+TARGET = BaseballGraphics
 TEMPLATE = app
 INCLUDEPATH += GUI \
                Wizard \

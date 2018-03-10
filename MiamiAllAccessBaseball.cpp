@@ -69,13 +69,13 @@ int
 MiamiAllAccessBaseball::exec() {
     checkAppDirectory();
 
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("Version Check");
-    msgBox.setText("You are using update 5, updated on May 2. Click 'No' if this is incorrect.");
-    msgBox.setStandardButtons(QMessageBox::Yes);
-    msgBox.addButton(QMessageBox::No);
-    msgBox.setDefaultButton(QMessageBox::Yes);
-    if(msgBox.exec() == QMessageBox::Yes){
+//    QMessageBox msgBox;
+//    msgBox.setWindowTitle("Version Check");
+//    msgBox.setText("You are using update 5, updated on May 2. Click 'No' if this is incorrect.");
+//    msgBox.setStandardButtons(QMessageBox::Yes);
+//    msgBox.addButton(QMessageBox::No);
+//    msgBox.setDefaultButton(QMessageBox::Yes);
+//    if(msgBox.exec() == QMessageBox::Yes){
 
         // Make vars, create wizard.
         scene = new QGraphicsScene();
@@ -174,7 +174,7 @@ MiamiAllAccessBaseball::exec() {
             connect(commercial,SIGNAL(removeNoTransparencyZone(QRect)), tricaster, SLOT(removeNoTransparencyZone(QRect)));
         }
         return QApplication::exec();
-    }
+   // }
 }
 
 QImage MiamiAllAccessBaseball::getTrimmedLogo(QString filePath)

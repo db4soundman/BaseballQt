@@ -14,10 +14,10 @@ DisplayControls::DisplayControls(BaseballGame* game, CommercialGraphic* comGraph
     fr->addWidget(&customtext, 1);
     customButton.setText("Custom Text");
     fr->addWidget(&customButton);
-    sponsorButton.setText("Sponsor");
-    fr->addWidget(&sponsorButton);
     announcersButton.setText("Announcers");
     fr->addWidget(&announcersButton);
+    sponsorButton.setText("Hide Text");
+    fr->addWidget(&sponsorButton);
     main->addLayout(fr);
 
     QHBoxLayout* sr = new QHBoxLayout();
