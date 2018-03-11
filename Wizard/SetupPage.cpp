@@ -9,14 +9,15 @@
 #include <QStringList>
 
 
-SetupPage::SetupPage(QString* pAwayName, QString* pHomeName, QString* pAwayFile,
+SetupPage::SetupPage(School *pawaySchool, School *phomeSchool, QString* pAwayFile,
                      QString* pHomeFile, QString* pSponsor, QString* pAnnouncer,
-                     QString* pAwayRank, QString* pHomeRank, QColor* pAwayColor,
-                     QColor* pHomeColor, QColor* pBg, bool *pUsingTricaster, QString* pawayLogo, QString* tricasterIp,
-                     QString* aSname, QString* hSname, int *portNum): homeColorPrev(16,16),
+                     QString* pAwayRank, QString* pHomeRank, QColor* pBg, bool *pUsingTricaster,
+                     QString* tricasterIp, int *portNum): homeColorPrev(16,16),
     awayColorPrev(16,16) {
-    homeColorPrev.fill(*pHomeColor);
-    awayColorPrev.fill(*pAwayColor);
+    awaySchool = pawaySchool;
+    homeSchool = phomeSchool;
+    homeColorPrev.fill(homeSchool->getPrimaryColor());
+    awayColorPrev.fill(awaySchool->getPrimaryColor());
     homeColorBox = new QLabel();
     awayColorBox = new QLabel();
     homeColorBox->setPixmap(homeColorPrev);
@@ -32,22 +33,21 @@ SetupPage::SetupPage(QString* pAwayName, QString* pHomeName, QString* pAwayFile,
     //browseStatCrew.setText("GameFile");
     browseLogo.setText("Logo");
     profileDialog.setText("Load Profile");
-    awayName = pAwayName;
-    homeName = pHomeName;
+   // homeName = homeSchool->getFullName();
     awayFile = pAwayFile;
     homeFile = (pHomeFile);
     sponsor = (pSponsor);
     announcer = (pAnnouncer);
     awayRank = (pAwayRank);
     homeRank = (pHomeRank);
-    awayColor = (pAwayColor);
-    homeColor = pHomeColor;
+   // awayColor = (pAwayColor);
+   // homeColor = pHomeColor;
     //statCrew = pStatCrew;
-    awayShort = aSname;
-    homeShort = hSname;
+  //  awayShort = aSname;
+  //  homeShort = hSname;
     bg = pBg;
     usingTricaster = pUsingTricaster;
-    awayLogo = pawayLogo;
+   // awayLogo = pawayLogo;
     this->tricasterIp = tricasterIp;
     port = portNum;
     QGridLayout* mainLayout = new QGridLayout();
@@ -105,9 +105,9 @@ SetupPage::SetupPage(QString* pAwayName, QString* pHomeName, QString* pAwayFile,
     connect(&profileDialog, SIGNAL(clicked()), this, SLOT(profileBrowse()));
     connect(swatchSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(applyProfile()));
 
-    homeNameLine.setText(*homeName);
+    homeNameLine.setText(homeSchool->getFullName());
     announcerLine.setText(*announcer);
-    homeShortLine.setText(*homeShort);
+    homeShortLine.setText(homeSchool->getShortName());
     setTitle("Game Information");
     //connect(&profileSelector, SIGNAL(closed(Profile)), this, SLOT(applyProfile(Profile)));
 }
@@ -118,12 +118,12 @@ bool SetupPage::validatePage()
     *homeRank = homeRankLine.text();
     *sponsor = sponsorLine.text();
     *announcer = announcerLine.text();
-    *awayName = awayNameLine.text().toUpper();
-    *homeName = homeNameLine.text().toUpper();
+    awaySchool->setFullName(awayNameLine.text().toUpper());
+    homeSchool->setFullName(homeNameLine.text().toUpper());
     *usingTricaster = tricasterBox->isChecked();
     *tricasterIp = tricasterIpLine.text();
-    *awayShort = awayShortLine.text().toUpper();
-    *homeShort = homeShortLine.text().toUpper();
+    awaySchool->setShortName(awayShortLine.text().toUpper());
+    homeSchool->setShortName(homeShortLine.text().toUpper());
     *port = portSelector->currentIndex() + 7000;
     return true;
 }
@@ -150,15 +150,15 @@ void SetupPage::profileBrowse()
         csv.open(QIODevice::ReadOnly);
         QTextStream stream(&csv);
         while (!stream.atEnd()) {
-        QStringList data = stream.readLine().split(',');
-        QString name = file.mid(file.lastIndexOf('/')+1).split('.')[0];
-        if (data[4] == name) {
-            Profile p(data[1], data[2], data[3], data[0], file, QStandardPaths::writableLocation(QStandardPaths::PicturesLocation)+"/IMS Images/Swatches/"+data[4]+".PNG");
-            activeProfile = p;
-            applyProfile();
-            csv.close();
-            break;
-        }
+            QStringList data = stream.readLine().split(',');
+            QString name = file.mid(file.lastIndexOf('/')+1).split('.')[0];
+            if (data[4] == name) {
+                Profile p(data[1], data[2], data[3], data[0], file, QStandardPaths::writableLocation(QStandardPaths::PicturesLocation)+"/IMS Images/Swatches/"+data[4]+".PNG");
+                activeProfile = p;
+                applyProfile();
+                csv.close();
+                break;
+            }
         }
     }
 
@@ -166,9 +166,9 @@ void SetupPage::profileBrowse()
 
 void SetupPage::awayColorDiag()
 {
-    QColor temp = QColorDialog::getColor(*awayColor, 0, "Away Color");
+    QColor temp = QColorDialog::getColor(awaySchool->getPrimaryColor(), 0, "Away Color");
     if (temp.isValid()) {
-        *awayColor = temp;
+        awaySchool->setPrimaryColor(temp);
         awayColorPrev.fill(temp);
         awayColorBox->setPixmap(awayColorPrev);
     }
@@ -176,9 +176,9 @@ void SetupPage::awayColorDiag()
 
 void SetupPage::homeColorDiag()
 {
-    QColor temp = QColorDialog::getColor(*homeColor, 0, "Home Color");
+    QColor temp = QColorDialog::getColor(homeSchool->getPrimaryColor(), 0, "Home Color");
     if (temp.isValid()) {
-        *homeColor = temp;
+        homeSchool->setPrimaryColor(temp);
         homeColorPrev.fill(temp);
         homeColorBox->setPixmap(homeColorPrev);
 
@@ -194,8 +194,11 @@ void SetupPage::bgDiag()
 
 void SetupPage::logoBrowse() {
     QString file = QFileDialog::getOpenFileName(0, "Away Logo");
-    if (!file.isEmpty())
-        *awayLogo = file;
+    if (!file.isEmpty()) {
+        QPixmap p(file);
+        awaySchool->setLogo(p);
+    }
+
 }
 
 void SetupPage::applyProfile()
@@ -203,16 +206,18 @@ void SetupPage::applyProfile()
     if (!activeProfile.getLogoPath().isEmpty()) {
         awayNameLine.setText(activeProfile.getFullName());
         QImage swatch(activeProfile.getSwatchPath());
+        School s(activeProfile, swatch, QPixmap(activeProfile.getLogoPath()));
+        QColor awayColor;
         switch (swatchSelector->currentIndex()) {
         case 0:
-            *awayColor = swatch.pixel(0,10);
+            awayColor = s.getPrimaryColor();
             break;
         default:
-            *awayColor = swatch.pixel(0,14);
+            awayColor = s.getSecondaryColor();
         }
-        awayColorPrev.fill(*awayColor);
+        awayColorPrev.fill(awayColor);
         awayColorBox->setPixmap(awayColorPrev);
-        *awayLogo = activeProfile.getLogoPath();
+        *awaySchool = s;
         awayShortLine.setText(activeProfile.getShortName());
     }
 }

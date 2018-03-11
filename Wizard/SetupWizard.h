@@ -6,13 +6,12 @@
 #include <QColor>
 #include "SetupPage.h"
 #include "AwayTeamInfo.h"
+#include "School.h"
 
 class SetupWizard : public QWizard {
 public:
-    SetupWizard(QString* pAwayName, QString* pHomeName, QString* pAwayFile, QString* pHomeFile,
-                QString* pSponsor, QString* pAnnouncer, QString* pAwayRank, QString* pHomeRank,
-                QColor* pAwayColor, QColor* pHomeColor, QColor* pBg, bool* usingTricaster,
-                QString *awayLogo, QString *tricasterIp, QString* aSname, QString* hSname, int *port);
+    SetupWizard(School* awaySchool, School* homeSchool,QString* pAwayFile, QString* pHomeFile,
+                QString* pSponsor, QString* pAnnouncer, QString* pAwayRank, QString* pHomeRank, QColor* pBg, bool* usingTricaster, QString *tricasterIp, int *port);
 
 private:
     SetupPage wizpage;

@@ -38,6 +38,7 @@ public:
     static QPixmap getImgFromESPN(QString name, int maxHeight, int maxWidth = 1920);
 
     int exec();
+    static QImage getTrimmedLogo(QString filePath);
 
 private:
     QGraphicsView* tv;
@@ -55,7 +56,7 @@ private:
     ScheduleGraphic scheduleGraphic;
     StandingsGraphic standings;
 
-    static QImage getTrimmedLogo(QString filePath);
+
 };
 
 #endif // MIAMIALLACCESSBASEBALL_H

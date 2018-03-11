@@ -10,14 +10,13 @@
 #include <QLabel>
 #include <QComboBox>
 #include "Profile.h"
+#include "School.h"
 
 class SetupPage : public QWizardPage {
     Q_OBJECT
 public:
-    SetupPage(QString* pAwayName, QString* pHomeName, QString* pAwayFile, QString* pHomeFile,
-              QString* pSponsor, QString* pAnnouncer, QString* pAwayRank, QString* pHomeRank,
-              QColor* pAwayColor, QColor* pHomeColor, QColor* pBg, bool *pUsingTricaster,
-              QString *pawayLogo, QString *tricasterIp, QString *aSname, QString *hSname, int* portNum);
+    SetupPage(School* pawaySchool, School* phomeSchool, QString* pAwayFile, QString* pHomeFile,
+              QString* pSponsor, QString* pAnnouncer, QString* pAwayRank, QString* pHomeRank, QColor* pBg, bool *pUsingTricaster, QString *tricasterIp, int* portNum);
     bool validatePage();
 
 private slots:
@@ -31,8 +30,8 @@ private slots:
     void applyProfile();
 
 private:
-    QString* awayName, *homeName, *awayRank, *homeRank, *homeFile, *awayFile, *sponsor, *announcer, *awayLogo, *tricasterIp, *awayShort, *homeShort;
-    QColor* awayColor, *homeColor,  *bg;
+    QString *awayRank, *homeRank, *homeFile, *awayFile, *sponsor, *announcer, *tricasterIp;
+    QColor *bg;
     QPushButton browseAway, browseHome, chooseHColor, chooseAColor, chooseBg, browseStatCrew, browseLogo, profileDialog;
     QLineEdit homeNameLine, awayNameLine, awayRankLine, homeRankLine, sponsorLine, announcerLine, tricasterIpLine, awayShortLine, homeShortLine;
     QCheckBox* tricasterBox;
@@ -42,6 +41,7 @@ private:
     bool* usingTricaster;
     int *port;
     Profile activeProfile;
+    School *awaySchool, *homeSchool;
 };
 
 #endif // SETUPPAGE_H

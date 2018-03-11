@@ -84,8 +84,12 @@ MiamiAllAccessBaseball::exec() {
                 awayLogo, tricasterIp, awayShort, homeShort;
         QColor awayColor, homeColor,  bg;
         int port;
+        School homeSchool = School::getSchoolFromESPN("MIAMI_OH");
+        School awaySchool;
         bool usingTricaster = true;
-        homeColor.setRgb(226, 24, 54);
+        homeSchool.setShortName("MIAMI");
+        homeSchool.setTitle("Miami");
+        homeSchool.setFullName("MIAMI");
         bg.setRgb(0,120,0);
         announcer = QString::fromStdString(params.stringValue("ANNOUNCER"));
         sponsor = QString::fromStdString(params.stringValue("SPONSOR"));
@@ -94,9 +98,9 @@ MiamiAllAccessBaseball::exec() {
         tricasterIp = QString::fromStdString(params.stringValue("IP"));
         QDesktopWidget desktop;
 
-        SetupWizard wizard(&awayName, &homeName, &awayFile, &homeFile, &sponsor,
-                           &announcer, &awayRank, &homeRank, &awayColor, &homeColor,
-                           &bg, &usingTricaster, &awayLogo, &tricasterIp, &awayShort, &homeShort, &port);
+        SetupWizard wizard(&awaySchool, &homeSchool, &awayFile, &homeFile, &sponsor,
+                           &announcer, &awayRank, &homeRank,
+                           &bg, &usingTricaster, &tricasterIp, &port);
         wizard.exec();
         QRect graphicsScreen = usingTricaster ? QRect(0,0,1920,1080) : desktop.screenGeometry(0);
         QImage img = getTrimmedLogo(awayLogo);

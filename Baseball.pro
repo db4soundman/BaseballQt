@@ -67,7 +67,8 @@ SOURCES += main.cpp\
     Standings/StandingsGraphic.cpp \
     Standings/StandingsWidget.cpp \
     graphic.cpp \
-    LineScore.cpp
+    LineScore.cpp \
+    School.cpp
 
 HEADERS  += MainWindow.h \
     Scoreboard.h \
@@ -116,7 +117,8 @@ HEADERS  += MainWindow.h \
     Standings/StandingsGraphic.h \
     Standings/StandingsWidget.h \
     graphic.h \
-    LineScore.h
+    LineScore.h \
+    School.h
 
 
 
