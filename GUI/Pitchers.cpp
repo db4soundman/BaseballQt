@@ -2,11 +2,12 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QLabel>
+#include "MiamiAllAccessBaseball.h"
 
 Pitchers::Pitchers(BaseballGame* game, PitcherGraphic *pg) {
     QHBoxLayout* main = new QHBoxLayout();
     QVBoxLayout* away = new QVBoxLayout();
-    away->addWidget(new QLabel(game->getAwayName()));
+    away->addWidget(new QLabel(MiamiAllAccessBaseball::awaySchool.getTitle()));
     awaySeason.setText("Season");
     homeSeason.setText("Season");
     awayPitcher.addItems(game->getAwayTeam()->getGuiNames());
@@ -18,7 +19,7 @@ Pitchers::Pitchers(BaseballGame* game, PitcherGraphic *pg) {
     away->addWidget(&awaySB);
 
     QVBoxLayout* home = new QVBoxLayout();
-    home->addWidget(new QLabel(game->getHomeName()));
+    home->addWidget(new QLabel(MiamiAllAccessBaseball::homeSchool.getTitle()));
     homePitcher.addItems(game->getHomeTeam()->getGuiNames());
     home->addWidget(&homePitcher);
     homeLt.setText("Game Lower Third");

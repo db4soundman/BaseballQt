@@ -14,8 +14,7 @@
 class Scoreboard : public QObject, public QGraphicsRectItem {
     Q_OBJECT
 public:
-     Scoreboard(QColor awayCol, QColor homeCol, QString awayTeam, QString homeTeam,
-                 QString sponsorText, QString pAwayRank, QString pHomeRank, QPixmap pawayLogo);
+     Scoreboard(QString sponsorText, QString pAwayRank, QString pHomeRank);
      void paint(QPainter * painter,
                 const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 
@@ -53,10 +52,10 @@ public slots:
      void toggleThirdBase(bool on);
 
 private:
-     QPixmap* homeLogo, *awayLogo;
+     QPixmap homeLogo, awayLogo;
      //QPixmap emptyBase, filledBase;
      QPixmap watermark;
-     QColor homeColor, awayColor;
+     //QColor homeColor, awayColor;
      QGraphicsTextItem* homeName;
      QGraphicsTextItem* awayName;
      QGraphicsTextItem* homeScore;

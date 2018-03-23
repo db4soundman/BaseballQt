@@ -12,7 +12,7 @@
 class CommercialGraphic : public QObject, public QGraphicsRectItem {
     Q_OBJECT
 public:
-    CommercialGraphic(BaseballGame* game, int width, QPixmap pawayLogo, QGraphicsItem *parent = 0);
+    CommercialGraphic(BaseballGame* game, int width, QGraphicsItem *parent = 0);
 
     void paint(QPainter * painter,
                const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
@@ -43,7 +43,7 @@ private:
     int clockStatus, awayHeightOffset, awayWidthOffset;
     void checkAwayFont();
     void prepareGradients(QColor awayColor, QColor homeColor);
-    QPixmap homeLogo, *awayLogo;
+    QPixmap homeLogo, awayLogo;
 };
 
 #endif // COMMERCIALGRAPHIC_H

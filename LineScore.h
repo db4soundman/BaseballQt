@@ -10,7 +10,7 @@ class LineScore : public Graphic, public QGraphicsRectItem
 {
     Q_OBJECT
 public:
-    LineScore(BaseballGame* pGame, QPixmap pawayLogo, QObject *parent = 0);
+    LineScore(BaseballGame* pGame, QObject *parent = 0);
 
     void paint(QPainter * painter,
                const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
@@ -41,7 +41,7 @@ private:
     QFont getDueUpFont();
     void prepareGradients(QColor awayColor, QColor homeColor);
     void prepareDueUp();
-    QPixmap homeLogo, *awayLogo;
+    QPixmap homeLogo, awayLogo;
 };
 
 #endif // LINESCORE_H

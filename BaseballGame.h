@@ -8,14 +8,13 @@
 #include "Scoreboard.h"
 #include "LowerThird.h"
 #include "BaseballTeam.h"
-
+#include "School.h"
 
 class BaseballGame : public QObject {
     Q_OBJECT
 public:
-    BaseballGame(QString awayName, QString homeName, QColor awayColor, QColor homeColor,
-               QString awayXML, QString homeXML, QString sponsor, QString announcers,
-               QString awayRank, QString homeRank, int screenWidth, QPixmap awayLogo);
+    BaseballGame(QString awayXML, QString homeXML, QString sponsor, QString announcers,
+               QString awayRank, QString homeRank, int screenWidth);
 
     Scoreboard* getSb();
     LowerThird* getLt();
@@ -25,12 +24,6 @@ public:
 
     QString getAnnouncers() const;
     void setAnnouncers(const QString& value);
-
-    QString getHomeName() const;
-    void setHomeName(const QString& value);
-
-    QString getAwayName() const;
-    void setAwayName(const QString& value);
 
     BaseballTeam* getHomeTeam() const;
 
@@ -43,12 +36,6 @@ public:
 
     QString getAwayRank() const;
     void setAwayRank(const QString& value);
-
-    QColor getHomeColor() const;
-    void setHomeColor(const QColor& value);
-
-    QColor getAwayColor() const;
-    void setAwayColor(const QColor& value);
 
     int getAwayScore() const;
     void setAwayScore(int value);
@@ -189,13 +176,12 @@ signals:
     void pitchCountUpdate(QString);
 
 private:
-    QString homeName, awayName, sponsor, announcers, homeRank,
+    QString sponsor, announcers, homeRank,
     awayRank, inningMod;
     int awayScore, homeScore, period, homeHits, awayHits, homeErrors, awayErrors,
     homeBatter, awayBatter, strikes, balls, outs;
     //Clock gameClock;
     bool isFinal, onFirst, onSecond, onThird;
-    QColor homeColor, awayColor;
     BaseballTeam* homeTeam;
     BaseballTeam* awayTeam;
     Scoreboard sb;

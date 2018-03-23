@@ -26,7 +26,6 @@ private:
 
     void prepareColor();
     void prepareFontSize();
-    QColor awayColor, homeColor;
     QLinearGradient homeGradient, homeStatGradient, awayGradient, awayStatGradient, mainGradient;
     QFont font, nameFont;
 };

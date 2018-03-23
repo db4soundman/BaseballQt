@@ -25,7 +25,6 @@ private:
     bool show, homeTeam;
     BaseballTeam* homeTeamP, *awayTeam;
     void prepareColor();
-    QColor awayColor, homeColor;
     QLinearGradient homeGradient, awayGradient;
     QFont font;
     QString homeName, awayName;

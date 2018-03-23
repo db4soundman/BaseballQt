@@ -31,7 +31,8 @@ public:
     static QString getAppDirPath();
     static QString getEspnImagesPath();
 
-
+    static School awaySchool;
+    static School homeSchool;
     void checkAppDirectory();
 
     static QPixmap getImgFromResources(QString name, int maxHeight, int maxWidth = 1920);

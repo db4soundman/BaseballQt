@@ -2,15 +2,12 @@
 #include "SeasonXMLHandler.h"
 #include "GameXmlHandler.h"
 #include "ClockDialog.h"
+#include "MiamiAllAccessBaseball.h"
 
-
-BaseballGame::BaseballGame(QString awayName, QString homeName, QColor awayColor, QColor homeColor,
-                       QString awayXML, QString homeXML, QString sponsor, QString announcers,
-                       QString awayRank, QString homeRank, int screenWidth, QPixmap awayLogo) :
-    awayName(awayName), homeName(homeName), sponsor(sponsor), announcers(announcers), awayColor(awayColor),
-    homeColor(homeColor), awayRank(awayRank), homeRank(homeRank),
-    sb(awayColor, homeColor, awayName, homeName, sponsor, /*&gameClock,*/ awayRank, homeRank, awayLogo),
-    lt (awayColor, homeColor, screenWidth) {
+BaseballGame::BaseballGame(QString awayXML, QString homeXML, QString sponsor, QString announcers,
+                       QString awayRank, QString homeRank, int screenWidth) :
+    sponsor(sponsor), announcers(announcers), awayRank(awayRank), homeRank(homeRank),
+    sb(sponsor, awayRank, homeRank), lt (screenWidth) {
     isFinal = false;
     awayBatter = homeBatter= 0;
     awayScore = 0;
@@ -185,7 +182,7 @@ void BaseballGame::gatherBatterSeasonSb()
 {
      BaseballPlayer* player = getBatter();
      QString text = player->getName() + " (" +
-             inningMod == "Top" ? getAwayName() : getHomeName()+"): ";
+             inningMod == "Top" ? MiamiAllAccessBaseball::awaySchool.getShortName() : MiamiAllAccessBaseball::homeSchool.getShortName()+"): ";
      text += player->getAvg() + ", " + QString::number(player->getWalks()) + " BB, "+
              QString::number(player->getStrikeouts()) + " K";
      sb.changeTopBarText(text);
@@ -238,7 +235,7 @@ void BaseballGame::gatherAwayPitcherRecapLt()
 void BaseballGame::gatherHomePitcherSb()
 {
     BaseballPlayer* player = getHomeTeam()->getPitcher();
-    QString text = player->getName() + " (" + getHomeName()+"): ";
+    QString text = player->getName() + " (" + MiamiAllAccessBaseball::homeSchool.getShortName()+"): ";
     text += QString::number(player->getPitchCount()) + " PITCHES, " + QString::number(player->getBallsThrown()) + " BALLS, "+
             QString::number(player->getStrikesThrown()) + " STRIKES";
 
@@ -248,7 +245,7 @@ void BaseballGame::gatherHomePitcherSb()
 void BaseballGame::gatherAwayPitcherSb()
 {
     BaseballPlayer* player = getAwayTeam()->getPitcher();
-    QString text = player->getName() + " (" + getAwayName()+"): ";
+    QString text = player->getName() + " (" + MiamiAllAccessBaseball::awaySchool.getShortName()+"): ";
     text += QString::number(player->getPitchCount()) + " PITCHES, " + QString::number(player->getBallsThrown()) + " BALLS, "+
             QString::number(player->getStrikesThrown()) + " STRIKES";
 
@@ -280,7 +277,7 @@ void BaseballGame::gatherHomeSeasonStatsLt(int index)
 void BaseballGame::gatherHomeSeasonStatsSb(int index)
 {
     BaseballPlayer* player = getHomeTeam()->getPlayer(index);
-    QString text = player->getName() + " (" + getHomeName()+"): ";
+    QString text = player->getName() + " (" + MiamiAllAccessBaseball::homeSchool.getShortName()+"): ";
     text += player->getAvg() + ", " + QString::number(player->getWalks()) + " BB, "+
             QString::number(player->getStrikeouts()) + " K";
 
@@ -330,7 +327,7 @@ void BaseballGame::gatherAwayGameStatsLt(int index)
 void BaseballGame::gatherHomeGameStatsSb(int index)
 {
     BaseballPlayer* player = getHomeTeam()->getPlayer(index);
-    QString text = player->getName() + " (" + getHomeName()+"): ";
+    QString text = player->getName() + " (" + MiamiAllAccessBaseball::homeSchool.getShortName()+"): ";
 
    // sb.changeTopBarText(text);
 }
@@ -365,7 +362,7 @@ void BaseballGame::gatherAwaySeasonStatsLt(int index)
 void BaseballGame::gatherAwaySeasonStatsSb(int index)
 {
     BaseballPlayer* player = getAwayTeam()->getPlayer(index);
-    QString text = player->getName() + " (" + getAwayName()+"): ";
+    QString text = player->getName() + " (" + MiamiAllAccessBaseball::awaySchool.getShortName()+"): ";
     text += player->getAvg() + ", " + QString::number(player->getWalks()) + " BB, "+
             QString::number(player->getStrikeouts()) + " K";
 
@@ -375,7 +372,7 @@ void BaseballGame::gatherAwaySeasonStatsSb(int index)
 void BaseballGame::gatherAwayGameStatsSb(int index)
 {
     BaseballPlayer* player = getAwayTeam()->getPlayer(index);
-    QString text = player->getName() + " (" + getAwayName()+"): ";
+    QString text = player->getName() + " (" + MiamiAllAccessBaseball::awaySchool.getShortName()+"): ";
 
    // sb.changeTopBarText(text);
 }
@@ -396,26 +393,6 @@ BaseballTeam* BaseballGame::getHomeTeam() const
     return homeTeam;
 }
 
-
-QString BaseballGame::getAwayName() const
-{
-    return awayName;
-}
-
-void BaseballGame::setAwayName(const QString& value)
-{
-    awayName = value;
-}
-
-QString BaseballGame::getHomeName() const
-{
-    return homeName;
-}
-
-void BaseballGame::setHomeName(const QString& value)
-{
-    homeName = value;
-}
 
 QString BaseballGame::getAnnouncers() const
 {
@@ -1162,26 +1139,6 @@ int BaseballGame::getAwayScore() const
 void BaseballGame::setAwayScore(int value)
 {
     awayScore = value;
-}
-
-QColor BaseballGame::getAwayColor() const
-{
-    return awayColor;
-}
-
-void BaseballGame::setAwayColor(const QColor& value)
-{
-    awayColor = value;
-}
-
-QColor BaseballGame::getHomeColor() const
-{
-    return homeColor;
-}
-
-void BaseballGame::setHomeColor(const QColor& value)
-{
-    homeColor = value;
 }
 
 QString BaseballGame::getAwayRank() const

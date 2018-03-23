@@ -13,7 +13,7 @@
 class LowerThird : public QObject, public QGraphicsRectItem {
     Q_OBJECT
 public:
-    LowerThird(QColor awayColor, QColor homeColor, int screenWidth, QGraphicsItem* parent = 0);
+    LowerThird(int screenWidth, QGraphicsItem* parent = 0);
 
     void paint(QPainter * painter,
                const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
@@ -35,7 +35,6 @@ private:
     QString name, number, year, firstName, lastName;
     QFont statFont, nameFont;
     QLinearGradient gradient, statGradient, homeNameGradient, awayNameGradient, homeStatGradient, awayStatGradient;
-    QColor homeTeamMain, awayTeamMain;
 
     QString homeName, awayName, homeLabel, awayLabel, homeStat, awayStat;
 

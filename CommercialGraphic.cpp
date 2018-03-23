@@ -1,6 +1,7 @@
 #include "CommercialGraphic.h"
 #include <QFontMetrics>
 #include <QGraphicsScene>
+#include "MiamiAllAccessBaseball.h"
 
 #define WIDTH 320
 #define HEIGHT 160
@@ -17,15 +18,16 @@
 #define INTERMISSION 1
 #define FINAL 2
 
-CommercialGraphic::CommercialGraphic(BaseballGame* game, int width, QPixmap pawayLogo, QGraphicsItem* parent) :
-    QGraphicsRectItem(parent), homeLogo(QPixmap(":/images/M.png")) {
+CommercialGraphic::CommercialGraphic(BaseballGame* game, int width, QGraphicsItem* parent) :
+    QGraphicsRectItem(parent), homeLogo(MiamiAllAccessBaseball::homeSchool.getLogo()),
+    awayLogo(MiamiAllAccessBaseball::awaySchool.getLogo()) {
     baseballGame = game;
     show = false;
     QFont font("Arial", 20, QFont::Bold);
-    away = new QGraphicsTextItem(game->getAwayName());
+    away = new QGraphicsTextItem(MiamiAllAccessBaseball::awaySchool.getTitle());
     away->setFont(font);
     checkAwayFont();
-    home = new QGraphicsTextItem(game->getHomeName());
+    home = new QGraphicsTextItem(MiamiAllAccessBaseball::homeSchool.getTitle());
     home->setFont(font);
     networkLogo = QPixmap(":/images/Watermark.png").scaledToWidth(200, Qt::SmoothTransformation);
     homeTeamGradient.setStart(0, H_TEAM_Y);
@@ -35,23 +37,22 @@ CommercialGraphic::CommercialGraphic(BaseballGame* game, int width, QPixmap pawa
     blackGradient.setStart(0,0);
     blackGradient.setFinalStop(0, V_TEAM_Y);
     //descriptiveFont = sponsorFont;
-    prepareGradients(game->getAwayColor(), game->getHomeColor());
+    prepareGradients(MiamiAllAccessBaseball::awaySchool.getPrimaryColor(), MiamiAllAccessBaseball::homeSchool.getPrimaryColor());
     maaText = "Miami Baseball";
     clockStatus = SHOW_CLOCK;
 
-    awayLogo = new QPixmap(pawayLogo);
-    if (awayLogo->height() > TEAM_HEIGHT) {
-        *awayLogo = awayLogo->scaledToHeight(TEAM_HEIGHT, Qt::SmoothTransformation);
+    if (awayLogo.height() > TEAM_HEIGHT) {
+        awayLogo = awayLogo.scaledToHeight(TEAM_HEIGHT, Qt::SmoothTransformation);
     }
     if (homeLogo.height() > TEAM_HEIGHT) {
         homeLogo = homeLogo.scaledToHeight(TEAM_HEIGHT, Qt::SmoothTransformation);
     }
-    if (awayLogo->width() > LOGO_WIDTH) {
-       *awayLogo =  awayLogo->scaledToWidth(LOGO_WIDTH, Qt::SmoothTransformation);
+    if (awayLogo.width() > LOGO_WIDTH) {
+       awayLogo =  awayLogo.scaledToWidth(LOGO_WIDTH, Qt::SmoothTransformation);
     }
 
-    awayHeightOffset = (TEAM_HEIGHT - awayLogo->height()) / 2;
-    awayWidthOffset = (LOGO_WIDTH - awayLogo->width()) / 2;
+    awayHeightOffset = (TEAM_HEIGHT - awayLogo.height()) / 2;
+    awayWidthOffset = (LOGO_WIDTH - awayLogo.width()) / 2;
 }
 
 void CommercialGraphic::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
@@ -70,7 +71,7 @@ void CommercialGraphic::paint(QPainter* painter, const QStyleOptionGraphicsItem*
         //painter->drawText(WIDTH/4, 0, NAME_WIDTH*2, TEAM_HEIGHT, Qt::AlignCenter, away->toPlainText());
         //painter->drawPixmap(WIDTH - CENTER_OFFSET - 100 - awayLogo.width(), 20, awayLogo);
 
-        painter->drawPixmap((networkLogo.width()/2 - awayLogo->width()/2), V_TEAM_Y + awayHeightOffset, *awayLogo);
+        painter->drawPixmap((networkLogo.width()/2 - awayLogo.width()/2), V_TEAM_Y + awayHeightOffset, awayLogo);
         painter->setFont(home->font());
         //painter->drawText(WIDTH/4, TEAM_HEIGHT, NAME_WIDTH*2, TEAM_HEIGHT, Qt::AlignCenter, home->toPlainText());
         painter->drawPixmap(networkLogo.width() / 2 - homeLogo.width()/2, H_TEAM_Y, homeLogo);

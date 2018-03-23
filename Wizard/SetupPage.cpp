@@ -1,4 +1,5 @@
 #include "SetupPage.h"
+#include "MiamiAllAccessBaseball.h"
 #include <QGridLayout>
 #include <QFileDialog>
 #include <QColorDialog>
@@ -9,15 +10,13 @@
 #include <QStringList>
 
 
-SetupPage::SetupPage(School *pawaySchool, School *phomeSchool, QString* pAwayFile,
+SetupPage::SetupPage(QString* pAwayFile,
                      QString* pHomeFile, QString* pSponsor, QString* pAnnouncer,
                      QString* pAwayRank, QString* pHomeRank, QColor* pBg, bool *pUsingTricaster,
                      QString* tricasterIp, int *portNum): homeColorPrev(16,16),
     awayColorPrev(16,16) {
-    awaySchool = pawaySchool;
-    homeSchool = phomeSchool;
-    homeColorPrev.fill(homeSchool->getPrimaryColor());
-    awayColorPrev.fill(awaySchool->getPrimaryColor());
+    homeColorPrev.fill(MiamiAllAccessBaseball::homeSchool.getPrimaryColor());
+    awayColorPrev.fill(MiamiAllAccessBaseball::awaySchool.getPrimaryColor());
     homeColorBox = new QLabel();
     awayColorBox = new QLabel();
     homeColorBox->setPixmap(homeColorPrev);
@@ -105,9 +104,9 @@ SetupPage::SetupPage(School *pawaySchool, School *phomeSchool, QString* pAwayFil
     connect(&profileDialog, SIGNAL(clicked()), this, SLOT(profileBrowse()));
     connect(swatchSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(applyProfile()));
 
-    homeNameLine.setText(homeSchool->getFullName());
+    homeNameLine.setText(MiamiAllAccessBaseball::homeSchool.getFullName());
     announcerLine.setText(*announcer);
-    homeShortLine.setText(homeSchool->getShortName());
+    homeShortLine.setText(MiamiAllAccessBaseball::homeSchool.getShortName());
     setTitle("Game Information");
     //connect(&profileSelector, SIGNAL(closed(Profile)), this, SLOT(applyProfile(Profile)));
 }
@@ -118,12 +117,12 @@ bool SetupPage::validatePage()
     *homeRank = homeRankLine.text();
     *sponsor = sponsorLine.text();
     *announcer = announcerLine.text();
-    awaySchool->setFullName(awayNameLine.text().toUpper());
-    homeSchool->setFullName(homeNameLine.text().toUpper());
+    MiamiAllAccessBaseball::awaySchool.setTitle(awayNameLine.text().toUpper());
+    MiamiAllAccessBaseball::homeSchool.setTitle(homeNameLine.text().toUpper());
     *usingTricaster = tricasterBox->isChecked();
     *tricasterIp = tricasterIpLine.text();
-    awaySchool->setShortName(awayShortLine.text().toUpper());
-    homeSchool->setShortName(homeShortLine.text().toUpper());
+    MiamiAllAccessBaseball::awaySchool.setShortName(awayShortLine.text().toUpper());
+    MiamiAllAccessBaseball::homeSchool.setShortName(homeShortLine.text().toUpper());
     *port = portSelector->currentIndex() + 7000;
     return true;
 }
@@ -166,9 +165,9 @@ void SetupPage::profileBrowse()
 
 void SetupPage::awayColorDiag()
 {
-    QColor temp = QColorDialog::getColor(awaySchool->getPrimaryColor(), 0, "Away Color");
+    QColor temp = QColorDialog::getColor(MiamiAllAccessBaseball::awaySchool.getPrimaryColor(), 0, "Away Color");
     if (temp.isValid()) {
-        awaySchool->setPrimaryColor(temp);
+        MiamiAllAccessBaseball::awaySchool.setPrimaryColor(temp);
         awayColorPrev.fill(temp);
         awayColorBox->setPixmap(awayColorPrev);
     }
@@ -176,9 +175,9 @@ void SetupPage::awayColorDiag()
 
 void SetupPage::homeColorDiag()
 {
-    QColor temp = QColorDialog::getColor(homeSchool->getPrimaryColor(), 0, "Home Color");
+    QColor temp = QColorDialog::getColor(MiamiAllAccessBaseball::homeSchool.getPrimaryColor(), 0, "Home Color");
     if (temp.isValid()) {
-        homeSchool->setPrimaryColor(temp);
+        MiamiAllAccessBaseball::homeSchool.setPrimaryColor(temp);
         homeColorPrev.fill(temp);
         homeColorBox->setPixmap(homeColorPrev);
 
@@ -196,7 +195,7 @@ void SetupPage::logoBrowse() {
     QString file = QFileDialog::getOpenFileName(0, "Away Logo");
     if (!file.isEmpty()) {
         QPixmap p(file);
-        awaySchool->setLogo(p);
+        MiamiAllAccessBaseball::awaySchool.setLogo(p);
     }
 
 }
@@ -206,7 +205,7 @@ void SetupPage::applyProfile()
     if (!activeProfile.getLogoPath().isEmpty()) {
         awayNameLine.setText(activeProfile.getFullName());
         QImage swatch(activeProfile.getSwatchPath());
-        School s(activeProfile, swatch, QPixmap(activeProfile.getLogoPath()));
+        School s(activeProfile, swatch, QPixmap::fromImage(MiamiAllAccessBaseball::getTrimmedLogo(activeProfile.getLogoPath())));
         QColor awayColor;
         switch (swatchSelector->currentIndex()) {
         case 0:
@@ -217,7 +216,7 @@ void SetupPage::applyProfile()
         }
         awayColorPrev.fill(awayColor);
         awayColorBox->setPixmap(awayColorPrev);
-        *awaySchool = s;
+        MiamiAllAccessBaseball::awaySchool = s;
         awayShortLine.setText(activeProfile.getShortName());
     }
 }

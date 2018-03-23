@@ -10,12 +10,11 @@
 #include <QLabel>
 #include <QComboBox>
 #include "Profile.h"
-#include "School.h"
 
 class SetupPage : public QWizardPage {
     Q_OBJECT
 public:
-    SetupPage(School* pawaySchool, School* phomeSchool, QString* pAwayFile, QString* pHomeFile,
+    SetupPage(QString* pAwayFile, QString* pHomeFile,
               QString* pSponsor, QString* pAnnouncer, QString* pAwayRank, QString* pHomeRank, QColor* pBg, bool *pUsingTricaster, QString *tricasterIp, int* portNum);
     bool validatePage();
 
@@ -41,7 +40,6 @@ private:
     bool* usingTricaster;
     int *port;
     Profile activeProfile;
-    School *awaySchool, *homeSchool;
 };
 
 #endif // SETUPPAGE_H

@@ -1,15 +1,14 @@
 #include "DefenseGraphic.h"
 #include <QGraphicsScene>
+#include "MiamiAllAccessBaseball.h"
 #define GRADIENT_LEVEL .5
 DefenseGraphic::DefenseGraphic(BaseballGame *game) : font(QFont("Arial",24, QFont::Bold))
 {
     setPixmap(QPixmap(":/images/Field.png"));
     show = false;
     homeTeam = true;
-    awayColor = game->getAwayColor();
-    homeColor = game->getHomeColor();
-    homeName = game->getHomeName() + " DEFENSE";
-    awayName = game->getAwayName() + " DEFENSE";
+    homeName = MiamiAllAccessBaseball::homeSchool.getTitle() + " DEFENSE";
+    awayName = MiamiAllAccessBaseball::awaySchool.getTitle() + " DEFENSE";
     awayGradient.setStart(0,0);
     awayGradient.setFinalStop(0,30);
     homeGradient.setStart(0,0);
@@ -70,6 +69,10 @@ void DefenseGraphic::hideGraphic()
 }
 
 void DefenseGraphic::prepareColor() {
+
+    QColor homeColor = MiamiAllAccessBaseball::homeSchool.getPrimaryColor();
+    QColor awayColor = MiamiAllAccessBaseball::awaySchool.getPrimaryColor();
+
     int red, green, blue;
     red = -1*homeColor.red() *GRADIENT_LEVEL + homeColor.red();
     green = -1*homeColor.green() *GRADIENT_LEVEL + homeColor.green();

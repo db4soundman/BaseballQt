@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <QFontMetrics>
 #include <QFontInfo>
+#include "MiamiAllAccessBaseball.h"
 
 #define GRADIENT_LEVEL .3
 #define AWAY_PP 1
@@ -44,39 +45,32 @@
 #define SPONSOR_BAR_Y 50
 #define SPONSOR_BAR_HEIGHT 35
 
-Scoreboard::Scoreboard(QColor awayCol, QColor homeCol, QString awayTeam, QString homeTeam,
-                       QString sponsorText, /*Clock* clock,*/ QString pAwayRank, QString pHomeRank, QPixmap pawayLogo) :
-    homeColor(homeCol), awayColor(awayCol) {
+Scoreboard::Scoreboard(QString sponsorText, QString pAwayRank, QString pHomeRank) :
+    awayLogo(MiamiAllAccessBaseball::awaySchool.getLogo()), homeLogo(MiamiAllAccessBaseball::homeSchool.getLogo()) {
     QFont font("Arial", 24, QFont::Bold);
     QFont sponsorFont("Arial", 18, QFont::Bold);
-#ifdef Q_OS_OSX
-    font.setPointSize(40);
-    sponsorFont.setPointSize(28);
-    #endif
     watermark = QPixmap(":/images/Watermark.png");
     watermark = watermark.scaledToWidth(200, Qt::SmoothTransformation);
     defaultSponsorText = sponsorFont;
     show =firstBase = secondBase = thirdBase = false;
     setRect(0,0,SCOREBOARD_WIDTH,SCOREBOARD_HEIGHT);
 
-    homeLogo = new QPixmap(":/images/M.png");
-    awayLogo = new QPixmap(pawayLogo);
     inning = "1";
     topOfInning = true;
 
-    *homeLogo = homeLogo->scaledToHeight(TEAM_BOX_HEIGHT, Qt::SmoothTransformation);
-    if (homeLogo->width() > LOGO_WIDTH)
-        *homeLogo = homeLogo->scaledToWidth(LOGO_WIDTH, Qt::SmoothTransformation);
-    homeLogoOffset = (TEAM_BOX_HEIGHT - homeLogo->height()) / 2;
+    homeLogo = homeLogo.scaledToHeight(TEAM_BOX_HEIGHT, Qt::SmoothTransformation);
+    if (homeLogo.width() > LOGO_WIDTH)
+        homeLogo = homeLogo.scaledToWidth(LOGO_WIDTH, Qt::SmoothTransformation);
+    homeLogoOffset = (TEAM_BOX_HEIGHT - homeLogo.height()) / 2;
 
-    *awayLogo = awayLogo->scaledToHeight(TEAM_BOX_HEIGHT, Qt::SmoothTransformation);
-    if (awayLogo->width() > LOGO_WIDTH)
-        *awayLogo = awayLogo->scaledToWidth(LOGO_WIDTH, Qt::SmoothTransformation);
-    awayLogoHeightOffset = (TEAM_BOX_HEIGHT - awayLogo->height()) / 2;
-    awayLogoWidthOffset = (LOGO_WIDTH - awayLogo->width()) / 2;
+    awayLogo = awayLogo.scaledToHeight(TEAM_BOX_HEIGHT, Qt::SmoothTransformation);
+    if (awayLogo.width() > LOGO_WIDTH)
+        awayLogo = awayLogo.scaledToWidth(LOGO_WIDTH, Qt::SmoothTransformation);
+    awayLogoHeightOffset = (TEAM_BOX_HEIGHT - awayLogo.height()) / 2;
+    awayLogoWidthOffset = (LOGO_WIDTH - awayLogo.width()) / 2;
 
-    awayName = new QGraphicsTextItem(awayTeam);
-    homeName = new QGraphicsTextItem(homeTeam);
+    awayName = new QGraphicsTextItem("");
+    homeName = new QGraphicsTextItem("");
     awayName->setFont(font);
     homeName->setFont(font);
     awayScore = new QGraphicsTextItem("0");
@@ -100,11 +94,6 @@ Scoreboard::Scoreboard(QColor awayCol, QColor homeCol, QString awayTeam, QString
     scoreGradient.setStart(0, TEAM_BOX_Y);
     scoreGradient.setFinalStop(0, TEAM_BOX_Y + 44);
     prepareColor();
-    // penalty gradient
-//    penaltyGradient.setStart(0, SCOREBOARD_HEIGHT);
-//    penaltyGradient.setFinalStop(0, SCOREBOARD_HEIGHT + PP_BAR_HEIGHT);
-//    penaltyGradient.setColorAt(0, QColor(255, 255, 0));
-//    penaltyGradient.setColorAt(1, QColor(188, 188, 0));
 
     QFont rankFont("Arial", 20, QFont::Bold);
     awayRank = new QGraphicsTextItem(pAwayRank);
@@ -151,14 +140,10 @@ Scoreboard::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
         painter->drawPixmap(OUTS_X + CLOCK_FIELD_WIDTH, OUTS_Y + 5, watermark);
         if (showPdAndClock) {
             painter->drawText(INNING_X, INNING_Y, CLOCK_FIELD_WIDTH,CLOCK_FIELD_HEIGHT, Qt::AlignHCenter, (topOfInning ? "TOP " : "BOT ") + inning);
-            //painter->setPen(QColor(255,255,255));
-            //painter->drawText(CLOCK_FIELD_X + CLOCK_FIELD_WIDTH/4, CLOCK_FIELD_Y, CLOCK_FIELD_WIDTH/4, CLOCK_FIELD_HEIGHT, Qt::AlignCenter, inning);
-            //painter->setPen(QColor(1,1,1));
             painter->drawText(COUNT_X, COUNT_Y, CLOCK_FIELD_WIDTH, CLOCK_FIELD_HEIGHT, Qt::AlignHCenter,
                               count);
             painter->drawText(OUTS_X, OUTS_Y, CLOCK_FIELD_WIDTH, CLOCK_FIELD_HEIGHT, Qt::AlignHCenter,
                               QString::number(out) + " OUT");
-            //painter->fillRect(CLOCK_FIELD_X, topOfInning ? 3 : 48-5, CLOCK_FIELD_WIDTH/3, 5, QColor(1,1,1));
 
         }
         else {
@@ -168,9 +153,9 @@ Scoreboard::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
         // Away text
         painter->fillRect(V_TEAM_BOX_STARTX, V_TEAM_BOX_STARTY, TEAM_BOX_WIDTH, TEAM_BOX_HEIGHT, awayGradient );
         painter->setPen(QColor(255,255,255));
-        //painter->drawRect(V_TEAM_BOX_STARTX , V_TEAM_BOX_STARTY, TEAM_BOX_WIDTH, TEAM_BOX_HEIGHT);
         // Away logo
-        painter->drawPixmap(V_TEAM_BOX_STARTX + awayLogoWidthOffset, V_TEAM_BOX_STARTY + awayLogoHeightOffset, *awayLogo);
+        painter->fillRect(V_TEAM_BOX_STARTX, V_TEAM_BOX_STARTY, LOGO_WIDTH, TEAM_BOX_HEIGHT, MiamiAllAccessBaseball::awaySchool.getPrimaryLogoBg());
+        painter->drawPixmap(V_TEAM_BOX_STARTX + awayLogoWidthOffset, V_TEAM_BOX_STARTY + awayLogoHeightOffset, awayLogo);
 
         painter->setFont(awayName->font());
         QString aName;
@@ -186,7 +171,7 @@ Scoreboard::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
             painter->setPen(QColor(255, 255, 255));
             painter->drawText(V_TEAM_BOX_STARTX + LOGO_WIDTH, V_TEAM_BOX_STARTY, awayRankOffset - LOGO_WIDTH, TEAM_BOX_HEIGHT, Qt::AlignCenter,  awayRank->toPlainText());
             painter->setFont(awayName->font());
-            aName = awayName->toPlainText();
+            aName = MiamiAllAccessBaseball::awaySchool.getTitle();
             painter->drawText(V_TEAM_BOX_STARTX + 5 + awayRankOffset, V_TEAM_BOX_STARTY, TEAM_NAME_WIDTH, TEAM_BOX_HEIGHT, Qt::AlignVCenter,
                               aName);
         }
@@ -199,10 +184,9 @@ Scoreboard::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
         // Home Text
         painter->fillRect(H_TEAM_BOX_STARTX, H_TEAM_BOX_STARTY, TEAM_BOX_WIDTH, TEAM_BOX_HEIGHT, homeGradient);
         painter->setPen(QColor(255,255,255));
-        //painter->drawRect(H_TEAM_BOX_STARTX, H_TEAM_BOX_STARTY, TEAM_BOX_WIDTH, TEAM_BOX_HEIGHT);
         // Home logo
-
-        painter->drawPixmap(H_TEAM_BOX_STARTX, H_TEAM_BOX_STARTY + homeLogoOffset, *homeLogo);
+        painter->fillRect(H_TEAM_BOX_STARTX, H_TEAM_BOX_STARTY, LOGO_WIDTH, TEAM_BOX_HEIGHT, MiamiAllAccessBaseball::homeSchool.getPrimaryLogoBg());
+        painter->drawPixmap(H_TEAM_BOX_STARTX, H_TEAM_BOX_STARTY + homeLogoOffset, homeLogo);
 
         painter->setFont(homeRank->font());
         painter->drawText(H_TEAM_BOX_STARTX + LOGO_WIDTH, H_TEAM_BOX_STARTY, homeRankOffset - LOGO_WIDTH, TEAM_BOX_HEIGHT, Qt::AlignCenter, homeRank->toPlainText());
@@ -216,14 +200,12 @@ Scoreboard::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
         }
         else {
             painter->setFont(homeName->font());
-            hName = homeName->toPlainText();
+            hName = MiamiAllAccessBaseball::homeSchool.getTitle();
             painter->drawText(H_TEAM_BOX_STARTX + 5 + homeRankOffset, H_TEAM_BOX_STARTY, TEAM_NAME_WIDTH, TEAM_BOX_HEIGHT, Qt::AlignVCenter,
                               hName);
         }
 
         // Home Score
-//        painter->fillRect(730, TEAM_BOX_Y, 78, 42, scoreGradient);
-
         painter->setFont(homeScore->font());
         painter->drawText(H_TEAM_BOX_STARTX + TEAM_NAME_WIDTH, H_TEAM_BOX_STARTY, SCORE_WIDTH, TEAM_BOX_HEIGHT, Qt::AlignCenter, homeScore->toPlainText());
         if (sponsor) {
@@ -237,6 +219,8 @@ Scoreboard::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
         // 3rd base
         painter->rotate(45);
         painter->setPen(QColor(1,1,1));
+        QColor awayColor = MiamiAllAccessBaseball::awaySchool.getPrimaryColor();
+        QColor homeColor = MiamiAllAccessBaseball::homeSchool.getPrimaryColor();
         if (thirdBase) {
             painter->fillRect(0, 0,26,26, topOfInning ? awayColor : homeColor);
         } else {
@@ -267,6 +251,7 @@ Scoreboard::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 void
 Scoreboard::prepareColor() {
     int red, green, blue;
+    QColor homeColor = MiamiAllAccessBaseball::homeSchool.getPrimaryColor();
     red = -1*homeColor.red() *GRADIENT_LEVEL + homeColor.red();
     green = -1*homeColor.green() *GRADIENT_LEVEL + homeColor.green();
     blue = -1*homeColor.blue() *GRADIENT_LEVEL + homeColor.blue();
@@ -279,6 +264,7 @@ Scoreboard::prepareColor() {
     homeGradient.setColorAt(1, end);
     //homeGradient.setColorAt(0, end);
 
+    QColor awayColor = MiamiAllAccessBaseball::awaySchool.getPrimaryColor();
     red = -1*awayColor.red() *GRADIENT_LEVEL + awayColor.red();
     green = -1*awayColor.green() *GRADIENT_LEVEL + awayColor.green();
     blue = -1*awayColor.blue() *GRADIENT_LEVEL + awayColor.blue();

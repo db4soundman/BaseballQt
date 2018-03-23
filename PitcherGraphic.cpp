@@ -1,5 +1,6 @@
 #include "PitcherGraphic.h"
 #include <QGraphicsScene>
+#include "MiamiAllAccessBaseball.h"
 #define GRADIENT_LEVEL .5
 #define WIDTH 350
 #define HEIGHT 517
@@ -11,8 +12,6 @@ PitcherGraphic::PitcherGraphic(BaseballGame *game) : font(QFont("Arial",24, QFon
     setRect(0,0,WIDTH, HEIGHT);
     homeTeam = true;
     show = false;
-    awayColor = game->getAwayColor();
-    homeColor = game->getHomeColor();
     awayGradient.setStart(0,0);
     awayGradient.setFinalStop(0,NAME_HEIGHT);
     homeGradient.setStart(0,0);
@@ -95,6 +94,8 @@ void PitcherGraphic::hideGraphic()
 
 void PitcherGraphic::prepareColor()
 {
+    QColor homeColor = MiamiAllAccessBaseball::homeSchool.getPrimaryColor();
+    QColor awayColor = MiamiAllAccessBaseball::awaySchool.getPrimaryColor();
     int red, green, blue;
     red = -1*homeColor.red() *GRADIENT_LEVEL + homeColor.red();
     green = -1*homeColor.green() *GRADIENT_LEVEL + homeColor.green();

@@ -1,5 +1,6 @@
 #include "BattingOrder.h"
 #include <QGraphicsScene>
+#include "MiamiAllAccessBaseball.h"
 #define GRADIENT_LEVEL .5
 #define COLUMN1_X 5
 #define COLUMN2_X 50
@@ -13,10 +14,8 @@ BattingOrder::BattingOrder(BaseballGame* game) : font(QFont("Arial",20, QFont::B
     setRect(0,0, WIDTH, HEIGHT);
     show = false;
     homeTeam = true;
-    awayColor = game->getAwayColor();
-    homeColor = game->getHomeColor();
-    homeName = game->getHomeName() + " BATTING ORDER";
-    awayName = game->getAwayName() + " BATTING ORDER";
+    homeName = MiamiAllAccessBaseball::homeSchool.getTitle() + " BATTING ORDER";
+    awayName = MiamiAllAccessBaseball::awaySchool.getTitle() + " BATTING ORDER";
     awayGradient.setStart(0,0);
     awayGradient.setFinalStop(0,NAME_HEIGHT);
     homeGradient.setStart(0,0);
@@ -60,6 +59,8 @@ void BattingOrder::setHomeOrder()
 
 void BattingOrder::displayGraphic(bool team)
 {
+    QColor homeColor = MiamiAllAccessBaseball::homeSchool.getPrimaryColor();
+    QColor awayColor = MiamiAllAccessBaseball::awaySchool.getPrimaryColor();
     homeTeam = team;
 
     int red, green, blue;
@@ -98,6 +99,8 @@ void BattingOrder::hideGraphic()
     }
 }
 void BattingOrder::prepareColor() {
+    QColor homeColor = MiamiAllAccessBaseball::homeSchool.getPrimaryColor();
+    QColor awayColor = MiamiAllAccessBaseball::awaySchool.getPrimaryColor();
     int red, green, blue;
     red = -1*homeColor.red() *GRADIENT_LEVEL + homeColor.red();
     green = -1*homeColor.green() *GRADIENT_LEVEL + homeColor.green();

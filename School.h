@@ -57,7 +57,7 @@ public:
 private:
     //QString name;
     QColor primaryColor, secondaryColor, primaryLogoBg, secondaryLogoBg;
-    QPixmap logo;
+    QPixmap *logo;
     QString title, nickname, fullName, shortName, logoPath, swatchPath;
 };
 

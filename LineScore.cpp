@@ -2,7 +2,7 @@
 #include <QFontMetrics>
 #include <QGraphicsScene>
 #include <algorithm>
-
+#include "MiamiAllAccessBaseball.h"
 #define WIDTH 620
 #define HEIGHT 160
 #define TEAM_HEIGHT 50
@@ -18,16 +18,16 @@
 #define INTERMISSION 1
 #define FINAL 2
 
-LineScore::LineScore(BaseballGame *pGame,  QPixmap pawayLogo, QObject *parent) :
-    homeLogo(QPixmap(":/images/M.png")) {
+LineScore::LineScore(BaseballGame *pGame, QObject *parent) :
+    homeLogo(MiamiAllAccessBaseball::homeSchool.getLogo()) {
         baseballGame = pGame;
         show = false;
         inGame  = false;
         QFont font("Arial", 20, QFont::Bold);
-        away = new QGraphicsTextItem(pGame->getAwayName());
+        away = new QGraphicsTextItem(MiamiAllAccessBaseball::awaySchool.getTitle());
         away->setFont(font);
         getDueUpFont();
-        home = new QGraphicsTextItem(pGame->getHomeName());
+        home = new QGraphicsTextItem(MiamiAllAccessBaseball::homeSchool.getTitle());
         home->setFont(font);
         networkLogo = QPixmap(":/images/Watermark.png").scaledToWidth(200, Qt::SmoothTransformation);
         homeTeamGradient.setStart(0, H_TEAM_Y);
@@ -37,23 +37,23 @@ LineScore::LineScore(BaseballGame *pGame,  QPixmap pawayLogo, QObject *parent) :
         blackGradient.setStart(0,0);
         blackGradient.setFinalStop(0, V_TEAM_Y);
         //descriptiveFont = sponsorFont;
-        prepareGradients(pGame->getAwayColor(), pGame->getHomeColor());
+        prepareGradients(MiamiAllAccessBaseball::awaySchool.getPrimaryColor(), MiamiAllAccessBaseball::homeSchool.getPrimaryColor());
 
         clockStatus = SHOW_CLOCK;
 
-        awayLogo = new QPixmap(pawayLogo);
-        if (awayLogo->height() > TEAM_HEIGHT) {
-            *awayLogo = awayLogo->scaledToHeight(TEAM_HEIGHT, Qt::SmoothTransformation);
+        awayLogo = MiamiAllAccessBaseball::awaySchool.getLogo();
+        if (awayLogo.height() > TEAM_HEIGHT) {
+            awayLogo = awayLogo.scaledToHeight(TEAM_HEIGHT, Qt::SmoothTransformation);
         }
         if (homeLogo.height() > TEAM_HEIGHT) {
             homeLogo = homeLogo.scaledToHeight(TEAM_HEIGHT, Qt::SmoothTransformation);
         }
-        if (awayLogo->width() > LOGO_WIDTH) {
-           *awayLogo =  awayLogo->scaledToWidth(LOGO_WIDTH, Qt::SmoothTransformation);
+        if (awayLogo.width() > LOGO_WIDTH) {
+           awayLogo =  awayLogo.scaledToWidth(LOGO_WIDTH, Qt::SmoothTransformation);
         }
 
-        awayHeightOffset = (TEAM_HEIGHT - awayLogo->height()) / 2;
-        awayWidthOffset = (LOGO_WIDTH - awayLogo->width()) / 2;
+        awayHeightOffset = (TEAM_HEIGHT - awayLogo.height()) / 2;
+        awayWidthOffset = (LOGO_WIDTH - awayLogo.width()) / 2;
 
 }
 
@@ -70,7 +70,7 @@ void LineScore::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
         painter->fillRect(0, H_TEAM_Y, WIDTH, TEAM_HEIGHT, homeTeamGradient);
         painter->setFont(away->font());
 
-        painter->drawPixmap(awayWidthOffset, V_TEAM_Y + awayHeightOffset, *awayLogo);
+        painter->drawPixmap(awayWidthOffset, V_TEAM_Y + awayHeightOffset, awayLogo);
         painter->setFont(home->font());
 
         painter->drawPixmap(0, H_TEAM_Y, homeLogo);

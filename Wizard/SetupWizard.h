@@ -10,7 +10,7 @@
 
 class SetupWizard : public QWizard {
 public:
-    SetupWizard(School* awaySchool, School* homeSchool,QString* pAwayFile, QString* pHomeFile,
+    SetupWizard(QString* pAwayFile, QString* pHomeFile,
                 QString* pSponsor, QString* pAnnouncer, QString* pAwayRank, QString* pHomeRank, QColor* pBg, bool* usingTricaster, QString *tricasterIp, int *port);
 
 private:

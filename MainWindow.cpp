@@ -35,7 +35,7 @@ void MainWindow::makeMenu(BaseballGame* game)
     nchcMenu->addAction(standingsAction);
     connect(standingsAction, SIGNAL(triggered()), &standings, SLOT(show()));
 
-    QMenu* awayMenu = new QMenu(game->getAwayName());
+    QMenu* awayMenu = new QMenu(MiamiAllAccessBaseball::awaySchool.getTitle());
     QAction* awayPlayerEditor = new QAction("Edit Player Stats", this);
     connect(awayPlayerEditor, SIGNAL(triggered()), &awayPlayerEdit, SLOT(updateSpinBoxes()));
     connect(awayPlayerEditor, SIGNAL(triggered()), &awayPlayerEdit, SLOT(show()));
@@ -45,7 +45,7 @@ void MainWindow::makeMenu(BaseballGame* game)
     connect(awayTeamEdit, SIGNAL(triggered()), &awayEdit, SLOT(show()));
     awayMenu->addAction(awayTeamEdit);
 
-    QMenu* homeMenu = new QMenu(game->getHomeName());
+    QMenu* homeMenu = new QMenu(MiamiAllAccessBaseball::homeSchool.getTitle());
 //    QAction* homePlayerEditor = new QAction("Edit Player Stats", this);
 //    connect(homePlayerEditor, SIGNAL(triggered()), &homePlayerEdit, SLOT(updateSpinBoxes()));
 //    connect(homePlayerEditor, SIGNAL(triggered()), &homePlayerEdit, SLOT(show()));

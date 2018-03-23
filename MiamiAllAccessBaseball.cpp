@@ -8,6 +8,9 @@
 #include <QRect>
 #include <QMessageBox>
 
+School MiamiAllAccessBaseball::awaySchool = School();
+School MiamiAllAccessBaseball::homeSchool = School();
+
 MiamiAllAccessBaseball::MiamiAllAccessBaseball(int& argc, char* argv[]) :
     QApplication (argc, argv) {
     setApplicationName("Miami Baseball");
@@ -84,8 +87,8 @@ MiamiAllAccessBaseball::exec() {
                 awayLogo, tricasterIp, awayShort, homeShort;
         QColor awayColor, homeColor,  bg;
         int port;
-        School homeSchool = School::getSchoolFromESPN("MIAMI_OH");
-        School awaySchool;
+        MiamiAllAccessBaseball::homeSchool = School::getSchoolFromESPN("MIAMI_OH");
+
         bool usingTricaster = true;
         homeSchool.setShortName("MIAMI");
         homeSchool.setTitle("Miami");
@@ -98,29 +101,28 @@ MiamiAllAccessBaseball::exec() {
         tricasterIp = QString::fromStdString(params.stringValue("IP"));
         QDesktopWidget desktop;
 
-        SetupWizard wizard(&awaySchool, &homeSchool, &awayFile, &homeFile, &sponsor,
+        SetupWizard wizard(&awayFile, &homeFile, &sponsor,
                            &announcer, &awayRank, &homeRank,
                            &bg, &usingTricaster, &tricasterIp, &port);
         wizard.exec();
         QRect graphicsScreen = usingTricaster ? QRect(0,0,1920,1080) : desktop.screenGeometry(0);
         QImage img = getTrimmedLogo(awayLogo);
         QPixmap awayImg = QPixmap::fromImage(img);
-        game = new BaseballGame(awayName, homeName, awayColor, homeColor,
-                                awayFile, homeFile, sponsor, announcer, awayRank,
-                                homeRank, graphicsScreen.width() + 1, awayImg);
+        game = new BaseballGame(awayFile, homeFile, sponsor, announcer, awayRank,
+                                homeRank, graphicsScreen.width() + 1);
         if (usingTricaster)
             bg.setRgb(0,0,0);
 
         pitcherVert = new PitcherGraphic(game);
         defense = new DefenseGraphic(game);
         battingOrderGraphic = new BattingOrder(game);
-        lineScore = new LineScore(game, awayImg);
+        lineScore = new LineScore(game);
         connect(game, SIGNAL(showDefense(bool)), defense, SLOT(displayGraphic(bool)));
         connect(game, SIGNAL(showBatters(bool)), battingOrderGraphic, SLOT(displayGraphic(bool)));
         scene->addItem(game->getSb());
 
         scene->addItem(game->getLt());
-        commercial = new CommercialGraphic(game, graphicsScreen.width(), awayImg);
+        commercial = new CommercialGraphic(game, graphicsScreen.width());
         commercial->setMaaText(QString::fromStdString(params.stringValue("COMMERCIAL_TITLE")));
         scene->addItem(commercial);
         game->getLt()->setX(100);

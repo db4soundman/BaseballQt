@@ -3,6 +3,7 @@
 #include <QStringRef>
 #include <QGraphicsScene>
 #include <QRect>
+#include "MiamiAllAccessBaseball.h"
 
 #define NAME_GRADIENT_LEVEL .5
 #define STAT_GRADIENT_LEVEL .3
@@ -10,13 +11,9 @@
 #define HEIGHT 250
 #define NAME_HEIGHT 34
 #define NAME_WIDTH 245
-LowerThird::LowerThird(QColor awayColor, QColor homeColor, int screenWidth, QGraphicsItem* parent) : QGraphicsRectItem(parent),
-    name(""), number("number"), statFont("Arial", 18, QFont::Bold), nameFont("Arial", 20, QFont::Bold),
-    awayTeamMain(awayColor), homeTeamMain(homeColor) {
-#ifdef Q_OS_OSX
-    statFont.setPointSize(36);
-    nameFont.setPointSize(36);
-    #endif
+LowerThird::LowerThird(int screenWidth, QGraphicsItem* parent) : QGraphicsRectItem(parent),
+    name(""), number("number"), statFont("Arial", 18, QFont::Bold), nameFont("Arial", 20, QFont::Bold) {
+
     fontPointSize = nameFont.pointSize();
     setRect(0,0,WIDTH,HEIGHT);
     statFontPointSize = statFont.pointSize();
@@ -133,6 +130,7 @@ void LowerThird::prepareForCustomLt(QString name, QString number, QString year,
 
 void LowerThird::prepareColors() {
     int red, green, blue;
+    QColor homeTeamMain = MiamiAllAccessBaseball::homeSchool.getPrimaryColor();
     red = -1*homeTeamMain.red() *NAME_GRADIENT_LEVEL + homeTeamMain.red();
     green = -1*homeTeamMain.green() *NAME_GRADIENT_LEVEL + homeTeamMain.green();
     blue = -1*homeTeamMain.blue() *NAME_GRADIENT_LEVEL + homeTeamMain.blue();
@@ -153,7 +151,7 @@ void LowerThird::prepareColors() {
     homeStatGradient.setColorAt(1, end);
 
 // -------------------------------------Away Team--------------------------------
-
+    QColor awayTeamMain = MiamiAllAccessBaseball::awaySchool.getPrimaryColor();
     red = -1*awayTeamMain.red() *NAME_GRADIENT_LEVEL + awayTeamMain.red();
     green = -1*awayTeamMain.green() *NAME_GRADIENT_LEVEL + awayTeamMain.green();
     blue = -1*awayTeamMain.blue() *NAME_GRADIENT_LEVEL + awayTeamMain.blue();

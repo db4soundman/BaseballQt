@@ -15,7 +15,7 @@ School::School(QString name, QColor primaryColor, QColor secondaryColor, QPixmap
     this->title=name;
     this->primaryColor=primaryColor;
     this->secondaryColor=secondaryColor;
-    this->logo=logo;
+    this->logo=new QPixmap(logo);
 }
 
 School::School(Profile p, QImage swatch, QPixmap logo)
@@ -29,7 +29,7 @@ School::School(Profile p, QImage swatch, QPixmap logo)
     this->secondaryLogoBg= swatch.pixel(0,14);
     this->primaryColor=swatch.pixel(0,5);
     this->secondaryColor=swatch.pixel(6,5);
-    this->logo=logo;
+    this->logo=new QPixmap(logo);
 
 }
 
@@ -65,12 +65,12 @@ void School::setSecondaryColor(const QColor &value)
 
 QPixmap School::getLogo() const
 {
-    return logo;
+    return *logo;
 }
 
 void School::setLogo(const QPixmap &value)
 {
-    logo = value;
+    logo = new QPixmap(value);
 }
 
 QColor School::getPrimaryLogoBg() const
@@ -112,7 +112,7 @@ School::getSchoolFromESPN(QString imsName)
      }
      if (!activeProfile.getLogoPath().isEmpty()) {
          QImage swatch(activeProfile.getSwatchPath());
-         return School(activeProfile,swatch,QPixmap(activeProfile.getLogoPath()));
+         return School(activeProfile,swatch,QPixmap::fromImage(MiamiAllAccessBaseball::getTrimmedLogo(activeProfile.getLogoPath())));
      }
      return School();
 }
