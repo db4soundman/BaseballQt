@@ -15,19 +15,20 @@ public:
                const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 
 public slots:
-    void setAwayPitcher(BaseballPlayer* pitcher);
-    void setHomePitcher(BaseballPlayer* pitcher);
+    void setAwayPitcher(int idx);
+    void setHomePitcher(int idx);
     void displayGraphic(bool team);
     void hideGraphic();
 private:
 
-    BaseballPlayer *awayPitcher, *homePitcher;
+    BaseballPlayer awayPitcher, homePitcher;
     bool show, homeTeam;
 
     void prepareColor();
     void prepareFontSize();
     QLinearGradient homeGradient, homeStatGradient, awayGradient, awayStatGradient, mainGradient;
     QFont font, nameFont;
+    BaseballGame* game;
 };
 
 #endif // PITCHERGRAPHIC_H

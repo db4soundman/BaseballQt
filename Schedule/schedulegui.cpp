@@ -82,7 +82,7 @@ void ScheduleGUI::prepareToShow()
 {
     int num = numToShow.value();
     QList<ScheduleEntry> toShow;
-    for (int i = 0; toShow.size() <  num; i++) {
+    for (int i = 0; toShow.size() < num && schedule.size() > 0; i++) {
         if (series.isChecked()) {
             toShow.append(schedule[i]);
         }
@@ -98,5 +98,7 @@ void ScheduleGUI::prepareToShow()
             }
         }
     }
-    emit show(toShow, series.isChecked());
+    if ( schedule.size() > 0) {
+        emit show(toShow, series.isChecked());
+    }
 }

@@ -19,7 +19,7 @@ public slots:
     void displayGraphic(bool team);
     void hideGraphic();
 private:
-    QList<BaseballPlayer*> away, home;
+    QList<BaseballPlayer> away, home;
     QList<QString> awayPos, homePos;
     bool show, homeTeam;
     BaseballTeam* homeTeamP, *awayTeam;

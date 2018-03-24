@@ -178,7 +178,7 @@ void
 LowerThird::prepareFontSize() {
     int subtraction = 1;
     QFontMetrics fontSize(nameFont);
-    while (fontSize.width(name) > NAME_WIDTH - 20) {
+    while (fontSize.width(name) > NAME_WIDTH - 30) {
         QFont tempFont("Arial", fontPointSize - subtraction, QFont::Bold);
         //nameFont.setPointSize(fontPointSize - subtraction);
         subtraction++;

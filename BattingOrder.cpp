@@ -39,21 +39,21 @@ void BattingOrder::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
         painter->drawText(0,0, NAME_WIDTH, NAME_HEIGHT, Qt::AlignCenter,homeTeam? homeName : awayName);
         for (int i = 0; i < 9; i++) {
             painter->drawText(COLUMN1_X, NAME_HEIGHT + 10 + (24 * (i*2)), 45, 28, Qt::AlignCenter, homeTeam? homePos.at(i) : awayPos.at(i));
-            painter->drawText(COLUMN2_X, NAME_HEIGHT + 10 + (24 * (i*2)), 476, 28, Qt::AlignCenter, homeTeam? home.at(i)->getName() : away.at(i)->getName());
-            painter->drawText(COLUMN3_X, NAME_HEIGHT + 10 + (24 * (i*2)), 50, 28, Qt::AlignCenter, homeTeam? home.at(i)->getAvg() : away.at(i)->getAvg());
+            painter->drawText(COLUMN2_X, NAME_HEIGHT + 10 + (24 * (i*2)), 476, 28, Qt::AlignCenter, homeTeam? homeTeamP->getBatterByIndex(i).getName() : awayTeam->getBatterByIndex(i).getName());
+            painter->drawText(COLUMN3_X, NAME_HEIGHT + 10 + (24 * (i*2)), 50, 28, Qt::AlignCenter, homeTeam? homeTeamP->getBatterByIndex(i).getAvg() : awayTeam->getBatterByIndex(i).getAvg());
         }
     }
 }
 
 void BattingOrder::setAwayOrder()
 {
-    away = awayTeam->getBattingOrder();
+    //away = awayTeam->getBattingOrder();
     awayPos = awayTeam->getOrderDefense();
 }
 
 void BattingOrder::setHomeOrder()
 {
-    home = homeTeamP->getBattingOrder();
+   // home = homeTeamP->getBattingOrder();
     homePos = homeTeamP->getOrderDefense();
 }
 

@@ -3,12 +3,170 @@
 #define HBP 2
 
 BaseballPlayer::BaseballPlayer() {
-    abToday= rToday= hToday= rbiToday= hrToday= walksToday= strikeoutsToday= hbpToday=pitchCount= ballsThrown= strikesThrown= outsToday =0;
-    outs= ap= gs= wins= losses= saves= hitsAllowed= runsAllowed= er= bb= kOut = pStrikeOutsToday= pWalksToday=0;
+    gp=0;
+    rbi =0;
+    ab=0;
+    hr=0;
+    h=0;
+    doubles=0;
+    hbp=0;
+    r=0;
+    strikeouts = 0;
+    sacFly = 0;
+    triples = 0;
+    walks = 0;
+    abToday= 0;
+    rToday= 0;
+    hToday=0;
+    rbiToday= 0;
+    hrToday= 0;
+    walksToday= 0;
+    strikeoutsToday= 0;
+    hbpToday=0;
+    pitchCount= 0;
+    ballsThrown= 0;
+    strikesThrown=0;
+    outsToday= 0;
+    outs= 0;
+    ap=0;
+    gs= 0;
+    wins= 0;
+    losses= 0;
+    saves= 0;
+    hitsAllowed= 0;
+    runsAllowed= 0;
+    er=0;
+    bb= 0;
+    kOut = 0;
+    pStrikeOutsToday=0;
+    pWalksToday=0;
+    year="";
+    pos="";
+    bats="";
+    throws="";
     era = "0.00";
     pos = "";
     bats = "";
     throws = "";
+    name = "NO NAME";
+}
+
+BaseballPlayer::BaseballPlayer(const BaseballPlayer &p)
+{
+    gp=p.gp;
+    rbi = p.rbi;
+    ab=p.ab;
+    hr=p.hr;
+    abToday= p.abToday;
+    rToday= p.rToday;
+    hToday=p.hToday;
+    rbiToday= p.rbiToday;
+    hrToday= p.hrToday;
+    walksToday= p.walksToday;
+    strikeoutsToday= p.strikeoutsToday;
+    hbpToday=p.hbpToday;
+    pitchCount= p.pitchCount;
+    ballsThrown= p.ballsThrown;
+    strikesThrown= p.strikesThrown;
+    outsToday =p.outsToday;
+    outs= p.outs;
+    ap= p.ap;
+    gs= p.gs;
+    wins= p.wins;
+    losses= p.losses;
+    saves= p.saves;
+    hitsAllowed= p.hitsAllowed;
+    runsAllowed= p.runsAllowed;
+    er= p.er;
+    bb= p.bb;
+    kOut = p.kOut;
+    pStrikeOutsToday=p.pStrikeOutsToday;
+    pWalksToday=p.walksToday;
+    era = p.era;
+    pos = p.pos;
+    bats = p.bats;
+    throws = p.throws;
+    name=p.name;
+    uni = p.uni;
+    year=p.year;
+    pos=p.pos;
+    bats=p.bats;
+    throws=p.throws;
+    doubles=p.doubles;
+    hbp=p.hbp;
+    r=p.r;
+    sacFly = p.sacFly;
+    triples = p.triples;
+    walks = p.walks;
+    strikeouts = p.strikeouts;
+    h=p.h;
+}
+
+BaseballPlayer &BaseballPlayer::operator =(const BaseballPlayer &p)
+{
+    gp=p.gp;
+    rbi = p.rbi;
+    ab=p.ab;
+    hr=p.hr;
+    abToday= p.abToday;
+    rToday= p.rToday;
+    hToday=p.hToday;
+    rbiToday= p.rbiToday;
+    hrToday= p.hrToday;
+    walksToday= p.walksToday;
+    strikeoutsToday= p.strikeoutsToday;
+    hbpToday=p.hbpToday;
+    pitchCount= p.pitchCount;
+    ballsThrown= p.ballsThrown;
+    strikesThrown= p.strikesThrown;
+    outsToday =p.outsToday;
+    outs= p.outs;
+    ap= p.ap;
+    gs= p.gs;
+    wins= p.wins;
+    losses= p.losses;
+    saves= p.saves;
+    hitsAllowed= p.hitsAllowed;
+    runsAllowed= p.runsAllowed;
+    er= p.er;
+    bb= p.bb;
+    kOut = p.kOut;
+    pStrikeOutsToday=p.pStrikeOutsToday;
+    pWalksToday=p.walksToday;
+    era = p.era;
+    pos = p.pos;
+    bats = p.bats;
+    throws = p.throws;
+    name=p.name;
+    uni = p.uni;
+    year=p.year;
+    pos=p.pos;
+    bats=p.bats;
+    throws=p.throws;
+    doubles=p.doubles;
+    hbp=p.hbp;
+    r=p.r;
+    sacFly = p.sacFly;
+    triples = p.triples;
+    walks = p.walks;
+    strikeouts = p.strikeouts;
+    h=p.h;
+    return *this;
+}
+
+bool BaseballPlayer::operator ==(const BaseballPlayer &p) const
+{
+    return this->name==p.name;
+}
+
+bool BaseballPlayer::operator !=(const BaseballPlayer &p) const
+{
+    return !(*this == p);
+}
+
+bool BaseballPlayer::operator <(const BaseballPlayer &p) const
+{
+    return uni.toInt() < p.uni.toInt();
 }
 
 

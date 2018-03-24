@@ -1,6 +1,5 @@
 #include "BaseballGame.h"
 #include "SeasonXMLHandler.h"
-#include "GameXmlHandler.h"
 #include "ClockDialog.h"
 #include "MiamiAllAccessBaseball.h"
 
@@ -52,7 +51,7 @@ BaseballGame::BaseballGame(QString awayXML, QString homeXML, QString sponsor, QS
 
     BaseballPlayer* currPlayer = new BaseballPlayer();
     currPlayer->setName("NO NAME");
-    currPlayer->setUni("");
+    currPlayer->setUni("1000");
     currPlayer->setYear("");
     currPlayer->setGp(0);
     currPlayer->setSacFly(0);
@@ -74,7 +73,7 @@ BaseballGame::BaseballGame(QString awayXML, QString homeXML, QString sponsor, QS
     currPlayer->setEr(0);
     currPlayer->setBb(0);
     currPlayer->setKOut(0);
-    homeTeam->addPlayer(currPlayer);
+    homeTeam->addPlayer(*currPlayer);
 
     SeasonXMLHandler roadHandler(awayTeam);
     r.setContentHandler(&roadHandler);
@@ -85,7 +84,7 @@ BaseballGame::BaseballGame(QString awayXML, QString homeXML, QString sponsor, QS
 
     currPlayer = new BaseballPlayer();
     currPlayer->setName("NO NAME");
-    currPlayer->setUni("");
+    currPlayer->setUni("1000");
     currPlayer->setYear("");
     currPlayer->setGp(0);
     currPlayer->setSacFly(0);
@@ -107,7 +106,7 @@ BaseballGame::BaseballGame(QString awayXML, QString homeXML, QString sponsor, QS
     currPlayer->setEr(0);
     currPlayer->setBb(0);
     currPlayer->setKOut(0);
-    awayTeam->addPlayer(currPlayer);
+    awayTeam->addPlayer(*currPlayer);
 }
 
 void
@@ -129,7 +128,7 @@ void BaseballGame::checkOuts()
     }
 }
 
-BaseballPlayer *BaseballGame::getPitcher()
+BaseballPlayer &BaseballGame::getPitcher()
 {
     if (inningMod == "Top") {
         return homeTeam->getPitcher();
@@ -137,7 +136,7 @@ BaseballPlayer *BaseballGame::getPitcher()
     return awayTeam->getPitcher();
 }
 
-BaseballPlayer *BaseballGame::getBatter()
+BaseballPlayer &BaseballGame::getBatter()
 {
     if (inningMod == "Top") {
         return awayTeam->getBatterByIndex(awayBatter);
@@ -157,7 +156,7 @@ BaseballGame::showAnnouncers() {
 
 void BaseballGame::gatherBatterGraphic()
 {
-     BaseballPlayer* player = getBatter();
+     BaseballPlayer& player = getBatter();
      QList<QString> labels, numbers;
 
      labels.append("GP");
@@ -167,31 +166,31 @@ void BaseballGame::gatherBatterGraphic()
      labels.append("BB");
      labels.append("SO");
 
-     numbers.append(QString::number(player->getGp()));
-     numbers.append(player->getAvg());
-     numbers.append(QString::number(player->getRbi()));
-     numbers.append(QString::number(player->getHr()));
-     numbers.append(QString::number(player->getWalks()));
-     numbers.append(QString::number(player->getStrikeouts()));
+     numbers.append(QString::number(player.getGp()));
+     numbers.append(player.getAvg());
+     numbers.append(QString::number(player.getRbi()));
+     numbers.append(QString::number(player.getHr()));
+     numbers.append(QString::number(player.getWalks()));
+     numbers.append(QString::number(player.getStrikeouts()));
 
-     lt.prepareForDisplay(player->getName(),player->getUni(), player->getPos(),
+     lt.prepareForDisplay(player.getName(),player.getUni(), player.getPos(),
                           labels, numbers, inningMod == "Bot", "L");
 }
 
 void BaseballGame::gatherBatterSeasonSb()
 {
-     BaseballPlayer* player = getBatter();
-     QString text = player->getName() + " (" +
+     BaseballPlayer& player = getBatter();
+     QString text = player.getName() + " (" +
              inningMod == "Top" ? MiamiAllAccessBaseball::awaySchool.getShortName() : MiamiAllAccessBaseball::homeSchool.getShortName()+"): ";
-     text += player->getAvg() + ", " + QString::number(player->getWalks()) + " BB, "+
-             QString::number(player->getStrikeouts()) + " K";
+     text += player.getAvg() + ", " + QString::number(player.getWalks()) + " BB, "+
+             QString::number(player.getStrikeouts()) + " K";
      sb.changeTopBarText(text);
 }
 
 void BaseballGame::gatherHomePitcherRecapLt()
 {
     QList<QString> labels, numbers;
-    BaseballPlayer* player = homeTeam->getPitcher();
+    BaseballPlayer& player = homeTeam->getPitcher();
     labels.append("IP");
     labels.append("PC");
     labels.append("B");
@@ -199,21 +198,21 @@ void BaseballGame::gatherHomePitcherRecapLt()
     labels.append("BB");
     labels.append("K");
 
-    numbers.append(player->getIpToday());
-    numbers.append(QString::number(player->getPitchCount()));
-    numbers.append(QString::number(player->getBallsThrown()));
-    numbers.append(QString::number(player->getStrikesThrown()));
-    numbers.append(QString::number(player->getPWalksToday()));
-    numbers.append(QString::number(player->getPStrikeOutsToday()));
+    numbers.append(player.getIpToday());
+    numbers.append(QString::number(player.getPitchCount()));
+    numbers.append(QString::number(player.getBallsThrown()));
+    numbers.append(QString::number(player.getStrikesThrown()));
+    numbers.append(QString::number(player.getPWalksToday()));
+    numbers.append(QString::number(player.getPStrikeOutsToday()));
 
-    lt.prepareForDisplay(player->getName(), player->getUni(), "P",
+    lt.prepareForDisplay(player.getName(), player.getUni(), "P",
                          labels, numbers, true);
 }
 
 void BaseballGame::gatherAwayPitcherRecapLt()
 {
     QList<QString> labels, numbers;
-    BaseballPlayer* player = awayTeam->getPitcher();
+    BaseballPlayer& player = awayTeam->getPitcher();
     labels.append("IP");
     labels.append("PC");
     labels.append("B");
@@ -221,33 +220,33 @@ void BaseballGame::gatherAwayPitcherRecapLt()
     labels.append("BB");
     labels.append("K");
 
-    numbers.append(player->getIpToday());
-    numbers.append(QString::number(player->getPitchCount()));
-    numbers.append(QString::number(player->getBallsThrown()));
-    numbers.append(QString::number(player->getStrikesThrown()));
-    numbers.append(QString::number(player->getPWalksToday()));
-    numbers.append(QString::number(player->getPStrikeOutsToday()));
+    numbers.append(player.getIpToday());
+    numbers.append(QString::number(player.getPitchCount()));
+    numbers.append(QString::number(player.getBallsThrown()));
+    numbers.append(QString::number(player.getStrikesThrown()));
+    numbers.append(QString::number(player.getPWalksToday()));
+    numbers.append(QString::number(player.getPStrikeOutsToday()));
 
-    lt.prepareForDisplay(player->getName(), player->getUni(), "P",
+    lt.prepareForDisplay(player.getName(), player.getUni(), "P",
                          labels, numbers, false);
 }
 
 void BaseballGame::gatherHomePitcherSb()
 {
-    BaseballPlayer* player = getHomeTeam()->getPitcher();
-    QString text = player->getName() + " (" + MiamiAllAccessBaseball::homeSchool.getShortName()+"): ";
-    text += QString::number(player->getPitchCount()) + " PITCHES, " + QString::number(player->getBallsThrown()) + " BALLS, "+
-            QString::number(player->getStrikesThrown()) + " STRIKES";
+    BaseballPlayer& player = getHomeTeam()->getPitcher();
+    QString text = player.getName() + " (" + MiamiAllAccessBaseball::homeSchool.getShortName()+"): ";
+    text += QString::number(player.getPitchCount()) + " PITCHES, " + QString::number(player.getBallsThrown()) + " BALLS, "+
+            QString::number(player.getStrikesThrown()) + " STRIKES";
 
     sb.changeTopBarText(text);
 }
 
 void BaseballGame::gatherAwayPitcherSb()
 {
-    BaseballPlayer* player = getAwayTeam()->getPitcher();
-    QString text = player->getName() + " (" + MiamiAllAccessBaseball::awaySchool.getShortName()+"): ";
-    text += QString::number(player->getPitchCount()) + " PITCHES, " + QString::number(player->getBallsThrown()) + " BALLS, "+
-            QString::number(player->getStrikesThrown()) + " STRIKES";
+    BaseballPlayer& player = getAwayTeam()->getPitcher();
+    QString text = player.getName() + " (" + MiamiAllAccessBaseball::awaySchool.getShortName()+"): ";
+    text += QString::number(player.getPitchCount()) + " PITCHES, " + QString::number(player.getBallsThrown()) + " BALLS, "+
+            QString::number(player.getStrikesThrown()) + " STRIKES";
 
     sb.changeTopBarText(text);
 }
@@ -255,7 +254,7 @@ void BaseballGame::gatherAwayPitcherSb()
 void BaseballGame::gatherHomeSeasonStatsLt(int index)
 {
     QList<QString> labels, numbers;
-    BaseballPlayer* player = getHomeTeam()->getPlayer(index);
+    BaseballPlayer& player = getHomeTeam()->getPlayer(index);
     labels.append("GP");
     labels.append("AVG");
     labels.append("RBI");
@@ -263,30 +262,30 @@ void BaseballGame::gatherHomeSeasonStatsLt(int index)
     labels.append("BB");
     labels.append("SO");
 
-    numbers.append(QString::number(player->getGp()));
-    numbers.append(player->getAvg());
-    numbers.append(QString::number(player->getRbi()));
-    numbers.append(QString::number(player->getHr()));
-    numbers.append(QString::number(player->getWalks()));
-    numbers.append(QString::number(player->getStrikeouts()));
+    numbers.append(QString::number(player.getGp()));
+    numbers.append(player.getAvg());
+    numbers.append(QString::number(player.getRbi()));
+    numbers.append(QString::number(player.getHr()));
+    numbers.append(QString::number(player.getWalks()));
+    numbers.append(QString::number(player.getStrikeouts()));
 
-    lt.prepareForDisplay(player->getName(), player->getUni(), player->getYear(),
+    lt.prepareForDisplay(player.getName(), player.getUni(), player.getYear(),
                          labels, numbers, true, "L");
 }
 
 void BaseballGame::gatherHomeSeasonStatsSb(int index)
 {
-    BaseballPlayer* player = getHomeTeam()->getPlayer(index);
-    QString text = player->getName() + " (" + MiamiAllAccessBaseball::homeSchool.getShortName()+"): ";
-    text += player->getAvg() + ", " + QString::number(player->getWalks()) + " BB, "+
-            QString::number(player->getStrikeouts()) + " K";
+    BaseballPlayer& player = getHomeTeam()->getPlayer(index);
+    QString text = player.getName() + " (" + MiamiAllAccessBaseball::homeSchool.getShortName()+"): ";
+    text += player.getAvg() + ", " + QString::number(player.getWalks()) + " BB, "+
+            QString::number(player.getStrikeouts()) + " K";
 
     sb.changeTopBarText(text);
 }
 
 void BaseballGame::gatherHomeGameStatsLt(int index)
 {
-    BaseballPlayer* player = getHomeTeam()->getPlayer(index);
+    BaseballPlayer& player = getHomeTeam()->getPlayer(index);
     QList<QString> labels, numbers;
 
     labels.append("H");
@@ -295,19 +294,19 @@ void BaseballGame::gatherHomeGameStatsLt(int index)
     labels.append("BB");
     labels.append("SO");
 
-    numbers.append(QString::number(player->getHToday()));
-    numbers.append(QString::number(player->getAbToday()));
-    numbers.append(QString::number(player->getRbiToday()));
-    numbers.append(QString::number(player->getWalksToday()));
-    numbers.append(QString::number(player->getStrikeoutsToday()));
+    numbers.append(QString::number(player.getHToday()));
+    numbers.append(QString::number(player.getAbToday()));
+    numbers.append(QString::number(player.getRbiToday()));
+    numbers.append(QString::number(player.getWalksToday()));
+    numbers.append(QString::number(player.getStrikeoutsToday()));
 
-    lt.prepareForDisplay(player->getName(), player->getUni(), player->getYear(),
+    lt.prepareForDisplay(player.getName(), player.getUni(), player.getYear(),
                          labels, numbers, true);
 }
 
 void BaseballGame::gatherAwayGameStatsLt(int index)
 {
-    BaseballPlayer* player = getAwayTeam()->getPlayer(index);
+    BaseballPlayer& player = getAwayTeam()->getPlayer(index);
     QList<QString> labels, numbers;
     labels.append("H");
     labels.append("AB");
@@ -315,19 +314,19 @@ void BaseballGame::gatherAwayGameStatsLt(int index)
     labels.append("BB");
     labels.append("SO");
 
-    numbers.append(QString::number(player->getHToday()));
-    numbers.append(QString::number(player->getAbToday()));
-    numbers.append(QString::number(player->getRbiToday()));
-    numbers.append(QString::number(player->getWalksToday()));
-    numbers.append(QString::number(player->getStrikeoutsToday()));
-    lt.prepareForDisplay(player->getName(), player->getUni(), player->getYear(),
+    numbers.append(QString::number(player.getHToday()));
+    numbers.append(QString::number(player.getAbToday()));
+    numbers.append(QString::number(player.getRbiToday()));
+    numbers.append(QString::number(player.getWalksToday()));
+    numbers.append(QString::number(player.getStrikeoutsToday()));
+    lt.prepareForDisplay(player.getName(), player.getUni(), player.getYear(),
                          labels, numbers, false);
 }
 
 void BaseballGame::gatherHomeGameStatsSb(int index)
 {
-    BaseballPlayer* player = getHomeTeam()->getPlayer(index);
-    QString text = player->getName() + " (" + MiamiAllAccessBaseball::homeSchool.getShortName()+"): ";
+    BaseballPlayer& player = getHomeTeam()->getPlayer(index);
+    QString text = player.getName() + " (" + MiamiAllAccessBaseball::homeSchool.getShortName()+"): ";
 
    // sb.changeTopBarText(text);
 }
@@ -335,7 +334,7 @@ void BaseballGame::gatherHomeGameStatsSb(int index)
 void BaseballGame::gatherAwaySeasonStatsLt(int index)
 {
     QList<QString> labels, numbers;
-    BaseballPlayer* player = getAwayTeam()->getPlayer(index);
+    BaseballPlayer& player = getAwayTeam()->getPlayer(index);
     labels.append("GP");
     labels.append("AVG");
     labels.append("RBI");
@@ -343,36 +342,36 @@ void BaseballGame::gatherAwaySeasonStatsLt(int index)
     labels.append("BB");
     labels.append("SO");
 
-    numbers.append(QString::number(player->getGp()));
-    numbers.append(player->getAvg());
-    numbers.append(QString::number(player->getRbi()));
-    numbers.append(QString::number(player->getHr()));
-    numbers.append(QString::number(player->getWalks()));
-    numbers.append(QString::number(player->getStrikeouts()));
+    numbers.append(QString::number(player.getGp()));
+    numbers.append(player.getAvg());
+    numbers.append(QString::number(player.getRbi()));
+    numbers.append(QString::number(player.getHr()));
+    numbers.append(QString::number(player.getWalks()));
+    numbers.append(QString::number(player.getStrikeouts()));
 
-    QString bats = player->getBats();
+    QString bats = player.getBats();
     if (bats == "S" || bats.isEmpty()) {
-        QString throws = getPitcher()->getThrows();
+        QString throws = getPitcher().getThrows();
         bats = throws == "R" ? "L" : "R";
     }
-    lt.prepareForDisplay(player->getName(), player->getUni(), player->getYear(),
+    lt.prepareForDisplay(player.getName(), player.getUni(), player.getYear(),
                          labels, numbers, false, bats);
 }
 
 void BaseballGame::gatherAwaySeasonStatsSb(int index)
 {
-    BaseballPlayer* player = getAwayTeam()->getPlayer(index);
-    QString text = player->getName() + " (" + MiamiAllAccessBaseball::awaySchool.getShortName()+"): ";
-    text += player->getAvg() + ", " + QString::number(player->getWalks()) + " BB, "+
-            QString::number(player->getStrikeouts()) + " K";
+    BaseballPlayer& player = getAwayTeam()->getPlayer(index);
+    QString text = player.getName() + " (" + MiamiAllAccessBaseball::awaySchool.getShortName()+"): ";
+    text += player.getAvg() + ", " + QString::number(player.getWalks()) + " BB, "+
+            QString::number(player.getStrikeouts()) + " K";
 
     sb.changeTopBarText(text);
 }
 
 void BaseballGame::gatherAwayGameStatsSb(int index)
 {
-    BaseballPlayer* player = getAwayTeam()->getPlayer(index);
-    QString text = player->getName() + " (" + MiamiAllAccessBaseball::awaySchool.getShortName()+"): ";
+    BaseballPlayer& player = getAwayTeam()->getPlayer(index);
+    QString text = player.getName() + " (" + MiamiAllAccessBaseball::awaySchool.getShortName()+"): ";
 
    // sb.changeTopBarText(text);
 }
@@ -468,7 +467,7 @@ BaseballGame::advancePeriod() {
     emit updateCount(balls, strikes, outs);
     emit periodChanged(inningMod, period);
     updateBatterNoAdvance();
-    emit pitchCountUpdate(getPitcher()->getName() + ": " + getPitcher()->getTodaysPitchCount());
+    emit pitchCountUpdate(getPitcher().getName() + ": " + getPitcher().getTodaysPitchCount());
 }
 
 void
@@ -476,11 +475,11 @@ BaseballGame::rewindPeriod() {
     if (inningMod == "Top") {
         inningMod = "Bot";
         period--;
-        emit batterChanged(homeTeam->getBatterByIndex(homeBatter)->getName());
+        emit batterChanged(homeTeam->getBatterByIndex(homeBatter).getName());
     }
     else {
         inningMod = "Top";
-        emit batterChanged(awayTeam->getBatterByIndex(awayBatter)->getName());
+        emit batterChanged(awayTeam->getBatterByIndex(awayBatter).getName());
     }
     isFinal = false;
     balls = strikes = 0;
@@ -488,7 +487,7 @@ BaseballGame::rewindPeriod() {
     emit updateCount(balls, strikes, outs);
     emit periodChanged(inningMod, period);
     updateBatterNoAdvance();
-    emit pitchCountUpdate(getPitcher()->getName() + ": " + getPitcher()->getTodaysPitchCount());
+    emit pitchCountUpdate(getPitcher().getName() + ": " + getPitcher().getTodaysPitchCount());
 }
 
 void BaseballGame::addScore(int value)
@@ -560,21 +559,21 @@ void BaseballGame::advanceBatter()
 {
     if (inningMod == "Top") {
         awayBatter = (awayBatter + 1) % 9;
-        emit batterChanged(awayTeam->getBatterByIndex(awayBatter)->getName());
+        emit batterChanged(awayTeam->getBatterByIndex(awayBatter).getName());
     }
     else {
         homeBatter = (homeBatter + 1) % 9;
-        emit batterChanged(homeTeam->getBatterByIndex(homeBatter)->getName());
+        emit batterChanged(homeTeam->getBatterByIndex(homeBatter).getName());
     }
 }
 
 void BaseballGame::updateBatterNoAdvance()
 {
     if (inningMod == "Top") {
-        emit batterChanged(awayTeam->getBatterByIndex(awayBatter)->getName());
+        emit batterChanged(awayTeam->getBatterByIndex(awayBatter).getName());
     }
     else {
-        emit batterChanged(homeTeam->getBatterByIndex(homeBatter)->getName());
+        emit batterChanged(homeTeam->getBatterByIndex(homeBatter).getName());
     }
 }
 
@@ -632,20 +631,20 @@ void BaseballGame::ballThrown()
     if (period == 0) {
         advancePeriod();
     }
-    BaseballPlayer* pitcher = getPitcher();
-    pitcher->ballThrown(1);
+    BaseballPlayer& pitcher = getPitcher();
+    pitcher.ballThrown(1);
     balls++;
     emit updateCount(balls, strikes, outs);
-    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
+    emit pitchCountUpdate(pitcher.getName() + ": " + pitcher.getTodaysPitchCount());
 }
 
 void BaseballGame::subBallThrown()
 {
-    BaseballPlayer* pitcher = getPitcher();
-    pitcher->ballThrown(-1);
+    BaseballPlayer& pitcher = getPitcher();
+    pitcher.ballThrown(-1);
     balls--;
     emit updateCount(balls, strikes, outs);
-    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
+    emit pitchCountUpdate(pitcher.getName() + ": " + pitcher.getTodaysPitchCount());
 }
 
 void BaseballGame::strikeThrown()
@@ -653,20 +652,20 @@ void BaseballGame::strikeThrown()
     if (period == 0) {
         advancePeriod();
     }
-    BaseballPlayer* pitcher = getPitcher();
-    pitcher->strikeThrown(1);
+    BaseballPlayer& pitcher = getPitcher();
+    pitcher.strikeThrown(1);
     strikes++;
     emit updateCount(balls, strikes, outs);
-    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
+    emit pitchCountUpdate(pitcher.getName() + ": " + pitcher.getTodaysPitchCount());
 }
 
 void BaseballGame::subStrikeThrown()
 {
-    BaseballPlayer* pitcher = getPitcher();
-    pitcher->strikeThrown(-1);
+    BaseballPlayer& pitcher = getPitcher();
+    pitcher.strikeThrown(-1);
     strikes--;
     emit updateCount(balls, strikes, outs);
-    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
+    emit pitchCountUpdate(pitcher.getName() + ": " + pitcher.getTodaysPitchCount());
 }
 
 void BaseballGame::foulBall()
@@ -674,39 +673,39 @@ void BaseballGame::foulBall()
     if (period == 0) {
         advancePeriod();
     }
-    BaseballPlayer* pitcher = getPitcher();
-    pitcher->strikeThrown(1);
+    BaseballPlayer& pitcher = getPitcher();
+    pitcher.strikeThrown(1);
     if (strikes < 2) {
         strikes++;
         emit updateCount(balls, strikes, outs);
     }
-    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
+    emit pitchCountUpdate(pitcher.getName() + ": " + pitcher.getTodaysPitchCount());
 }
 
 void BaseballGame::subFoulBall()
 {
-    BaseballPlayer* pitcher = getPitcher();
-    pitcher->strikeThrown(-1);
-    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
+    BaseballPlayer& pitcher = getPitcher();
+    pitcher.strikeThrown(-1);
+    emit pitchCountUpdate(pitcher.getName() + ": " + pitcher.getTodaysPitchCount());
 }
 
 void BaseballGame::out()
 {
-    BaseballPlayer* pitcher = getPitcher();
-    pitcher->recordOut(1);
+    BaseballPlayer& pitcher = getPitcher();
+    pitcher.recordOut(1);
     outs++;
     emit updateCount(balls, strikes, outs);
     checkOuts();
-    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
+    emit pitchCountUpdate(pitcher.getName() + ": " + pitcher.getTodaysPitchCount());
 }
 
 void BaseballGame::subOut()
 {
-    BaseballPlayer* pitcher = getPitcher();
-    pitcher->recordOut(-1);
+    BaseballPlayer& pitcher = getPitcher();
+    pitcher.recordOut(-1);
     outs--;
     emit updateCount(balls, strikes, outs);
-    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
+    emit pitchCountUpdate(pitcher.getName() + ": " + pitcher.getTodaysPitchCount());
 }
 
 void BaseballGame::clearCount()
@@ -717,58 +716,58 @@ void BaseballGame::clearCount()
 
 void BaseballGame::single()
 {
-    BaseballPlayer* pitcher = getPitcher();
-    BaseballPlayer* batter = getBatter();
+    BaseballPlayer& pitcher = getPitcher();
+    BaseballPlayer& batter = getBatter();
 
-    batter->applyBaseHit(1);
-    pitcher->applyHitAllowed(1);
-    pitcher->strikeThrown(1);
+    batter.applyBaseHit(1);
+    pitcher.applyHitAllowed(1);
+    pitcher.strikeThrown(1);
     addHit();
     setOnFirst(true);
     advanceBatter();
     clearCount();
-    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
+    emit pitchCountUpdate(pitcher.getName() + ": " + pitcher.getTodaysPitchCount());
 }
 
 void BaseballGame::double2b()
 {
-    BaseballPlayer* pitcher = getPitcher();
-    BaseballPlayer* batter = getBatter();
+    BaseballPlayer& pitcher = getPitcher();
+    BaseballPlayer& batter = getBatter();
 
-    batter->applyBaseHit(2);
-    pitcher->applyHitAllowed(1);
-    pitcher->strikeThrown(1);
+    batter.applyBaseHit(2);
+    pitcher.applyHitAllowed(1);
+    pitcher.strikeThrown(1);
     addHit();
     setOnSecond(true);
     advanceBatter();
     clearCount();
-    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
+    emit pitchCountUpdate(pitcher.getName() + ": " + pitcher.getTodaysPitchCount());
 }
 
 void BaseballGame::triple()
 {
-    BaseballPlayer* pitcher = getPitcher();
-    BaseballPlayer* batter = getBatter();
+    BaseballPlayer& pitcher = getPitcher();
+    BaseballPlayer& batter = getBatter();
 
-    batter->applyBaseHit(3);
-    pitcher->applyHitAllowed(1);
-    pitcher->strikeThrown(1);
+    batter.applyBaseHit(3);
+    pitcher.applyHitAllowed(1);
+    pitcher.strikeThrown(1);
     addHit();
     setOnThird(true);
     advanceBatter();
     clearCount();
-    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
+    emit pitchCountUpdate(pitcher.getName() + ": " + pitcher.getTodaysPitchCount());
 }
 
 void BaseballGame::homeRun()
 {
-    BaseballPlayer* pitcher = getPitcher();
-    BaseballPlayer* batter = getBatter();
+    BaseballPlayer& pitcher = getPitcher();
+    BaseballPlayer& batter = getBatter();
 
-    batter->applyBaseHit(4);
-    pitcher->applyHitAllowed(1);
+    batter.applyBaseHit(4);
+    pitcher.applyHitAllowed(1);
 
-    pitcher->strikeThrown(1);
+    pitcher.strikeThrown(1);
     addHit();
 
     int runsScored = 1;
@@ -779,47 +778,47 @@ void BaseballGame::homeRun()
     advanceBatter();
     clearCount();
     clearBases();
-    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
+    emit pitchCountUpdate(pitcher.getName() + ": " + pitcher.getTodaysPitchCount());
 }
 
 void BaseballGame::strikeOut()
 {
     strikeThrown();
-    BaseballPlayer* pitcher = getPitcher();
-    BaseballPlayer* batter = getBatter();
-    batter->applyStrikeOutBatter();
-    pitcher->applyStrikeOutPitcher();
+    BaseballPlayer& pitcher = getPitcher();
+    BaseballPlayer& batter = getBatter();
+    batter.applyStrikeOutBatter();
+    pitcher.applyStrikeOutPitcher();
     advanceBatter();
     clearCount();
     out();
-    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
+    emit pitchCountUpdate(pitcher.getName() + ": " + pitcher.getTodaysPitchCount());
 }
 
 void BaseballGame::walk()
 {
     ballThrown();
-    BaseballPlayer* pitcher = getPitcher();
-    BaseballPlayer* batter = getBatter();
-    pitcher->applyWalkPitcher();
-    batter->applyWalk(1);
+    BaseballPlayer& pitcher = getPitcher();
+    BaseballPlayer& batter = getBatter();
+    pitcher.applyWalkPitcher();
+    batter.applyWalk(1);
     advanceBatter();
     clearCount();
     advanceRunnersOnWalk();
     setOnFirst(true);
-    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
+    emit pitchCountUpdate(pitcher.getName() + ": " + pitcher.getTodaysPitchCount());
 }
 
 void BaseballGame::hitByPitch()
 {
     ballThrown();
-    BaseballPlayer* pitcher = getPitcher();
-    BaseballPlayer* batter = getBatter();
-    batter->applyWalk(2);
+    BaseballPlayer& pitcher = getPitcher();
+    BaseballPlayer& batter = getBatter();
+    batter.applyWalk(2);
     advanceRunnersOnWalk();
     setOnFirst(true);
     advanceBatter();
     clearCount();
-    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
+    emit pitchCountUpdate(pitcher.getName() + ": " + pitcher.getTodaysPitchCount());
 }
 
 void BaseballGame::advanceRunnersOnWalk() {
@@ -842,66 +841,66 @@ void BaseballGame::advanceRunnersOnWalk() {
 void BaseballGame::reachOnError()
 {
     strikeThrown();
-    BaseballPlayer* pitcher = getPitcher();
-    BaseballPlayer* batter = getBatter();
-    batter->applyGenericOut();
+    BaseballPlayer& pitcher = getPitcher();
+    BaseballPlayer& batter = getBatter();
+    batter.applyGenericOut();
     addError();
     advanceBatter();
     clearCount();
-    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
+    emit pitchCountUpdate(pitcher.getName() + ": " + pitcher.getTodaysPitchCount());
 }
 
 void BaseballGame::genOut()
 {
     strikeThrown();
-    BaseballPlayer* pitcher = getPitcher();
-    BaseballPlayer* batter = getBatter();
-    batter->applyGenericOut();
-    //pitcher->recordOut(1);
+    BaseballPlayer& pitcher = getPitcher();
+    BaseballPlayer& batter = getBatter();
+    batter.applyGenericOut();
+    //pitcher.recordOut(1);
     advanceBatter();
     clearCount();
     out();
-    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
+    emit pitchCountUpdate(pitcher.getName() + ": " + pitcher.getTodaysPitchCount());
 }
 
 void BaseballGame::fielderChoice()
 {
     strikeThrown();
-    BaseballPlayer* pitcher = getPitcher();
-    BaseballPlayer* batter = getBatter();
-    batter->applyGenericOut();
-    //pitcher->recordOut(1);
+    BaseballPlayer& pitcher = getPitcher();
+    BaseballPlayer& batter = getBatter();
+    batter.applyGenericOut();
+    //pitcher.recordOut(1);
     advanceBatter();
     clearCount();
     //setOnFirst(true);
     out();
-    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
+    emit pitchCountUpdate(pitcher.getName() + ": " + pitcher.getTodaysPitchCount());
 }
 
 void BaseballGame::doublePlay()
 {
     strikeThrown();
-    BaseballPlayer* pitcher = getPitcher();
-    BaseballPlayer* batter = getBatter();
-    batter->applyGenericOut();
-    //pitcher->recordOut(2);
+    BaseballPlayer& pitcher = getPitcher();
+    BaseballPlayer& batter = getBatter();
+    batter.applyGenericOut();
+    //pitcher.recordOut(2);
     advanceBatter();
     clearCount();
     setOnFirst(false);
     out();
     out();
-    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
+    emit pitchCountUpdate(pitcher.getName() + ": " + pitcher.getTodaysPitchCount());
 }
 
 void BaseballGame::sacrifice()
 {
     strikeThrown();
-    BaseballPlayer* pitcher = getPitcher();
-    //pitcher->recordOut(1);
+    BaseballPlayer& pitcher = getPitcher();
+    //pitcher.recordOut(1);
     advanceBatter();
     clearCount();
     out();
-    emit pitchCountUpdate(pitcher->getName() + ": " + pitcher->getTodaysPitchCount());
+    emit pitchCountUpdate(pitcher.getName() + ": " + pitcher.getTodaysPitchCount());
 }
 
 QList<int> BaseballGame::getHomeLineScore() const
@@ -915,7 +914,7 @@ QList<QString> BaseballGame::getDueUp()
     BaseballTeam* team = inningMod == "Bot" ? homeTeam : awayTeam;
     int nextUp = inningMod == "Bot" ? homeBatter : awayBatter;
     for (int i = 0; i < 3; i++) {
-        batters.append(team->getBatterByIndex(nextUp)->getName());
+        batters.append(team->getBatterByIndex(nextUp).getName());
         nextUp=(nextUp+1)%9;
     }
     return batters;

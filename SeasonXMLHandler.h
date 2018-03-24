@@ -18,7 +18,7 @@ public:
 private:
     BaseballTeam* team;
     bool inPlayer, inTotals, inOpponent, foundPitcher;
-    BaseballPlayer* currPlayer;
+    BaseballPlayer currPlayer;
 
     QString correctName(QString name);
 };

@@ -9,30 +9,30 @@ class BaseballTeam : public QObject {
     Q_OBJECT
 public:
     BaseballTeam();
-    BaseballPlayer* getPlayer(const int i);
-    BaseballPlayer* getPlayerByNumber(const QString i);
-    void addPlayer(BaseballPlayer* player);
+    BaseballPlayer& getPlayer(const int i);
+    BaseballPlayer &getPlayerByNumber(const QString i);
+    void addPlayer(BaseballPlayer player);
 
 
     QList<QString> getGuiNames();
 
-    BaseballPlayer* getPitcher();
-    BaseballPlayer* getBatterByIndex(int index);
+    BaseballPlayer& getPitcher();
+    BaseballPlayer &getBatterByIndex(int index);
     QString getPlayerPos(int orderIndex);
 
     QList<QString> getOrderDefense() const;
     void setOrderDefense(const QList<QString> &value);
 
-    QList<BaseballPlayer *> getRoster() const;
-    void setRoster(const QList<BaseballPlayer *> &value);
+    QList<BaseballPlayer> getRoster() const;
+    void setRoster(const QList<BaseballPlayer> &value);
 
-    QList<BaseballPlayer *> getBattingOrder() const;
-    QList<BaseballPlayer *> getDefense() const;
+    QList<int> getBattingOrder() const;
+    QList<BaseballPlayer> getDefense() const;
 
 signals:
     void defenseChanged();
     void battingOrderChanged();
-    void pitcherChanged(BaseballPlayer* pitcher);
+    void pitcherChanged(int pitcher);
 
 public slots:
 
@@ -41,10 +41,11 @@ public slots:
     void setDefense(QList<int> playerIndicies);
 
 private:
-    QList<BaseballPlayer*> roster, battingOrder, defense;
+    QList<BaseballPlayer> roster, defense;
+    QList<int> battingOrder;
     QList<QString> orderDefense;
 
-    BaseballPlayer* pitcher;
+    int pitcher;
 };
 
 #endif // BASEBALLTEAM_H

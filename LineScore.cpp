@@ -69,10 +69,10 @@ void LineScore::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
         painter->fillRect(0, V_TEAM_Y, WIDTH, TEAM_HEIGHT, awayTeamGradient);
         painter->fillRect(0, H_TEAM_Y, WIDTH, TEAM_HEIGHT, homeTeamGradient);
         painter->setFont(away->font());
-
+        painter->fillRect(0, V_TEAM_Y, LOGO_WIDTH, TEAM_HEIGHT, MiamiAllAccessBaseball::awaySchool.getPrimaryLogoBg());
         painter->drawPixmap(awayWidthOffset, V_TEAM_Y + awayHeightOffset, awayLogo);
         painter->setFont(home->font());
-
+        painter->fillRect(0, H_TEAM_Y, LOGO_WIDTH, TEAM_HEIGHT, MiamiAllAccessBaseball::homeSchool.getPrimaryLogoBg());
         painter->drawPixmap(0, H_TEAM_Y, homeLogo);
 
         painter->setFont(QFont("Arial", 16, QFont::Bold));

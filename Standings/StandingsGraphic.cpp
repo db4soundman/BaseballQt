@@ -22,16 +22,16 @@ void StandingsGraphic::paint(QPainter* painter, const QStyleOptionGraphicsItem* 
         painter->drawText(100, 0, 230, 40, Qt::AlignCenter, "MAC STANDINGS");
         painter->drawPixmap(rect().width() - macLogo.width() - 30,0,macLogo);
         painter->setPen(QColor(253,180,26));
-        painter->drawText(100, 50, 230, 40, Qt::AlignCenter, "EAST DIVISION");
-        painter->drawText(100, 370, 230, 40, Qt::AlignCenter, "WEST DIVISION");
+//        painter->drawText(100, 50, 230, 40, Qt::AlignCenter, "EAST DIVISION");
+//        painter->drawText(100, 370, 230, 40, Qt::AlignCenter, "WEST DIVISION");
         fontSize = 14;
         painter->setFont(QFont("Arial", fontSize, QFont::Bold));
         painter->drawText(370, 50, 60, 40, Qt::AlignCenter, "OVR");
         painter->drawText(300, 50, 60, 40, Qt::AlignCenter, "CONF");
-        painter->drawText(370, 370, 60, 40, Qt::AlignCenter, "OVR");
-        painter->drawText(300, 370, 60, 40, Qt::AlignCenter, "CONF");
+//        painter->drawText(370, 370, 60, 40, Qt::AlignCenter, "OVR");
+//        painter->drawText(300, 370, 60, 40, Qt::AlignCenter, "CONF");
         painter->setPen(QColor(255,255,255));
-        for (int i = 0; i < macStandings.size()/2; i++) {
+        for (int i = 0; i < macStandings.size(); i++) {
 
             painter->drawText(35, 100 + (50*i), 240, 50, Qt::AlignRight | Qt::AlignVCenter, macStandings.at(i).getTeamName());
             painter->drawText(220, 100 + (50*i), 140, 50, Qt::AlignRight | Qt::AlignVCenter,
@@ -39,14 +39,14 @@ void StandingsGraphic::paint(QPainter* painter, const QStyleOptionGraphicsItem* 
             painter->drawText(370, 100 + (50*i), 55, 50, Qt::AlignRight | Qt::AlignVCenter,
                               QString::number(macStandings.at(i).getOvrWins())+"-"+ QString::number(macStandings.at(i).getOvrLosses()));
         }
-        for (int i = macStandings.size()/2; i < macStandings.size(); i++) {
+//        for (int i = macStandings.size()/2; i < macStandings.size(); i++) {
 
-            painter->drawText(35, 170 + (50*i), 240, 50, Qt::AlignRight | Qt::AlignVCenter, macStandings.at(i).getTeamName());
-            painter->drawText(220, 170 + (50*i), 140, 50, Qt::AlignRight | Qt::AlignVCenter,
-                              QString::number(macStandings.at(i).getWins())+"-"+ QString::number(macStandings.at(i).getLosses()));
-            painter->drawText(370, 170 + (50*i), 55, 50, Qt::AlignRight | Qt::AlignVCenter,
-                              QString::number(macStandings.at(i).getOvrWins())+"-"+ QString::number(macStandings.at(i).getOvrLosses()));
-        }
+//            painter->drawText(35, 170 + (50*i), 240, 50, Qt::AlignRight | Qt::AlignVCenter, macStandings.at(i).getTeamName());
+//            painter->drawText(220, 170 + (50*i), 140, 50, Qt::AlignRight | Qt::AlignVCenter,
+//                              QString::number(macStandings.at(i).getWins())+"-"+ QString::number(macStandings.at(i).getLosses()));
+//            painter->drawText(370, 170 + (50*i), 55, 50, Qt::AlignRight | Qt::AlignVCenter,
+//                              QString::number(macStandings.at(i).getOvrWins())+"-"+ QString::number(macStandings.at(i).getOvrLosses()));
+//        }
     }
 }
 

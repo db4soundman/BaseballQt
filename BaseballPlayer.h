@@ -7,7 +7,12 @@ class BaseballPlayer : public QObject {
     Q_OBJECT
 public:
     BaseballPlayer();
-    //BaseballPlayer& operator = (const BaseballPlayer&);
+    BaseballPlayer(const BaseballPlayer& p);
+    BaseballPlayer& operator = (const BaseballPlayer&p);
+
+    bool operator ==(const BaseballPlayer&p) const;
+    bool operator !=(const BaseballPlayer&p) const;
+    bool operator <(const BaseballPlayer& p)const ;
 
     QString getName() const;
     void setName(const QString& value);

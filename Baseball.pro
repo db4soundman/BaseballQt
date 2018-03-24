@@ -26,7 +26,6 @@ SOURCES += main.cpp\
     LowerThird.cpp \
     Clock.cpp \
     SeasonXMLHandler.cpp \
-    GameXmlHandler.cpp \
     MiamiAllAccessBaseball.cpp \
     GUI/ControlPanel.cpp \
     GUI/DisplayControls.cpp \
@@ -41,8 +40,6 @@ SOURCES += main.cpp\
     GameStatEditors/PlayerEditor.cpp \
     GameStatEditors/TeamEditor.cpp \
     LowerThirdCreator.cpp \
-    GameXmlUpdater.cpp \
-    StatCrewScanner.cpp \
     TricasterHandler.cpp \
     BaseballGame.cpp \
     BaseballPlayer.cpp \
@@ -76,7 +73,6 @@ HEADERS  += MainWindow.h \
     Clock.h \
     BaseballTeam.h \
     SeasonXMLHandler.h \
-    GameXmlHandler.h \
     MiamiAllAccessBaseball.h \
     GUI/ControlPanel.h \
     GUI/DisplayControls.h \
@@ -91,8 +87,6 @@ HEADERS  += MainWindow.h \
     GameStatEditors/PlayerEditor.h \
     GameStatEditors/TeamEditor.h \
     LowerThirdCreator.h \
-    GameXmlUpdater.h \
-    StatCrewScanner.h \
     TricasterHandler.h \
     AirSend_api.h \
     BaseballGame.h \

@@ -40,7 +40,7 @@ private:
     QGraphicsTextItem* away, *home;
     QString homeScore, awayScore, maaText, clock, hitsHome, hitsAway, errorsHome, errorsAway;
     QFont descriptiveFont;
-    int clockStatus, awayHeightOffset, awayWidthOffset;
+    int clockStatus, awayHeightOffset, awayWidthOffset, homeWidthOffset;
     void checkAwayFont();
     void prepareGradients(QColor awayColor, QColor homeColor);
     QPixmap homeLogo, awayLogo;

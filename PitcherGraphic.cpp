@@ -23,23 +23,23 @@ PitcherGraphic::PitcherGraphic(BaseballGame *game) : font(QFont("Arial",24, QFon
     awayStatGradient.setStart(0,NAME_HEIGHT);
     awayStatGradient.setFinalStop(0, HEIGHT);
     nameFont = font;
-
-    connect(game->getAwayTeam(), SIGNAL(pitcherChanged(BaseballPlayer*)), this, SLOT(setAwayPitcher(BaseballPlayer*)));
-    connect(game->getHomeTeam(), SIGNAL(pitcherChanged(BaseballPlayer*)), this, SLOT(setHomePitcher(BaseballPlayer*)));
+    this->game=game;
+    connect(game->getAwayTeam(), SIGNAL(pitcherChanged(int)), this, SLOT(setAwayPitcher(int)));
+    connect(game->getHomeTeam(), SIGNAL(pitcherChanged(int)), this, SLOT(setHomePitcher(int)));
     prepareColor();
 }
 
 void PitcherGraphic::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     if (show) {
-        BaseballPlayer* player = homeTeam? homePitcher : awayPitcher;
+        BaseballPlayer player = homeTeam? homePitcher : awayPitcher;
         painter->setFont(font);
         painter->fillRect(0,0,WIDTH,NAME_HEIGHT, homeTeam? homeGradient : awayGradient);
         painter->fillRect(0,NAME_HEIGHT, WIDTH, HEIGHT - NAME_HEIGHT, homeTeam? homeStatGradient : awayStatGradient);
         painter->setPen(QColor(255,255,255));
-        painter->drawText(0,0, 48, NAME_HEIGHT, Qt::AlignCenter, player->getUni());
+        painter->drawText(0,0, 48, NAME_HEIGHT, Qt::AlignCenter, player.getUni());
         painter->setFont(nameFont);
-        painter->drawText(48,0, WIDTH - 48, NAME_HEIGHT, Qt::AlignCenter, player->getName());
+        painter->drawText(48,0, WIDTH - 48, NAME_HEIGHT, Qt::AlignCenter, player.getName());
         painter->setFont(font);
         painter->drawText(15, 42* 1, 240, 30, Qt::AlignLeft, "APP");
         painter->drawText(15,  42* 2, 240, 30, Qt::AlignLeft, "GS/SV");
@@ -52,27 +52,27 @@ void PitcherGraphic::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
         painter->drawText(15,  42* 9, 240, 30, Qt::AlignLeft, "BB");
         painter->drawText(15,  42* 10, 240, 30, Qt::AlignLeft, "SO");
 
-        painter->drawText(105,  42* 1, 240, 30, Qt::AlignRight, QString::number(player->getAp()));
-        painter->drawText(105,  42* 2, 240, 30, Qt::AlignRight,  QString::number(player->getGs()) + "/" +  QString::number(player->getSaves()));
-        painter->drawText(105,  42* 3, 240, 30, Qt::AlignRight,  QString::number(player->getWins()) + "-" +  QString::number(player->getLosses()));
-        painter->drawText(105,  42* 4, 240, 30, Qt::AlignRight,  player->getEra());
-        painter->drawText(105,  42* 5, 240, 30, Qt::AlignRight,  player->getIp());
-        painter->drawText(105,  42* 6, 240, 30, Qt::AlignRight,  QString::number(player->getHitsAllowed()));
-        painter->drawText(105,  42* 7, 240, 30, Qt::AlignRight,  QString::number(player->getRunsAllowed()));
-        painter->drawText(105,  42* 8, 240, 30, Qt::AlignRight,  QString::number(player->getEr()));
-        painter->drawText(105,  42* 9, 240, 30, Qt::AlignRight, QString::number(player->getBb()));
-        painter->drawText(105,  42* 10, 240, 30, Qt::AlignRight,  QString::number(player->getKOut()));
+        painter->drawText(105,  42* 1, 240, 30, Qt::AlignRight, QString::number(player.getAp()));
+        painter->drawText(105,  42* 2, 240, 30, Qt::AlignRight,  QString::number(player.getGs()) + "/" +  QString::number(player.getSaves()));
+        painter->drawText(105,  42* 3, 240, 30, Qt::AlignRight,  QString::number(player.getWins()) + "-" +  QString::number(player.getLosses()));
+        painter->drawText(105,  42* 4, 240, 30, Qt::AlignRight,  player.getEra());
+        painter->drawText(105,  42* 5, 240, 30, Qt::AlignRight,  player.getIp());
+        painter->drawText(105,  42* 6, 240, 30, Qt::AlignRight,  QString::number(player.getHitsAllowed()));
+        painter->drawText(105,  42* 7, 240, 30, Qt::AlignRight,  QString::number(player.getRunsAllowed()));
+        painter->drawText(105,  42* 8, 240, 30, Qt::AlignRight,  QString::number(player.getEr()));
+        painter->drawText(105,  42* 9, 240, 30, Qt::AlignRight, QString::number(player.getBb()));
+        painter->drawText(105,  42* 10, 240, 30, Qt::AlignRight,  QString::number(player.getKOut()));
     }
 }
 
-void PitcherGraphic::setAwayPitcher(BaseballPlayer *pitcher)
+void PitcherGraphic::setAwayPitcher(int idx)
 {
-    awayPitcher = pitcher;
+    awayPitcher = game->getAwayTeam()->getPlayer(idx);
 }
 
-void PitcherGraphic::setHomePitcher(BaseballPlayer *pitcher)
+void PitcherGraphic::setHomePitcher(int idx)
 {
-    homePitcher = pitcher;
+    homePitcher = game->getHomeTeam()->getPlayer(idx);
 }
 
 void PitcherGraphic::displayGraphic(bool team)
@@ -131,8 +131,8 @@ void
 PitcherGraphic::prepareFontSize() {
     int subtraction = 1;
     QFontMetrics fontSize(nameFont);
-    BaseballPlayer* player = homeTeam? homePitcher : awayPitcher;
-    while (fontSize.width(player->getName()) > WIDTH - 58) {
+    BaseballPlayer player = homeTeam? homePitcher : awayPitcher;
+    while (fontSize.width(player.getName()) > WIDTH - 58) {
         QFont tempFont("Arial", 24 - subtraction, QFont::Bold);
         //nameFont.setPointSize(fontPointSize - subtraction);
         subtraction++;

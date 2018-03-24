@@ -1,42 +1,43 @@
 #include "BaseballTeam.h"
-
+#include <algorithm>
 BaseballTeam::BaseballTeam() {
-
+    pitcher=0;
 
 }
 
-BaseballPlayer* BaseballTeam::getPlayer(const int i) {
+BaseballPlayer& BaseballTeam::getPlayer(const int i) {
     if (i >= roster.size())
-        return NULL;
-    return roster.at(i);
+        return roster.last();
+    return roster[i];
 }
 
-BaseballPlayer*BaseballTeam::getPlayerByNumber(const QString num)
+BaseballPlayer& BaseballTeam::getPlayerByNumber(const QString num)
 {
     for (int i = 0; i < roster.size(); i++) {
-        if (roster.at(i)->getUni() == num) {
-            return roster.at(i);
+        if (roster.at(i).getUni() == num) {
+            return roster[i];
         }
     }
-    return NULL;
+    return roster.last();
 }
 
 void
-BaseballTeam::addPlayer(BaseballPlayer* player) {
+BaseballTeam::addPlayer(BaseballPlayer player) {
     roster.append(player);
+    std::sort(roster.begin(), roster.end());
 }
 
 
 
-BaseballPlayer* BaseballTeam::getPitcher()
+BaseballPlayer &BaseballTeam::getPitcher()
 {
-    return pitcher;
+    return roster[pitcher];
 }
 
-BaseballPlayer *BaseballTeam::getBatterByIndex(int index)
+BaseballPlayer &BaseballTeam::getBatterByIndex(int index)
 {
-    if (index > 8) return NULL;
-    return battingOrder.at(index);
+    if (index > 8) return roster.last();
+    return getPlayer(battingOrder[index]);
 }
 
 QString BaseballTeam::getPlayerPos(int orderIndex)
@@ -49,10 +50,10 @@ void BaseballTeam::setPitcher(int index)
     if (index >= roster.size()) {
     }
     else {
-        pitcher = getPlayer(index);
+        pitcher = index;
         if (defense.size() > 0)
-            defense[0] = pitcher;
-        else defense.append(pitcher);
+            defense[0] = getPlayer(index);
+        else defense.append(getPlayer(index));
         emit pitcherChanged(pitcher);
     }
 }
@@ -60,20 +61,20 @@ void BaseballTeam::setPitcher(int index)
 void BaseballTeam::setBattingOrder(QList<int> playerIndicies, QList<QString> p)
 {
     battingOrder.clear();
-    for (int i = 0; i < playerIndicies.length(); i++) {
-        battingOrder.append(getPlayer(playerIndicies.at(i)));
-        getPlayer(playerIndicies.at(i))->setPos(p.at(i));
-    }
+    battingOrder = playerIndicies;
     orderDefense = p;
+    for (int i = 0 ; i < battingOrder.size(); i++) {
+        getBatterByIndex(i).setPos(orderDefense[i]);
+    }
     emit battingOrderChanged();
 }
 
 void BaseballTeam::setDefense(QList<int> playerIndicies)
 {
     defense.clear();
-    defense.append(pitcher);
+    defense.append(getPlayer(pitcher));
     // DH used
-    if (Q_LIKELY(pitcher != getPlayer(playerIndicies.at(0))))
+    if (Q_LIKELY(getPlayer(pitcher) != getPlayer(playerIndicies.at(0))))
         for (int i = 0; i < playerIndicies.size(); i++) {
             defense.append(getPlayer(playerIndicies.at(i)));
         }
@@ -87,22 +88,22 @@ void BaseballTeam::setDefense(QList<int> playerIndicies)
 
     emit defenseChanged();
 }
-QList<BaseballPlayer *> BaseballTeam::getRoster() const
+QList<BaseballPlayer> BaseballTeam::getRoster() const
 {
     return roster;
 }
 
-void BaseballTeam::setRoster(const QList<BaseballPlayer *> &value)
+void BaseballTeam::setRoster(const QList<BaseballPlayer> &value)
 {
     roster = value;
 }
 
-QList<BaseballPlayer *> BaseballTeam::getBattingOrder() const
+QList<int> BaseballTeam::getBattingOrder() const
 {
     return battingOrder;
 }
 
-QList<BaseballPlayer *> BaseballTeam::getDefense() const
+QList<BaseballPlayer> BaseballTeam::getDefense() const
 {
     return defense;
 }
@@ -122,8 +123,8 @@ QList<QString> BaseballTeam::getGuiNames()
 {
     QList<QString> names;
     for (int i = 0; i < roster.size(); i++) {
-        names.append(roster.at(i)->getUni() + " - " +
-                     roster.at(i)->getName());
+        names.append(roster.at(i).getUni() + " - " +
+                     roster.at(i).getName());
     }
 
     return names;

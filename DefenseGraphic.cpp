@@ -31,15 +31,15 @@ void DefenseGraphic::paint(QPainter *painter,
         painter->drawPixmap(0,30, pixmap());
         painter->setPen(QColor(255,255,255));
         painter->drawText(0,0, pixmap().width(), 30, Qt::AlignCenter,homeTeam? homeName : awayName);
-        painter->drawText(438,444,400,28, Qt::AlignCenter,homeTeam? home[0]->getLastName() : away[0]->getLastName());
-        painter->drawText(438,762,400,28, Qt::AlignCenter,homeTeam? home[1]->getLastName() : away[1]->getLastName());
-        painter->drawText(790,380,400,28, Qt::AlignCenter,homeTeam? home[2]->getLastName() : away[2]->getLastName());
-        painter->drawText(718,250,400,28, Qt::AlignCenter,homeTeam? home[3]->getLastName() : away[3]->getLastName());
-        painter->drawText(638-440,250,400,28, Qt::AlignCenter,homeTeam? home[4]->getLastName() : away[4]->getLastName());
-        painter->drawText(190,380,400,28, Qt::AlignCenter,homeTeam? home[5]->getLastName() : away[5]->getLastName());
-        painter->drawText(100,126,400,28, Qt::AlignCenter, homeTeam? home[6]->getLastName() : away[6]->getLastName());
-        painter->drawText(438,50,400,28, Qt::AlignCenter,homeTeam? home[7]->getLastName() : away[7]->getLastName());
-        painter->drawText(800,126,400,28, Qt::AlignCenter, homeTeam? home[8]->getLastName() : away[8]->getLastName());
+        painter->drawText(438,444,400,28, Qt::AlignCenter,homeTeam? home[0].getLastName() : away[0].getLastName());
+        painter->drawText(438,762,400,28, Qt::AlignCenter,homeTeam? home[1].getLastName() : away[1].getLastName());
+        painter->drawText(790,380,400,28, Qt::AlignCenter,homeTeam? home[2].getLastName() : away[2].getLastName());
+        painter->drawText(718,250,400,28, Qt::AlignCenter,homeTeam? home[3].getLastName() : away[3].getLastName());
+        painter->drawText(638-440,250,400,28, Qt::AlignCenter,homeTeam? home[4].getLastName() : away[4].getLastName());
+        painter->drawText(190,380,400,28, Qt::AlignCenter,homeTeam? home[5].getLastName() : away[5].getLastName());
+        painter->drawText(100,126,400,28, Qt::AlignCenter, homeTeam? home[6].getLastName() : away[6].getLastName());
+        painter->drawText(438,50,400,28, Qt::AlignCenter,homeTeam? home[7].getLastName() : away[7].getLastName());
+        painter->drawText(800,126,400,28, Qt::AlignCenter, homeTeam? home[8].getLastName() : away[8].getLastName());
     }
 }
 

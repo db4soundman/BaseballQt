@@ -20,10 +20,10 @@ private slots:
     void changePlayer(int index);
 
 private:
-    QSpinBox goalsToday, astToday, penaltiesToday, pimToday;
-    QComboBox playerSelect;
-    BaseballPlayer* player;
-    BaseballTeam* team;
+//    QSpinBox goalsToday, astToday, penaltiesToday, pimToday;
+//    QComboBox playerSelect;
+//    BaseballPlayer* player;
+//    BaseballTeam* team;
 
 };
 
