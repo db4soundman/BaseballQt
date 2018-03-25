@@ -169,6 +169,8 @@ public:
     QString getThrows() const;
     void setThrows(const QString &value);
 
+    void reset();
+
 private:
     QString name, uni, year, pos, bats, throws;
     // Batting

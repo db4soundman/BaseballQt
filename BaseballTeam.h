@@ -28,6 +28,7 @@ public:
 
     QList<int> getBattingOrder() const;
     QList<BaseballPlayer> getDefense() const;
+    void resetPlayers();
 
 signals:
     void defenseChanged();

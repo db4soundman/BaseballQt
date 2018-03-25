@@ -252,7 +252,7 @@ void BaseballPlayer::setRbi(int value)
 }
 int BaseballPlayer::getHr() const
 {
-    return hr;
+    return hr + hrToday;
 }
 
 void BaseballPlayer::setHr(int value)
@@ -553,7 +553,7 @@ void BaseballPlayer::applyBaseHit(int base)
         triples++;
         break;
     case 4:
-        hr++;
+        hrToday++;
         break;
     default:
         break;
@@ -666,6 +666,11 @@ QString BaseballPlayer::getThrows() const
 void BaseballPlayer::setThrows(const QString &value)
 {
     throws = value;
+}
+
+void BaseballPlayer::reset()
+{
+    abToday = rToday = hToday = rbiToday = hrToday = walksToday = strikeoutsToday = hbpToday = pitchCount = ballsThrown = strikesThrown = outsToday = pStrikeOutsToday = pWalksToday = 0;
 }
 
 

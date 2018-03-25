@@ -65,9 +65,15 @@ void MainWindow::makeMenu(BaseballGame* game)
     lowerThirdMenu->addAction(customLtCreator);
 
 
+    QMenu* doubleHeaderMenu = new QMenu("Double Header");
+    QAction* resetGame = new QAction("Reset Game", this);
+    connect(resetGame, SIGNAL(triggered(bool)), game, SLOT(resetGame()));
+    doubleHeaderMenu->addAction(resetGame);
+
     //menuBar()->addMenu(awayMenu);
     menuBar()->addMenu(nchcMenu);
     menuBar()->addMenu(homeMenu);
+    menuBar()->addMenu(doubleHeaderMenu);
     //menuBar()->addMenu(lowerThirdMenu);
 
 

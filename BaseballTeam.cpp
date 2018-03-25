@@ -108,6 +108,13 @@ QList<BaseballPlayer> BaseballTeam::getDefense() const
     return defense;
 }
 
+void BaseballTeam::resetPlayers()
+{
+    for (int i = 0; i < roster.size() - 1; i++) {
+        roster[i].reset();
+    }
+}
+
 QList<QString> BaseballTeam::getOrderDefense() const
 {
     return orderDefense;

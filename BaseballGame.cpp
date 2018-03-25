@@ -903,6 +903,33 @@ void BaseballGame::sacrifice()
     emit pitchCountUpdate(pitcher.getName() + ": " + pitcher.getTodaysPitchCount());
 }
 
+void BaseballGame::resetGame()
+{
+    clearBases();
+    clearCount();
+    inningMod = "Top";
+    period = 1;
+    emit periodChanged(inningMod, period);
+    awayLineScore.clear();
+    homeLineScore.clear();
+    awayScoreByInning.clear();
+    homeScoreByInning.clear();
+    isFinal = false;
+    homeHits = awayHits = homeErrors = awayErrors = homeScore = awayScore = 0;
+    emit homeScoreChanged(0);
+    emit awayScoreChanged(0);
+    emit awayHitsChanged(0);
+    emit homeHitsChanged(0);
+    emit homeErrorsChanged(0);
+    emit awayErrorsChanged(0);
+    homeBatter = awayBatter = 0;
+    updateBatterNoAdvance();
+    homeTeam->resetPlayers();
+    awayTeam->resetPlayers();
+    awayScoreByInning.append(0);
+    homeScoreByInning.append(0);
+}
+
 QList<int> BaseballGame::getHomeLineScore() const
 {
     return homeLineScore;

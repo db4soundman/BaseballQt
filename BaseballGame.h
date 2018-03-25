@@ -156,6 +156,8 @@ public slots:
     void doublePlay();
     void sacrifice();
 
+    void resetGame();
+
 signals:
     void homeScoreChanged(int score);
     void awayScoreChanged(int score);
