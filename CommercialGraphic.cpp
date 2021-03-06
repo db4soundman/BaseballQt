@@ -50,9 +50,14 @@ CommercialGraphic::CommercialGraphic(BaseballGame* game, int width, QGraphicsIte
     if (awayLogo.width() > LOGO_WIDTH) {
        awayLogo =  awayLogo.scaledToWidth(LOGO_WIDTH, Qt::SmoothTransformation);
     }
+    if (homeLogo.width() > LOGO_WIDTH) {
+       homeLogo =  homeLogo.scaledToWidth(LOGO_WIDTH, Qt::SmoothTransformation);
+    }
 
     awayHeightOffset = (TEAM_HEIGHT - awayLogo.height()) / 2;
     awayWidthOffset = (LOGO_WIDTH - awayLogo.width()) / 2;
+
+    homeHeightOffset = (TEAM_HEIGHT - homeLogo.height()) / 2;
     homeWidthOffset = (LOGO_WIDTH - homeLogo.width()) / 2;
 }
 
@@ -76,7 +81,7 @@ void CommercialGraphic::paint(QPainter* painter, const QStyleOptionGraphicsItem*
         painter->drawText(LOGO_WIDTH, V_TEAM_Y, RUNS_X - LOGO_WIDTH, TEAM_HEIGHT, Qt::AlignCenter, MiamiAllAccessBaseball::awaySchool.getShortName());
         painter->setFont(home->font());
         painter->fillRect(0, H_TEAM_Y, LOGO_WIDTH, TEAM_HEIGHT, MiamiAllAccessBaseball::homeSchool.getPrimaryLogoBg());
-        painter->drawPixmap(0, H_TEAM_Y, homeLogo);
+        painter->drawPixmap(homeWidthOffset, H_TEAM_Y + homeHeightOffset, homeLogo);
         painter->drawText(LOGO_WIDTH, H_TEAM_Y, RUNS_X - LOGO_WIDTH, TEAM_HEIGHT, Qt::AlignCenter, MiamiAllAccessBaseball::homeSchool.getShortName());
 
         //painter->fillRect(WIDTH*.75 - CENTER_OFFSET, 0, CENTER_OFFSET, TEAM_HEIGHT*2, QColor(1,1,1, 100));

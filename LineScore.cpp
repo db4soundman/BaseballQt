@@ -51,9 +51,15 @@ LineScore::LineScore(BaseballGame *pGame, QObject *parent) :
         if (awayLogo.width() > LOGO_WIDTH) {
            awayLogo =  awayLogo.scaledToWidth(LOGO_WIDTH, Qt::SmoothTransformation);
         }
+        if (homeLogo.width() > LOGO_WIDTH) {
+           homeLogo =  homeLogo.scaledToWidth(LOGO_WIDTH, Qt::SmoothTransformation);
+        }
 
         awayHeightOffset = (TEAM_HEIGHT - awayLogo.height()) / 2;
         awayWidthOffset = (LOGO_WIDTH - awayLogo.width()) / 2;
+
+        homeHeightOffset = (TEAM_HEIGHT - homeLogo.height()) / 2;
+        homeWidthOffset = (LOGO_WIDTH - homeLogo.width()) / 2;
 
 }
 
@@ -73,7 +79,7 @@ void LineScore::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
         painter->drawPixmap(awayWidthOffset, V_TEAM_Y + awayHeightOffset, awayLogo);
         painter->setFont(home->font());
         painter->fillRect(0, H_TEAM_Y, LOGO_WIDTH, TEAM_HEIGHT, MiamiAllAccessBaseball::homeSchool.getPrimaryLogoBg());
-        painter->drawPixmap(0, H_TEAM_Y, homeLogo);
+        painter->drawPixmap(homeWidthOffset, H_TEAM_Y + homeHeightOffset, homeLogo);
 
         painter->setFont(QFont("Arial", 16, QFont::Bold));
 
@@ -106,7 +112,7 @@ void LineScore::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
         painter->fillRect(0, H_TEAM_Y + TEAM_HEIGHT, WIDTH, HEIGHT - (H_TEAM_Y + TEAM_HEIGHT), QColor(50,50,50));
         painter->setFont(getDueUpFont());
-        painter->drawText(0,  H_TEAM_Y + TEAM_HEIGHT, WIDTH, HEIGHT - (H_TEAM_Y + TEAM_HEIGHT), Qt::AlignCenter, dueUpString);
+        painter->drawText(0,  H_TEAM_Y + TEAM_HEIGHT, WIDTH, HEIGHT - (H_TEAM_Y + TEAM_HEIGHT), Qt::AlignCenter, clock);
 
     }
 
@@ -121,7 +127,7 @@ void LineScore::prepareAndShow()
     errorsAway = QString::number(baseballGame->getAwayErrors());
     errorsHome = QString::number(baseballGame->getHomeErrors());
     dueUp = baseballGame->getDueUp();
-    prepareDueUp();
+//    prepareDueUp();
     clock = clockStatus == SHOW_CLOCK? baseballGame->getInningText() : clock;
     clock = clock.replace("Top", "START").replace("Bot", "MID");
     show = true;
