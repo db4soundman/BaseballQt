@@ -37,7 +37,7 @@ private:
     QString homeScore, awayScore, clock, hitsHome, hitsAway, errorsHome, errorsAway, dueUpString;
     QList<QString> dueUp;
     QFont descriptiveFont;
-    int clockStatus, awayHeightOffset, awayWidthOffset;
+    int clockStatus, awayHeightOffset, awayWidthOffset, homeHeightOffset, homeWidthOffset;
     QFont getDueUpFont();
     void prepareGradients(QColor awayColor, QColor homeColor);
     void prepareDueUp();

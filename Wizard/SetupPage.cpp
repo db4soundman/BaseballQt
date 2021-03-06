@@ -143,7 +143,7 @@ void SetupPage::awayBrowse()
 
 void SetupPage::profileBrowse()
 {
-    QString file = QFileDialog::getOpenFileName(0, "Away Profile",QStandardPaths::writableLocation(QStandardPaths::PicturesLocation)+"/IMS Images/Logos_Keyable");
+    QString file = QFileDialog::getOpenFileName(0, "Away Profile",QStandardPaths::writableLocation(QStandardPaths::PicturesLocation)+"/IMS Images/Primary");
     if (!file.isEmpty()) {
         QFile csv(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation)+"/IMS Images/ProfilesBaseball.csv");
         csv.open(QIODevice::ReadOnly);
