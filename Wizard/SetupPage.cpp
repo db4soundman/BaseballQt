@@ -81,13 +81,13 @@ SetupPage::SetupPage(QString* pAwayFile,
     mainLayout->addWidget(new QLabel("Announcers"), 6, 0);
     mainLayout->addWidget(&announcerLine, 6, 1);
     tricasterBox = new QCheckBox("Using Tricaster");
-    tricasterBox->setChecked(true);
-    mainLayout->addWidget(tricasterBox, 8, 0);
+    tricasterBox->setChecked(false);
+//    mainLayout->addWidget(tricasterBox, 8, 0);
     tricasterIpLine.setText(*tricasterIp);
-    mainLayout->addWidget(&tricasterIpLine, 8, 1);
-    mainLayout->addWidget(new QLabel("Net Input"),8, 2);
+//    mainLayout->addWidget(&tricasterIpLine, 8, 1);
+//    mainLayout->addWidget(new QLabel("Net Input"),8, 2);
     portSelector = new QComboBox();
-    mainLayout->addWidget(portSelector,8, 3);
+//    mainLayout->addWidget(portSelector,8, 3);
 
     portSelector->addItem("1");
     portSelector->addItem("2");

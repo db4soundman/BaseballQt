@@ -87,12 +87,9 @@ MiamiAllAccessBaseball::exec() {
                 awayLogo, tricasterIp, awayShort, homeShort;
         QColor awayColor, homeColor,  bg;
         int port;
-        MiamiAllAccessBaseball::homeSchool = School::getSchoolFromESPN("MIAMI_OH");
+        MiamiAllAccessBaseball::homeSchool = School::getSchoolFromESPN("AKRON");
 
         bool usingTricaster = true;
-        homeSchool.setShortName("MIAMI");
-        homeSchool.setTitle("Miami");
-        homeSchool.setFullName("MIAMI");
         bg.setRgb(0,120,0);
         announcer = QString::fromStdString(params.stringValue("ANNOUNCER"));
         sponsor = QString::fromStdString(params.stringValue("SPONSOR"));

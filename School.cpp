@@ -103,7 +103,7 @@ School::getSchoolFromESPN(QString imsName)
      while (!stream.atEnd()) {
          QStringList data = stream.readLine().split(',');
          if (data[4] == imsName) {
-             Profile p(data[1], data[2], data[3], data[0], QStandardPaths::writableLocation(QStandardPaths::PicturesLocation)+"/IMS Images/Logos_Keyable/"+data[4]+".PNG",
+             Profile p(data[1], data[2], data[3], data[0], QStandardPaths::writableLocation(QStandardPaths::PicturesLocation)+"/IMS Images/Primary/"+data[4]+".PNG",
                      QStandardPaths::writableLocation(QStandardPaths::PicturesLocation)+"/IMS Images/Swatches/"+data[4]+".PNG");
              activeProfile = p;
              csv.close();
